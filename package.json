@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@bimdata/viewer": "^0.6.0",
-    "core-js": "^3.4.4",
     "oidc-client": "^1.10.1",
     "vue": "^2.6.10",
     "vue-i18n": "^8.15.3",
@@ -18,7 +17,6 @@
     "vuex-oidc": "^3.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",
     "@vue/cli-plugin-vuex": "^4.1.0",
