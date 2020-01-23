@@ -11,7 +11,8 @@
 <script>
 import BimdataViewer from '@bimdata/viewer';
 import { mapGetters } from 'vuex';
-import SnowflakesPlugin from '@/plugins/snowflakes/snowflakes.js'
+//import SnowflakesPlugin from '@/plugins/snowflakes/snowflakes.plugin.js'
+import SplitPlugin from '@/plugins/split/split.plugin.js'
 
 export default {
   name: 'home',
@@ -24,12 +25,12 @@ export default {
         cloudId: process.env.VUE_APP_CLOUD_ID,
         projectId: process.env.VUE_APP_PROJECT_ID,
         ifcIds: [process.env.VUE_APP_IFC_ID],
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       }
     }
   },
   mounted() {
-    this.$refs.bimdataViewerInstance.registerPlugins([SnowflakesPlugin])
+    this.$refs.bimdataViewerInstance.registerPlugins([SplitPlugin])
   },
   computed: {
     ...mapGetters(['oidcAccessToken'])

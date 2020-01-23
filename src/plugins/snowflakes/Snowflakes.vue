@@ -1,7 +1,4 @@
 <script>
-function randomFromInterval(min, max) {
-  return Math.random() * (max - min + 1) + min;
-}
 
 export default {
   name: "snowflakes-component",
@@ -42,6 +39,9 @@ export default {
     }
   },
   methods: {
+    randomFromInterval(min, max) {
+      return Math.random() * (max - min + 1) + min;
+    },
     letItSnow() {
       const aabb = this.xeokit.scene.aabb; // Get scene area
 
@@ -55,11 +55,11 @@ export default {
       // Increasing area size
       const spwanXOffset = (xMax - xMin) / 2;
       const spwanZOffset = (zMax - zMin) / 2;
-      const randomXSnowflake = randomFromInterval(xMin - spwanXOffset, xMax + spwanXOffset);
-      const randomZSnowflake = randomFromInterval(zMin - spwanZOffset, zMax + spwanZOffset);
+      const randomXSnowflake = this.randomFromInterval(xMin - spwanXOffset, xMax + spwanXOffset);
+      const randomZSnowflake = this.randomFromInterval(zMin - spwanZOffset, zMax + spwanZOffset);
 
-      const speed = randomFromInterval(0.08, 0.12);
-      const size = randomFromInterval(0.2, 0.25);
+      const speed = this.randomFromInterval(0.08, 0.12);
+      const size = this.randomFromInterval(0.2, 0.25);
       const startPosition = yMax * 2;
 
       const snowflakeModel = this.loader.load({
