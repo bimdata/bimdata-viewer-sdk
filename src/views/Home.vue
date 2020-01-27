@@ -11,7 +11,7 @@
 <script>
 import BimdataViewer from '@bimdata/viewer';
 import { mapGetters } from 'vuex';
-//import SnowflakesPlugin from '@/plugins/snowflakes/snowflakes.plugin.js'
+import SnowflakesPlugin from '@/plugins/snowflakes/snowflakes.plugin.js'
 import SplitPlugin from '@/plugins/split/split.plugin.js'
 
 export default {
@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted() {
-    this.$refs.bimdataViewerInstance.registerPlugins([SplitPlugin])
+    this.$refs.bimdataViewerInstance.registerPlugins([SnowflakesPlugin, SplitPlugin])
   },
   computed: {
     ...mapGetters(['oidcAccessToken'])

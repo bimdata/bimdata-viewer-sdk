@@ -25,4 +25,3 @@ export default {
         options: { x: 512, y: 512 }
     }
 };
-
