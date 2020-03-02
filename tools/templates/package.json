@@ -1,0 +1,26 @@
+{
+  "name": "{{ name }}",
+  "version": "0.0.1",
+  "description": "{{ name }} BIMData Viewer Plugin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "main": "dist/{ name }}.plugin.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "BIMData",
+    "Viewer",
+    "Plugin",
+    "{{ name }}"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-url": "^4.0.2",
+    "rollup": "^1.32.0",
+    "rollup-plugin-scss": "^2.1.0",
+    "rollup-plugin-vue": "^5.1.6"
+  }
+}

@@ -5,10 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "init-plugin": "node tools/init-plugin.js"
   },
   "dependencies": {
     "@bimdata/bimdata-api-client": "^6.1.0",
+    "@bimdata/test-plugin-boilerplate": "^0.2.4",
     "@bimdata/viewer": "^0.6.3",
     "oidc-client": "^1.10.1",
     "vue": "^2.6.10",
@@ -23,8 +25,15 @@
     "@vue/cli-plugin-vuex": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
+    "chalk": "^3.0.0",
+    "commander": "^4.1.1",
+    "copy-dir": "^1.2.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "file-loader": "^5.1.0",
+    "inquirer": "^7.0.5",
+    "is-valid-var-name": "^1.0.2",
+    "nunjucks": "^3.2.0",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.11"

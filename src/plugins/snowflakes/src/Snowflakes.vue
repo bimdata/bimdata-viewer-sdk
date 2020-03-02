@@ -1,7 +1,8 @@
 <script>
+import snowflakeGltf from '../assets/snowflake.gltf';
 
 export default {
-  name: "snowflakes-component",
+  name: "SnowflakesComponent",
   data() {
     return {
       maxFlakes: 100, // Number of loaded snowflakes
@@ -64,7 +65,7 @@ export default {
 
       const snowflakeModel = this.loader.load({
         id: "snowflake" + (this.maxId++), // Unique ID
-        src: "https://unpkg.com/@bimdata/snowflakes-viewer-plugin/snowflake.gltf", // Model URI
+        src: snowflakeGltf, // Model URI
         position: [randomXSnowflake, startPosition, randomZSnowflake], // Randomize snowflakes
         rotation: [90, 0, Math.random() * 90],
         scale: [size, size, size],
