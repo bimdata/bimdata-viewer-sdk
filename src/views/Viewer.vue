@@ -6,9 +6,8 @@
 
 <script>
 import BimdataViewer from "@bimdata/viewer";
-// import SnowflakesPlugin from "@/plugins/snowflakes/snowflakes.plugin.js";
-import SnowflakesPlugin from "@bimdata/test-plugin-boilerplate";
-import SplitPlugin from "@/plugins/split/split.plugin.js";
+import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
+import SplitPlugin from "@/plugins/split/src/split.plugin.js";
 
 import { mapGetters } from "vuex";
 
@@ -32,7 +31,7 @@ export default {
   mounted() {
     this.$refs.bimdataViewerInstance.registerPlugins([
       SnowflakesPlugin,
-      SplitPlugin
+      SplitPlugin,
     ]);
   }
 };

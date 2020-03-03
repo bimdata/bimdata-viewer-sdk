@@ -1,12 +1,13 @@
 {
-  "name": "toto",
+  "name": "split",
   "version": "0.0.1",
-  "description": "toto BIMData Viewer Plugin",
+  "description": "split BIMData Viewer Plugin",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup --watch -c",
+    "prepublishOnly": "npm run build"
   },
-  "main": "dist/{ name }}.plugin.js",
+  "main": "dist/split.plugin.js",
   "files": [
     "dist"
   ],
@@ -14,13 +15,14 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "toto"
+    "split"
   ],
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-url": "^4.0.2",
     "rollup": "^1.32.0",
     "rollup-plugin-scss": "^2.1.0",
+    "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-vue": "^5.1.6"
   }
 }

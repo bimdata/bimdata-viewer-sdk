@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@bimdata/bimdata-api-client": "^6.1.0",
-    "@bimdata/test-plugin-boilerplate": "^0.2.4",
-    "@bimdata/viewer": "^0.6.3",
+    "@bimdata/viewer": "^0.7.9",
     "oidc-client": "^1.10.1",
     "vue": "^2.6.10",
     "vue-i18n": "^8.15.3",

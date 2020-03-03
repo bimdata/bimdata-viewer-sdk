@@ -82,8 +82,5 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.bimdata_input {
-  background: red;
-}
+<style lang="scss" scoped>
 </style>

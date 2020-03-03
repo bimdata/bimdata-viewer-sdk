@@ -1,10 +1,11 @@
 {
-  "name": "@bimdata/test-plugin-boilerplate",
-  "version": "0.2.4",
-  "description": "Winter holidays BIMData Viewer Plugin",
+  "name": "snowflakes",
+  "version": "0.0.1",
+  "description": "snowflakes BIMData Viewer Plugin",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup --watch -c",
+    "prepublishOnly": "npm run build"
   },
   "main": "dist/snowflakes.plugin.js",
   "files": [
@@ -14,16 +15,14 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "Snowflakes",
-    "OpenBIM"
+    "snowflakes"
   ],
-  "author": "hugo@bimdata.io",
-  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-url": "^4.0.2",
     "rollup": "^1.32.0",
     "rollup-plugin-scss": "^2.1.0",
+    "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-vue": "^5.1.6"
   }
 }

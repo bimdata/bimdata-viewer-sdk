@@ -1,3 +1,8 @@
+<template>
+  <!-- https://vuejs.org/v2/guide/syntax.html -->
+  <div></div>
+</template>
+
 <script>
 import snowflakeGltf from '../assets/snowflake.gltf';
 
@@ -18,8 +23,8 @@ export default {
   mounted() {
     const viewer3D = this.$store.state.viewer.plugins.get('viewer3D'); // Get the Viewer3D plugin
     this.loader = viewer3D.gltfLoader;
-    this.xeokit = viewer3D.viewer;
-    this.canvas = viewer3D.viewer.scene.canvas.canvas;
+    this.xeokit = viewer3D.xeokit;
+    this.canvas = viewer3D.xeokit.scene.canvas.canvas;
   },
   watch: {
     active: {
