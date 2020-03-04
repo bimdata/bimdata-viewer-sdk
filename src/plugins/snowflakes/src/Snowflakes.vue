@@ -1,7 +1,13 @@
+<template>
+  <!-- https://vuejs.org/v2/guide/syntax.html -->
+  <div></div>
+</template>
+
 <script>
+import snowflakeGltf from '../assets/snowflake.gltf';
 
 export default {
-  name: "snowflakes-component",
+  name: "SnowflakesComponent",
   data() {
     return {
       maxFlakes: 100, // Number of loaded snowflakes
@@ -17,8 +23,8 @@ export default {
   mounted() {
     const viewer3D = this.$store.state.viewer.plugins.get('viewer3D'); // Get the Viewer3D plugin
     this.loader = viewer3D.gltfLoader;
-    this.xeokit = viewer3D.viewer;
-    this.canvas = viewer3D.viewer.scene.canvas.canvas;
+    this.xeokit = viewer3D.xeokit;
+    this.canvas = viewer3D.xeokit.scene.canvas.canvas;
   },
   watch: {
     active: {
@@ -64,7 +70,7 @@ export default {
 
       const snowflakeModel = this.loader.load({
         id: "snowflake" + (this.maxId++), // Unique ID
-        src: "https://unpkg.com/@bimdata/snowflakes-viewer-plugin/snowflake.gltf", // Model URI
+        src: snowflakeGltf, // Model URI
         position: [randomXSnowflake, startPosition, randomZSnowflake], // Randomize snowflakes
         rotation: [90, 0, Math.random() * 90],
         scale: [size, size, size],

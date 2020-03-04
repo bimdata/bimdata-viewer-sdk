@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" v-model="fileName">
+    <input class="bimdata_input" type="text" v-model="fileName">
     <input type="checkbox" id="checkbox" v-model="exportStructure">
     <label for="checkbox">Include structure hierarchy</label>
     <button @click="exportSplit">Generate new model with selected elements</button>
@@ -81,3 +81,6 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+</style>
