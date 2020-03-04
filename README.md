@@ -16,7 +16,7 @@ npm install
 cp .env.example .env
 ```
 
-Edit .env file with your preferences (yout client_id)
+Edit .env file with your preferences (your client_id)
 
 ### Compiles and hot-reloads for development
 ```
@@ -56,7 +56,7 @@ mounted() {
 ## Package your plugin
 
 To load your plugin in a real environment, you may want to package and publish your plugin.
-The plugin template is pre configured with a rollup config that allow you to do this easily:
+The plugin template is pre-configured with a rollup config that allows you to do this easily:
 
 ```bash
 cd src/plugins/{your_plugin}
@@ -66,14 +66,14 @@ npm run build
 
 This will create a dist folder in your plugin directory with a simple js file. This minified file includes the CSS and the assets (encoded in base64). It's not the most performant way, but it's the simplest and the viewer will load many mega-bytes models anyway.
 
-You can either copy-past this file in your environment and load it as you want or you can publish it to npm.
+You can either copy-paste this file in your environment and load it as you want or you can publish it to npm.
 To do this, update the package.json file with the information you want and just run an `npm publish`.
 
 The code is minified to protect your code as much as possible.
 
 
 ### More info about how it works
-The SDK itself uses *Webpack* to build. The packaging uses *Rollup*. If you need a complexe JS flow, it may lead to some issues.
+The SDK itself uses *Webpack* to build. The packaging uses *Rollup*. If you need a complex JS flow, it may lead to some issues.
 To see these issues before there are deployed, you may want to load the packaged version in the SDK:
 ```bash
 cd src/plugins/{your_plugin}
