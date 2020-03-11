@@ -6,17 +6,18 @@ You can develop, test, build, package and share your plugin easily.
 
 ## Setup
 First, you must create a BIMData Application (see https://developers.bimdata.io/tutorials/dev_create_an_application.html)
-The SDK needs at least `cloud:read` and `ifc:read` scopes. The default BCF Plugin needs `bcf:read` and `bcf:write` scopes ans you can add any scope you may need for your plugins.
+The SDK needs at least `cloud:read` and `ifc:read` scopes.
+The default BCF Plugin needs `bcf:read` and `bcf:write` scopes, plus you can add any scope you need for your plugin.
 
 The redirect URI is by default http://localhost:8080/oidc-callback
 
-Then you can copy the .env.example file and add your client_id:
+Then you can copy the `.env.example` file and add your `client_id`:
 ```
 npm install
 cp .env.example .env
 ```
 
-Edit .env file with your preferences (your client_id)
+Edit `.env` file with your data (your `client_id`)
 
 ### Compiles and hot-reloads for development
 ```
@@ -25,7 +26,7 @@ npm run serve
 
 ### Usage
 When going on http://localhost:8080, a simple interface will parse your projects and models and let you open the one you want.
-You can directly open one by opening an URL with specific Ids: http://localhost:8080/viewer?cloudId=391&projectId=634&ifcId=1491
+You can directly open one by opening an URL using specific Ids: http://localhost:8080/viewer?cloudId=391&projectId=634&ifcId=1491
 
 ## Create your first plugin
 
@@ -33,11 +34,11 @@ You can directly open one by opening an URL with specific Ids: http://localhost:
 npm run init-plugin
 ```
 
-This tool will ask you some questions about the plugin you want to develop and will generate basic files for your plugin.
+This tool asks you a couple of questions about the plugin you develop and generate from your answers basic files for your plugin.
 
-Files will be created it `src/plugins/{{name of your plugin}}`.
+Files are created in the directory `src/plugins/{{name of your plugin}}`.
 
-You just need to import your newly created plugin `src/viewer/viewer.vue` and add it to the registerPlugin array.
+Then import your newly created plugin `src/viewer/viewer.vue` and add it to the registerPlugin array.
 
 ```js
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
@@ -55,8 +56,8 @@ mounted() {
 
 ## Package your plugin
 
-To load your plugin in a real environment, you may want to package and publish your plugin.
-The plugin template is pre-configured with a rollup config that allows you to do this easily:
+To load your plugin in a real environment, you want to package and publish your plugin.
+The plugin template is pre-configured with a rollup config that let you do this easily:
 
 ```bash
 cd src/plugins/{your_plugin}
@@ -64,22 +65,22 @@ npm install
 npm run build
 ```
 
-This will create a dist folder in your plugin directory with a simple js file. This minified file includes the CSS and the assets (encoded in base64). It's not the most performant way, but it's the simplest and the viewer will load many mega-bytes models anyway.
+This creates a dist/ folder in your plugin directory with a simple js file. This minified file includes the CSS and the assets (encoded in base64). It's not the most performant way, but it's the simplest and the Viewer loads many mega-bytes models anyway.
 
-You can either copy-paste this file in your environment and load it as you want or you can publish it to npm.
-To do this, update the package.json file with the information you want and just run an `npm publish`.
+You can either copy-paste this file in your environment and load it at your convenience, or you can publish it on NPM.
+To publish it, update the `package.json` file with the proper information and just run an `npm publish`.
 
 The code is minified to protect your code as much as possible.
 
 
 ### More info about how it works
 The SDK itself uses *Webpack* to build. The packaging uses *Rollup*. If you need a complex JS flow, it may lead to some issues.
-To see these issues before there are deployed, you may want to load the packaged version in the SDK:
+To see these issues before deploying, load the packaged version in the SDK:
 ```bash
 cd src/plugins/{your_plugin}
 npm run watch
 ```
-And load the dist version of the plugin
+And load the dist version of the plugin:
 ```js
 import SplitPlugin from "@/plugins/split/dist/split.plugin.js";
 
