@@ -1,7 +1,7 @@
 import VuePlugin from 'rollup-plugin-vue';
 import scssPlugin from 'rollup-plugin-scss';
 import url from '@rollup/plugin-url';
-import { terser } from "rollup-plugin-terser";
+import { terser } from 'rollup-plugin-terser';
 
 const isProduction = (process.env.BUILD === 'production');
 
