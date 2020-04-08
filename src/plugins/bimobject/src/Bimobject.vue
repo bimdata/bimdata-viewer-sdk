@@ -1,34 +1,30 @@
 <template>
   <div class="bim-object">
     <div class="bim-object__search">
-      <button @click=getProducts>
-        <img src="../assets/search-icon.svg" width="16" height="16" alt="picto search" />
-      </button>
-      <input type="text" v-model="searchText" :placeholder="$t('bimObjectPlugin.search')" @keyup.enter="getProducts">
-      <button @click=clear v-if="searchText !== ''">
-        <img src="../assets/close-icon.svg" width="16" height="16" alt="picto close" />
-      </button>
+      <BIMDataSearch width="100%" :placeholder="$t('bimObjectPlugin.search')" class="bimdata-search-bar__radius bimdata-search-bar__primary" v-model="searchText" @enter="getProducts" :clear="true" @clear="clear()"></BIMDataSearch>
     </div>
 
     <div v-if="selected === null">
-      <ul class="products-wrapper">
-        <li class="product-card" v-for="item in results" @click="getProperties(item)" :key="item.id">
-          <div class="product-card_logo">
-            <img :src="item.brand.imageUrl">
-          </div>
-          <div class="product-card_img">
-            <img :src="item.imageUrl">
-          </div>
-          <h4>{{ item.name }}</h4>
-        </li>
+      <ul class="bimdata-cards">
+        <BIMDataCard width="30%" v-for="item in results" :key="item.id" @click.native="getProperties(item)"  class="m-t-12">
+          <template #content>
+            <div class="bimdata-card_logo">
+              <img :src="item.brand.imageUrl">
+            </div>
+            <div class="bimdata-card_img">
+              <img :src="item.imageUrl">
+            </div>
+            <h4>{{ item.name }}</h4>
+          </template>
+        </BIMDataCard>
       </ul>
     </div>
 
     <div v-else class="product">
-      <button @click="selected=null" class="btn-shadow">
+      <BIMDataButton @click="selected=null" class="btn-shadow">
         <img src="../assets/arrow-icon.svg" width="14" height="14" alt="picto go back" />
         {{ $t('bimObjectPlugin.goBack') }}
-      </button>
+      </BIMDataButton>
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
         <div class="product-item-logo">
@@ -73,12 +69,18 @@
 
 <script>
 import BIMDataLoading from './BIMDataLoading.vue';
+import BIMDataComponents from '@bimdata/design-system';
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
-    BIMDataLoading
+    BIMDataLoading,
+    BIMDataSearch : BIMDataComponents.BIMDataSearch,
+    BIMDataCard : BIMDataComponents.BIMDataCard,
+    BIMDataButton : BIMDataComponents.BIMDataButton,
+
+
   },
   data: function () {
     return {
@@ -119,7 +121,6 @@ export default {
       this.loading = false;
     },
     async clear() {
-      this.searchText = ""
       this.getProducts();
     },
     async getProperties(selected) {
@@ -291,47 +292,36 @@ export default {
 
 /* custom BIM OBJECT - search */
 .bim-object .bim-object__search {
-  display: flex;
-  background-color: #f7f7f7;
-}
-.bim-object .bim-object__search input {
-  width: 100%;
-  height: 32px;
-  border: none;
-  background-color: transparent;
+  position: relative;
 }
 .bim-object .bim-object__search button {
   padding: 0;
   width: 50px;
   background-color: transparent;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 /* custom BIM OBJECT - list */
-.bim-object .products-wrapper {
+.bim-object .bimdata-cards {
   margin: 12px 0 0;
   padding: 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.bim-object .products-wrapper .product-card {
-  margin-top: 12px;
-  padding: 12px;
-  min-height: 160px;
-  display: flex;
-  position: relative;
-  flex-direction: column;
+.bim-object .bimdata-cards .bimdata-card {
   flex-basis: 31%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
   cursor: pointer;
 }
-.bim-object .products-wrapper .product-card:nth-child(1n) {
+.bim-object .bimdata-cards .bimdata-card:nth-child(1n) {
   margin-right: 12px;
 }
-.bim-object .products-wrapper .product-card:nth-child(3n) {
+.bim-object .bimdata-cards .bimdata-card:nth-child(3n) {
   margin-right: 0;
 }
-.bim-object .products-wrapper .product-card h4 {
+.bim-object .bimdata-cards .bimdata-card h4 {
   margin: 12px 0;
   text-align: center;
   font-weight: normal;
@@ -340,21 +330,21 @@ export default {
   font-size: 14px;
   line-height: 15px;
 }
-.bim-object .products-wrapper .product-card .product-card_logo {
+.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo {
   height: 20px;
   display: flex;
   align-items: flex-start;
 }
-.bim-object .products-wrapper .product-card .product-card_logo img {
+.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo img {
   max-height: 15px;
   max-width: 80px;
 }
-.bim-object .products-wrapper .product-card .product-card_img {
+.bim-object .bimdata-cards .bimdata-card .bimdata-card_img {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.bim-object .products-wrapper .product-card .product-card_img img {
+.bim-object .bimdata-cards .bimdata-card .bimdata-card_img img {
   width: 80%;
 }
 
