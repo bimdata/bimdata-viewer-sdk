@@ -7,7 +7,7 @@
     </div>
 
     <!-- import BIMData SEARCH -->
-    <BIMDataSearch placeholder="Search" class="bimdata-search-bar__radius bimdata-search-bar__primary"></BIMDataSearch>
+    <BIMDataSearch v-model="searchText" placeholder="Search" class="bimdata-search-bar__radius bimdata-search-bar__primary"></BIMDataSearch>
 
     <!-- import BIMData CARD -->
     <BIMDataCard titleHeader="header" submenuText="submenu">
@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      searchText: ""
     }
   },
   methods: {
