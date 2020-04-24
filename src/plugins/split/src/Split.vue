@@ -1,15 +1,29 @@
 <template>
   <div>
-    <input class="bimdata_input" type="text" v-model="fileName">
-    <input type="checkbox" id="checkbox" v-model="exportStructure">
-    <label for="checkbox">Include structure hierarchy</label>
-    <button @click="exportSplit">Generate new model with selected elements</button>
+    <BIMDataInput
+      v-model="fileName"
+      placeholder="Add your fill name"
+      :loading="false"
+    />
+    <BIMDataCheckbox
+      class="m-b-12"
+      text="Include structure hierarchy"
+      v-model="exportStructure">
+    </BIMDataCheckbox>
+    <BIMDataButton width="100%" @click="exportSplit" class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius">
+      Generate new model with selected elements
+    </BIMDataButton>
   </div>
 </template>
 <script>
-
+import BIMDataComponents from '@bimdata/design-system';
 export default {
   name: 'split-component',
+  components: {
+    BIMDataButton : BIMDataComponents.BIMDataButton,
+    BIMDataCheckbox : BIMDataComponents.BIMDataCheckbox,
+    BIMDataInput : BIMDataComponents.BIMDataInput
+  },
   data() {
     return {
       fileName: '',
