@@ -6,22 +6,22 @@
       <BIMDataButton class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius">TEST</BIMDataButton>
     </div>
 
-    <!-- import BIMData SEARCH -->
-    <BIMDataSearch v-model="searchText" placeholder="Search" class="bimdata-search-bar__radius bimdata-search-bar__primary"></BIMDataSearch>
-
     <!-- import BIMData CARD -->
-    <BIMDataCard titleHeader="header" submenuText="submenu">
+    <BIMDataCard class="m-t-12 m-b-12 m-l-12 m-r-12" titleHeader="header" submenuText="submenu">
       <template #headerIcons>
         header icons
+      </template>
+      <template #content>
+        content here
       </template>
     </BIMDataCard>
 
     <!-- import BIMData CHECKBOX -->
-    <BIMDataCheckbox text="text label here"></BIMDataCheckbox>
+    <BIMDataCheckbox class="m-t-12 m-b-12 m-l-6 m-r-6" text="text label here"></BIMDataCheckbox>
 
     <!-- import BIMData ICON -->
     <BIMDataIcon
-      class="icon-chevron"
+      class="icon-success m-l-6 m-r-6"
       icon-name="iconName"
       width="23"
       height="23"
@@ -30,6 +30,19 @@
     >
       <BIMDataSuccessIcon />
     </BIMDataIcon>
+
+    <!-- import BIMData INPUT -->
+    <BIMDataInput
+    class="m-l-6 m-r-6"
+      v-model="textInput"
+      placeholder="Your placeholder here"
+      :error="!textInput"
+      errorMessage="your error message here"
+      :loading="false"
+    />
+
+    <!-- import BIMData SEARCH -->
+    <BIMDataSearch v-model="searchText" placeholder="Search" class="bimdata-search-bar__radius bimdata-search-bar__primary m-t-6 m-b-6 m-l-6 m-r-6"></BIMDataSearch>
   </div>
 </template>
 
@@ -41,11 +54,12 @@ export default {
   name: "bimdataDesignSystem",
   components: {
     BIMDataButton : BIMDataComponents.BIMDataButton,
-    BIMDataSearch : BIMDataComponents.BIMDataSearch,
     BIMDataCard : BIMDataComponents.BIMDataCard,
     BIMDataCheckbox : BIMDataComponents.BIMDataCheckbox,
     BIMDataIcon : BIMDataComponents.BIMDataIcon,
-    BIMDataSuccessIcon : BIMDataComponents.BIMDataSuccessIcon
+    BIMDataInput : BIMDataComponents.BIMDataInput,
+    BIMDataSuccessIcon : BIMDataComponents.BIMDataSuccessIcon,
+    BIMDataSearch : BIMDataComponents.BIMDataSearch,
 
   },
   data() {
