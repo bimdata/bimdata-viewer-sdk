@@ -1,0 +1,30 @@
+{
+  "name": "iot",
+  "version": "0.0.1",
+  "description": "iot BIMData Viewer Plugin",
+  "scripts": {
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup --watch -c",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "dist/iot.plugin.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "BIMData",
+    "Viewer",
+    "Plugin",
+    "iot"
+  ],
+  "dependencies": {
+    "@bimdata/design-system": "0.0.7"
+  },
+  "devDependencies": {
+    "@rollup/plugin-url": "^4.0.2",
+    "rollup": "^2.0.3",
+    "rollup-plugin-scss": "^2.1.0",
+    "rollup-plugin-terser": "^5.2.0",
+    "rollup-plugin-vue": "^5.1.6"
+  }
+}
