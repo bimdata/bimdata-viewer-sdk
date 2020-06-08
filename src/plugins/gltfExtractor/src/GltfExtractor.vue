@@ -1,20 +1,23 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div></div>
+  <div>
+    <button @click="downloadGltf">Download GLTF</button>
+  </div>
 </template>
 
 <script>
 export default {
   // https://vuejs.org/v2/guide/components.html
-  name: "{{ name }}",
+  name: "gltfExtractor",
   data() {
     return {
     }
   },
-  created() {
-
-  },
   methods: {
+    downloadGltf() {
+      const ifc = this.$utils.getSelectedIfcs()[0]
+      window.location.href = ifc.gltf_file;
+    }
   }
 };
 </script>

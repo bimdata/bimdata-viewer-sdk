@@ -10,7 +10,6 @@ import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
 import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import bimdataDesignSystem from "@/plugins/bimdataDesignSystem/src/bimdataDesignSystem.plugin.js";
-
 import { mapGetters } from "vuex";
 
 export default {

@@ -13,7 +13,7 @@ const plugins = [
   commonjs(),
   resolve(),
   url({
-    limit: 100 * 1024 *1024,
+    limit: 100 * 1024 * 1024,
     include: ['assets/*']
   }),
 ];
@@ -23,9 +23,9 @@ if (isProduction) {
 }
 
 export default {
-  input: 'src/{{ name }}.plugin.js',
+  input: 'src/gltfExtractor.plugin.js',
   output: {
-    file: 'dist/{{ name }}.plugin.js',
+    file: 'dist/gltfExtractor.plugin.js',
     format: 'esm',
     sourcemap: !isProduction
   },
