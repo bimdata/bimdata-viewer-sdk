@@ -229,9 +229,9 @@ export default {
     },
     getBimDataPropertyType(bimObjectType) {
       const mapping = {
-        "Text": "string",
-        "Integer": "integer",
-        "Decimal": "float"
+        "Text": "IfcText",
+        "Integer": "IfcInteger",
+        "Decimal": "IfcReal"
       };
       return mapping[bimObjectType] || bimObjectType;
     },
