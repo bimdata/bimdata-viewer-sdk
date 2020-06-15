@@ -77,18 +77,22 @@
 
 <script>
 import BIMDataLoading from './BIMDataLoading.vue';
-import BIMDataComponents from '@bimdata/design-system';
+import BIMDataSearch from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSearch.js';
+import BIMDataCard from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCard.js';
+import BIMDataButton from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js';
+import {BIMDataIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
+import {BIMDataArrowIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
     BIMDataLoading,
-    BIMDataSearch : BIMDataComponents.BIMDataSearch,
-    BIMDataCard : BIMDataComponents.BIMDataCard,
-    BIMDataButton : BIMDataComponents.BIMDataButton,
-    BIMDataIcon : BIMDataComponents.BIMDataIcon,
-    BIMDataArrowIcon : BIMDataComponents.BIMDataArrowIcon,
+    BIMDataSearch,
+    BIMDataCard,
+    BIMDataButton,
+    BIMDataIcon,
+    BIMDataArrowIcon,
   },
   data: function () {
     return {
@@ -275,7 +279,7 @@ export default {
 </script>
 
 <style scoped>
-@import "~@bimdata/design-system/dist/styles/component.css";
+/* @import "~@bimdata/design-system/dist/css/design-system.css"; */
 
 /* custom BIM OBJECT - global */
 .bim-object {
@@ -286,14 +290,14 @@ export default {
 .bim-object .bim-object__search {
   position: relative;
 }
-.bim-object .bim-object__search button {
+/* .bim-object .bim-object__search button {
   padding: 0;
   width: 50px;
   background-color: transparent;
   position: absolute;
   right: 0;
   top: 0;
-}
+} */
 
 /* custom BIM OBJECT - list */
 .bim-object .bimdata-cards {
