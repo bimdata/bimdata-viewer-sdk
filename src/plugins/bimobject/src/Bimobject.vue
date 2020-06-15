@@ -278,8 +278,8 @@ export default {
 };
 </script>
 
-<style scoped>
-/* @import "~@bimdata/design-system/dist/css/design-system.css"; */
+<style lang="scss" scoped>
+@import "~@bimdata/design-system/dist/scss/BIMData.scss";
 
 /* custom BIM OBJECT - global */
 .bim-object {
@@ -290,14 +290,6 @@ export default {
 .bim-object .bim-object__search {
   position: relative;
 }
-/* .bim-object .bim-object__search button {
-  padding: 0;
-  width: 50px;
-  background-color: transparent;
-  position: absolute;
-  right: 0;
-  top: 0;
-} */
 
 /* custom BIM OBJECT - list */
 .bim-object .bimdata-cards {
@@ -322,7 +314,7 @@ export default {
   text-align: center;
   font-weight: normal;
   word-break: break-word;
-  color: var(--color-tertiary-dark);
+  color: $color-tertiary-dark;
   font-size: 14px;
   line-height: 15px;
 }
@@ -346,16 +338,16 @@ export default {
 
 /* custom BIM OBJECT SELECTED - product */
 .bim-object .product {
-  margin-top: var(--spacing-unit);
+  margin-top: $spacing-unit;
 }
 .bim-object .product .bimdata-btn__ghost {
   justify-content: flex-start;
 }
 .bim-object .product .product-item{
-  padding: 0 var(--spacing-unit) var(--spacing-unit);
+  padding: 0 $spacing-unit $spacing-unit;
 }
 .bim-object .product .product-item .product-item-name{
-  margin: var(--spacing-unit) 0 4px;
+  margin: $spacing-unit 0 4px;
   font-size: 16px;
   line-height: 19px;
   font-weight: normal;
@@ -375,24 +367,24 @@ export default {
 /* custom BIM OBJECT SELECTED - product - list */
 .bim-object .product .product-item .product-item-elem{
   padding: 22px 0;
-  border-bottom: 1px solid var(--color-tertiary);
+  border-bottom: 1px solid $color-tertiary;
 }
 .bim-object .product .product-item .product-item-elem h3{
   margin: 0;
   font-size: 13px;
   line-height: 15px;
-  color: var(--color-primary);
+  color: var$color-primary;
 }
 .bim-object .product .product-item .product-item-elem h6 {
   font-weight: bold;
-  color: var(--color-primary);
+  color: var$color-primary;
   display: block;
   margin: 5px 0;
   font-size: 13px;
   line-height: 15px;
 }
 .bim-object .product .product-item .product-item-elem .product-item-list{
-  color: var(--color-tertiary-dark);
+  color: var$color-tertiary-dark;
   font-size: 11px;
   line-height: 13px;
 }
@@ -400,13 +392,13 @@ export default {
 /* custom BIM OBJECT SELECTED - product - properties */
 .bim-object .product .product-item .product-item-properties{
   margin-top: 22px;
-  border-top: 1px solid var(--color-tertiary);
+  border-top: 1px solid $color-tertiary;
 }
 .bim-object .product .product-item .product-item-properties .product-item-list ul li{
   padding: 6px;
 }
 .bim-object .product .product-item .product-item-properties .product-item-list ul li:nth-child(even){
-  background-color: var(--color-tertiary-lightest);
+  background-color: $color-tertiary-lightest;
 }
 
 /* custom BIM OBJECT SELECTED - product - classifications */
@@ -417,7 +409,7 @@ export default {
   font-weight: bold;
 }
 .bim-object .product .product-item .product-item-classifications .product-item-list li:nth-child(even){
-  background-color: var(--color-tertiary-lightest);
+  background-color: $color-tertiary-lightest;
 }
 
 /* style BIMDATA LOADING */
@@ -431,15 +423,15 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgba(47, 55, 74, 0.9);
-  color: var(--color-white);
+  background-color: rgba($color-primary, 0.9);
+  color: $color-white;
   z-index: 2;
 }
 .bimdata-loading--square{
   width: 20px;
   height: 20px;
   position: relative;
-  border: 2px var(--color-white) solid;
+  border: 2px $color-white solid;
   animation: bimdataloading 1.4s linear infinite;
 }
 .bimdata-loading--text {
@@ -448,7 +440,7 @@ export default {
 }
 @keyframes bimdataloading {
   0% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
+    box-shadow: inset 0px 0px 0px 0px rgba($color-white, 0.1);
     transform: rotate(-0deg);
   }
   20% {
@@ -459,13 +451,13 @@ export default {
   }
   60% {
     transform: rotate(-0deg);
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
+    box-shadow: inset 0px 0px 0px 0px rgba($color-white, 0.1);
   }
   80% {
-    box-shadow: inset 0px -20px 0px 0px rgba(#fff, 1);
+    box-shadow: inset 0px -20px 0px 0px rgba($color-white, 1);
   }
   100% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
+    box-shadow: inset 0px 0px 0px 0px rgba($color-white, 0.1);
   }
 }
 
