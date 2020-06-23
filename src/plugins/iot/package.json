@@ -18,7 +18,9 @@
     "iot"
   ],
   "dependencies": {
-    "@bimdata/design-system": "0.0.7"
+    "@bimdata/design-system": "0.0.13",
+    "chartist": "^0.11.4",
+    "chartist-plugin-zoom": "^0.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-url": "^4.0.2",
