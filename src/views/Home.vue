@@ -2,26 +2,46 @@
   <div class="home">
     <div>
       <select v-model="selectedCloud" :disabled="fetchingClouds">
-        <option disabled :value="null">{{fetchingClouds ? 'Fetching clouds' : 'Select a cloud'}}</option>
-        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{cloud.name}}</option>
+        <option disabled :value="null">{{
+          fetchingClouds ? "Fetching clouds" : "Select a cloud"
+        }}</option>
+        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{
+          cloud.name
+        }}</option>
       </select>
     </div>
     <div>
-      <select v-model="selectedProject" :disabled="!selectedCloud || fetchingProjects">
+      <select
+        v-model="selectedProject"
+        :disabled="!selectedCloud || fetchingProjects"
+      >
+        <option disabled :value="null">{{
+          fetchingProjects ? "Fetching projects" : "Select a project"
+        }}</option>
         <option
-          disabled
-          :value="null"
-        >{{fetchingProjects ? 'Fetching projects' : 'Select a project'}}</option>
-        <option v-for="project of projects" :key="project.id" :value="project">{{project.name}}</option>
+          v-for="project of projects"
+          :key="project.id"
+          :value="project"
+          >{{ project.name }}</option
+        >
       </select>
     </div>
     <div>
-      <select v-model="selectedIfc" :disabled="!selectedProject || fetchingIfcs">
-        <option disabled :value="null">{{fetchingIfcs ? "Fetching IFCs" : "Select an IFC"}}</option>
-        <option v-for="ifc of ifcs" :key="ifc.id" :value="ifc">{{ifc.name}}</option>
+      <select
+        v-model="selectedIfc"
+        :disabled="!selectedProject || fetchingIfcs"
+      >
+        <option disabled :value="null">{{
+          fetchingIfcs ? "Fetching IFCs" : "Select an IFC"
+        }}</option>
+        <option v-for="ifc of ifcs" :key="ifc.id" :value="ifc">{{
+          ifc.name
+        }}</option>
       </select>
     </div>
-    <button :disabled="!selectedCloud || !selectedProject" @click="go">Go</button>
+    <button :disabled="!selectedCloud || !selectedProject" @click="go">
+      Go
+    </button>
   </div>
 </template>
 
@@ -42,7 +62,7 @@ export default {
       fetchingProjects: false,
       ifcs: [],
       selectedIfc: null,
-      fetchingIfcs: false
+      fetchingIfcs: false,
     };
   },
   computed: {
@@ -50,20 +70,17 @@ export default {
     collaborationApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
       return new apiClient.CollaborationApi();
     },
     ifcApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
       return new apiClient.IfcApi();
-    }
-  },
-  created() {
-    this.getClouds();
+    },
   },
   watch: {
     selectedCloud() {
@@ -78,7 +95,10 @@ export default {
         this.selectedIfc = null;
         this.getIfcs();
       }
-    }
+    },
+  },
+  created() {
+    this.getClouds();
   },
   methods: {
     go() {
@@ -87,8 +107,8 @@ export default {
         query: {
           cloudId: this.selectedCloud.id,
           projectId: this.selectedProject.id,
-          ifcId: this.selectedIfc.id
-        }
+          ifcId: this.selectedIfc.id,
+        },
       });
     },
     async getClouds() {
@@ -110,8 +130,8 @@ export default {
         this.selectedProject.id
       );
       this.fetchingIfcs = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -119,4 +139,3 @@ export default {
 .home {
 }
 </style>
-

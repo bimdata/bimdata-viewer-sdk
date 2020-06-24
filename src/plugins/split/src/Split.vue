@@ -8,72 +8,80 @@
     <BIMDataCheckbox
       class="m-b-12"
       text="Include structure hierarchy"
-      v-model="exportStructure">
+      v-model="exportStructure"
+    >
     </BIMDataCheckbox>
-    <BIMDataButton width="100%" @click="exportSplit" class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius">
+    <BIMDataButton
+      width="100%"
+      @click="exportSplit"
+      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+    >
       Generate new model with selected elements
     </BIMDataButton>
   </div>
 </template>
 <script>
-import BIMDataComponents from '@bimdata/design-system';
+import BIMDataComponents from "@bimdata/design-system";
 export default {
-  name: 'split-component',
+  name: "split-component",
   components: {
-    BIMDataButton : BIMDataComponents.BIMDataButton,
-    BIMDataCheckbox : BIMDataComponents.BIMDataCheckbox,
-    BIMDataInput : BIMDataComponents.BIMDataInput
+    BIMDataButton: BIMDataComponents.BIMDataButton,
+    BIMDataCheckbox: BIMDataComponents.BIMDataCheckbox,
+    BIMDataInput: BIMDataComponents.BIMDataInput,
+  },
+  props: {
+    active: Boolean, // Listen to activation state
   },
   data() {
     return {
-      fileName: '',
+      fileName: "",
       loadedIfc: null,
       exportStructure: true,
-    }
-  },
-  props: {
-    active: Boolean // Listen to activation state
+    };
   },
   watch: {
     active: {
       handler(active) {
-        if (active) { // Is plugin activated
+        if (active) {
+          // Is plugin activated
           const loadedIfcs = this.$utils.getSelectedIfcs();
           if (loadedIfcs.length > 1) {
-            this.$hub.emit('alert', {
-              type: 'error',
-              message: "You can't split more than one model at once. Please load only one model"
+            this.$hub.emit("alert", {
+              type: "error",
+              message:
+                "You can't split more than one model at once. Please load only one model",
             });
             this.$emit("set-inactive");
           } else if (loadedIfcs.length === 1) {
             this.loadedIfc = loadedIfcs[0];
             const fileName = this.loadedIfc.document.file_name;
-            const parts = fileName.split('.');
+            const parts = fileName.split(".");
             parts.pop(); // Remove extension
-            const name = parts.join('.'); // rebuild name without extension
+            const name = parts.join("."); // rebuild name without extension
 
             const date = new Date();
-            const stringDate = `${date.getYear()}-${date.getMonth() + 1}-${date.getDay()}-${date.getHours()}-${date.getMinutes()}`
-            this.fileName = name + '-split-' + stringDate + '.ifc'
-
+            const stringDate = `${date.getYear()}-${
+              date.getMonth() + 1
+            }-${date.getDay()}-${date.getHours()}-${date.getMinutes()}`;
+            this.fileName = name + "-split-" + stringDate + ".ifc";
           } else {
-            this.$hub.emit('alert', {
-              type: 'error',
-              message: "You must load a model to do a split"
+            this.$hub.emit("alert", {
+              type: "error",
+              message: "You must load a model to do a split",
             });
             this.$emit("set-inactive");
           }
         }
       },
-    }
+    },
   },
   methods: {
     async exportSplit() {
       const selectObjectsIds = this.$utils.getSelectedObjectIds();
       if (selectObjectsIds.length === 0) {
-        this.$hub.emit('alert', {
-          type: 'error',
-          message: 'You must select at least one element'
+        this.$hub.emit("alert", {
+          type: "error",
+          message: "You must select at least one element",
         });
         return;
       }
@@ -82,19 +90,19 @@ export default {
         this.loadedIfc.id,
         this.$utils.getProjectId(),
         {
-          structure: this.exportStructure ? "UPDATED": "NONE",
+          structure: this.exportStructure ? "UPDATED" : "NONE",
           file_name: this.fileName,
-          uuids: selectObjectsIds
+          uuids: selectObjectsIds,
         }
       );
-      this.$hub.emit('alert', {
-        type: 'success',
-        message: 'A new IFC model with only selected elements will soon be uploaded next to the original IFC file'
+      this.$hub.emit("alert", {
+        type: "success",
+        message:
+          "A new IFC model with only selected elements will soon be uploaded next to the original IFC file",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

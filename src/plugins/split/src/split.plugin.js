@@ -1,13 +1,13 @@
-import SplitComponent from './Split.vue';
+import SplitComponent from "./Split.vue";
 
 export default {
   name: "SplitPlugin",
   component: SplitComponent,
   display: {
-    iconPosition: 'left',
-    content: 'simple'
+    iconPosition: "left",
+    content: "simple",
   },
-  tooltip: 'Split',
+  tooltip: "Split",
   keepActive: false,
   icon: {
     svg: {
@@ -21,8 +21,8 @@ export default {
             <path d="M247.469,379.729c2.01,2.688,5.177,4.271,8.531,4.271s6.521-1.583,8.531-4.271l32-42.667 c3.542-4.708,2.583-11.396-2.135-14.927c-4.688-3.531-11.385-2.594-14.927,2.135L256,355.552l-23.469-31.281 c-3.542-4.74-10.24-5.688-14.927-2.135c-4.719,3.531-5.677,10.219-2.135,14.927L247.469,379.729z"/>
         </g>
         </svg>
-      `
+      `,
     },
-    options: { x: 512, y: 512 }
-  }
+    options: { x: 512, y: 512 },
+  },
 };

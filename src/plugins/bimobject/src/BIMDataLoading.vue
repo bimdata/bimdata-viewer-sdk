@@ -38,8 +38,6 @@ $color-white: rgba(255, 255, 255, 1);
   }
 }
 
-
-
 @keyframes bimdataloading {
   0% {
     box-shadow: inset 0px 0px 0px 0px rgba($color-white, 0.1);

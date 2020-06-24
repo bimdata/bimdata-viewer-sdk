@@ -1,17 +1,17 @@
-import BimobjectComponent from './Bimobject.vue';
-import icon from '../assets/plugin-icon.svg';
+import BimobjectComponent from "./Bimobject.vue";
+import icon from "../assets/plugin-icon.svg";
 
 export default {
   name: "bimObjectPlugin",
   component: BimobjectComponent,
   display: {
-    iconPosition: 'right',
-    content: 'windowed'
+    iconPosition: "right",
+    content: "windowed",
   },
   keepActive: true,
   tooltip: "bimObjectPlugin.tooltip",
   icon: {
-    imgUri: icon
+    imgUri: icon,
   },
   i18n: {
     en: {
@@ -20,9 +20,10 @@ export default {
         successMessage: "Objects updated",
         applySelected: "Apply to selection",
         noObject: "No object displayed.",
-        noObjectResearch: "Please search for an object to display available items",
+        noObjectResearch:
+          "Please search for an object to display available items",
         search: "Search an object",
-      }
+      },
     },
     fr: {
       bimObjectPlugin: {
@@ -30,9 +31,10 @@ export default {
         successMessage: "Objects mis à jour",
         applySelected: "Appliquer à la sélection",
         noObject: "Pas d'objet à afficher",
-        noObjectResearch: "Veuillez rechercher un objet pour afficher la liste d'objets",
+        noObjectResearch:
+          "Veuillez rechercher un objet pour afficher la liste d'objets",
         search: "Rechercher un objet",
-      }
-    }
-  }
+      },
+    },
+  },
 };
