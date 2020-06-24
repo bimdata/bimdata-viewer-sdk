@@ -97,7 +97,7 @@ function askQuestions() {
     },
   ];
   return inquirer.prompt(questions);
-};
+}
 
 
 const run = async () => {

@@ -1,6 +1,10 @@
 <template>
   <div class="viewer">
-    <BimdataViewer ref="bimdataViewerInstance" :accessToken="oidcAccessToken" :cfg="viewerConfig" />
+    <BimdataViewer
+      ref="bimdataViewerInstance"
+      :accessToken="oidcAccessToken"
+      :cfg="viewerConfig"
+    />
   </div>
 </template>
 
@@ -14,7 +18,7 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    BimdataViewer
+    BimdataViewer,
   },
   data() {
     return {
@@ -22,21 +26,21 @@ export default {
         cloudId: this.$route.query.cloudId,
         projectId: this.$route.query.projectId,
         ifcIds: [this.$route.query.ifcId],
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
-      }
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+      },
     };
   },
   computed: {
-    ...mapGetters(["oidcAccessToken"])
+    ...mapGetters(["oidcAccessToken"]),
   },
   mounted() {
     this.$refs.bimdataViewerInstance.registerPlugins([
       SnowflakesPlugin,
       SplitPlugin,
       BimObjectPlugin,
-      bimdataDesignSystem
+      bimdataDesignSystem,
     ]);
-  }
+  },
 };
 </script>
 
