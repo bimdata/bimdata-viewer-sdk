@@ -24,8 +24,8 @@ export default {
   methods: {
     downloadSvg() {
       const ifc = this.$utils.getSelectedIfcs()[0];
-      if (ifc.svg_file) {
-        window.location.href = ifc.svg_file;
+      if (ifc.map_file) {
+        window.location.href = ifc.map_file;
       } else {
         this.$hub.emit("alert", {
           type: "error",
