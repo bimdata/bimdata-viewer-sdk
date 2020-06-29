@@ -1,9 +1,8 @@
 <template>
-  <div>
-  </div>
+  <div></div>
 </template>
 <script>
-import pickerModal from './pickerModal.vue';
+import pickerModal from "./pickerModal.vue";
 
 export default {
   name: "backgroundColor",
@@ -13,7 +12,7 @@ export default {
     rightClickMenu.registerCommand({
       label: "title",
       execute: () => this.$plugins.modalManager.pushModal(pickerModal),
-      predicate: () => true
+      predicate: () => true,
     });
   },
 };

@@ -8,8 +8,16 @@
       :enableAlpha="false"
     />
     <div class="dflex">
-      <BIMDataButton @click="validateColorPicker" class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius">{{$t('apply')}}</BIMDataButton>
-      <BIMDataButton @click="cancelColorPicker" class="bimdata-btn__ghost bimdata-btn__radius">{{$t('close')}}</BIMDataButton>
+      <BIMDataButton
+        @click="validateColorPicker"
+        class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+        >{{ $t("apply") }}</BIMDataButton
+      >
+      <BIMDataButton
+        @click="cancelColorPicker"
+        class="bimdata-btn__ghost bimdata-btn__radius"
+        >{{ $t("close") }}</BIMDataButton
+      >
     </div>
   </div>
 </template>
@@ -21,12 +29,12 @@ export default {
   name: "colorPickerModal",
   components: {
     colorPicker,
-    BIMDataButton
+    BIMDataButton,
   },
   data() {
     return {
-      choosedColor: "rgb(0, 0, 0)"
-    }
+      choosedColor: "rgb(0, 0, 0)",
+    };
   },
   methods: {
     cancelColorPicker() {
@@ -36,8 +44,8 @@ export default {
       const canvas = document.getElementById(this.$plugins.viewer3D.canvasId);
       canvas.style.setProperty("background-color", this.choosedColor);
       this.$emit("close");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -48,14 +56,14 @@ export default {
   width: 500px;
   height: 450px;
   padding: 20px;
-  .dflex{
+  .dflex {
     display: flex;
     align-items: center;
     justify-content: center;
   }
   // custom VERTE COLOR PICKER
   .verte {
-    height:375px;
+    height: 375px;
     &__menu-origin {
       width: 100%;
       .verte__menu {
@@ -115,5 +123,4 @@ export default {
     }
   }
 }
-
 </style>
