@@ -12,10 +12,9 @@
 import BimdataViewer from "@bimdata/viewer";
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
-import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
-import bimdataDesignSystem from "@/plugins/bimdataDesignSystem/src/bimdataDesignSystem.plugin.js";
+import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.js";
 import { mapGetters } from "vuex";
-
+import backgroundColor from "@/plugins/backgroundColor/dist/backgroundColor.plugin.js";
 export default {
   components: {
     BimdataViewer,
@@ -27,6 +26,9 @@ export default {
         projectId: this.$route.query.projectId,
         ifcIds: [this.$route.query.ifcId],
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        bimdataPlugins: {
+          contextSwitch: true,
+        },
       },
     };
   },
@@ -38,7 +40,7 @@ export default {
       SnowflakesPlugin,
       SplitPlugin,
       BimObjectPlugin,
-      bimdataDesignSystem,
+      backgroundColor,
     ]);
   },
 };

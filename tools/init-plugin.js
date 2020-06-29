@@ -116,8 +116,9 @@ const run = async () => {
   console.log();
 
   console.log(chalk.green('You can now load your plugin to the viewer:'));
-  console.log(chalk.green('Add the following lines to src/views/viewer.vue'));
+  console.log(chalk.green('Add the import line to src/views/viewer.vue'));
   console.log(`import ${answers.name} from "@/plugins/${answers.name}/src/${answers.name}.plugin.js";`);
+  console.log('And add the plugin to the registerPlugin method: ');
   console.log(`this.$refs.bimdataViewerInstance.registerPlugins([${answers.name}]);`);
 };
 
