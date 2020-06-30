@@ -1,36 +1,24 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="m-y-6">
-    {{ system }}
-    <ul>
+  <div class="m-y-24">
+    <ul class="bimdata-list" v-if="systems.systems && systems.systems.length">
       <li
-        v-for="object in objectName"
-        :key="object.uuid"
-        @click="getObjectId(object)"
+        v-for="system in systems.systems[0].children"
+        :key="system.uuid"
+        @click="getObjectId(system)"
       >
-        {{ object.name }}
+        {{ system.name }}
       </li>
     </ul>
-    <h4 v-if="api" class="m-x-12">
-      {{ JSON.stringify(api.measurement_name).replace(/\"/g, "") }}
+    <h4 v-if="apiTemp" class="m-x-12">
+      {{ JSON.stringify(apiTemp.measurement_name).replace(/\"/g, "") }}
     </h4>
+    <div id="chartist-temp" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
 
-    <div id="my-chart" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
-
-    <!-- <BIMDataButton
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      @click="highlightObject"
-    >
-      highlight
-    </BIMDataButton>
-    <BIMDataButton
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      @click="unisolate"
-    >
-      unisolate
-    </BIMDataButton> -->
-
-    <!-- {{ JSON.stringify(api) }} -->
+    <h4 v-if="apiPuissance" class="m-x-12">
+      {{ JSON.stringify(apiPuissance.measurement_name).replace(/\"/g, "") }}
+    </h4>
+    <div id="chartist-puissance" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
   </div>
 </template>
 
@@ -47,8 +35,9 @@ export default {
   },
   data() {
     return {
-      api: null,
-      system: [],
+      apiTemp: null,
+      apiPuissance: null,
+      systems: [],
     };
   },
   computed: {
@@ -56,13 +45,12 @@ export default {
       const objectNames = this.$utils
         .getAllObjectsOfType("building_element_proxy")
         .map(object => ({ name: object.name, uuid: object.uuid }));
-      console.log(objectNames);
       return objectNames;
     },
   },
   watch: {
-    // api() {
-    //   if (this.api) {
+    // apiTemp() {
+    //   if (this.apiTemp) {
     //     console.log("ay");
     //   } else {
     //     console.log("nope");
@@ -71,10 +59,10 @@ export default {
   },
   async mounted() {
     this.$watch(
-      "api",
-      api => {
-        if (api) {
-          const result = api.data.reduce(
+      "apiTemp",
+      apiTemp => {
+        if (apiTemp) {
+          const result = apiTemp.data.reduce(
             (data, dataElement) => {
               data.labels.push(dataElement.timestamp);
               data.series[0].push(dataElement.value);
@@ -99,14 +87,42 @@ export default {
               // }),
             ],
           };
-          new Chartist.Line(".ct-chart", result, options);
+          new Chartist.Line("#chartist-temp", result, options);
         }
       },
       {
         immediate: true,
       }
     );
-    this.api = await import("./api/temperature.json");
+    this.$watch(
+      "apiPuissance",
+      apiPuissance => {
+        if (apiPuissance) {
+          const result = apiPuissance.data.reduce(
+            (data, dataElement) => {
+              data.labels.push(dataElement.timestamp);
+              data.series[0].push(dataElement.value);
+              return data;
+            },
+            { labels: [], series: [[]] }
+          );
+          const options = {
+            lineSmooth: false,
+            axisX: {
+              labelInterpolationFnc: function (value) {
+                return value.slice(0, 10);
+              },
+            },
+          };
+          new Chartist.Line("#chartist-puissance", result, options);
+        }
+      },
+      {
+        immediate: true,
+      }
+    );
+    this.apiTemp = await import("./api/temperature.json");
+    this.apiPuissance = await import("./api/puissance.json");
     this.highlightObject();
     this.$hub.on("select-objects", this.fitIfcSelectedOnClick);
   },
@@ -116,21 +132,26 @@ export default {
   },
   methods: {
     highlightObject() {
-      const selectedObjectIds = this.api.meter_id;
+      const selectedObjectIds = "0vNFceMkb8dezQiQhWAOcR";
       if (selectedObjectIds && selectedObjectIds.length) {
-        this.$hub.emit("isolate-objects", { ids: [selectedObjectIds] });
+        // this.$hub.emit("isolate-objects", { ids: [selectedObjectIds] });
         this.$hub.emit("colorize-objects", {
           ids: [selectedObjectIds],
-          color: [1, 0, 0],
+          color: [0, 1, 0],
+        });
+        this.$hub.emit("create-annotations", {
+          ids: [selectedObjectIds],
+          index: "",
+          priority: "low",
         });
         this.$hub.emit("fit-view-objects", { ids: [selectedObjectIds] });
       }
     },
-    getObjectId(object) {
-      this.$hub.emit("unisolate-all-objects");
+    getObjectId(system) {
+      // this.$hub.emit("unisolate-all-objects");
       const selectedAllObjectsIds = this.$utils.getSelectedObjectIds();
       this.$hub.emit("deselect-objects", { ids: selectedAllObjectsIds });
-      const selectedObjectId = object.uuid;
+      const selectedObjectId = system.uuid;
       this.$hub.emit("select-objects", { ids: [selectedObjectId] });
       this.$hub.emit("fit-view-objects", { ids: [selectedObjectId] });
     },
@@ -141,13 +162,14 @@ export default {
       });
     },
     async getSystems() {
-      this.system = await new this.$bimdataApiClient.IfcApi().getSystems(
-        this.$utils.getCloudId(),
-        7516,
-        this.$utils.getProjectId()
-      );
-      return this.system;
-    },
+      // TODO how to get ifc id... and could it be many of them ???
+      const ifcId = 7516;
+
+      const ifc = this.$utils.getSelectedIfcs().find(ifc => ifc.id === ifcId);
+      if (ifc && ifc.systems_file) {
+        this.systems = await fetch(ifc.systems_file).then(res => res.json());
+      }
+    }
   },
 };
 </script>
@@ -156,6 +178,18 @@ export default {
 /* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
 @import "~chartist/dist/chartist.min.css";
 @import "~@bimdata/design-system/dist/scss/BIMData.scss";
+.bimdata-list{
+  li{
+    margin: 6px;
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 16px;
+    cursor: pointer;
+  }
+}
+.ct-perfect-fourth{
+  min-height: 320px;
+}
 .ct-line {
   stroke-width: 2px;
 }
@@ -166,12 +200,24 @@ export default {
     }
   }
   .ct-horizontal {
+    margin-top: 10px;
     width: max-content;
     transform: rotate(-45deg);
-    transform-origin: right;
+    transform-origin: left bottom;
+    // transform-origin: right;
   }
 }
 .ct-point {
   stroke-width: 1px;
+}
+.ct-series-a{
+  .ct-line{
+    stroke: $color-success;
+  }
+}
+.annotation-marker{
+  &.low{
+    background-color: $color-white;
+  }
 }
 </style>
