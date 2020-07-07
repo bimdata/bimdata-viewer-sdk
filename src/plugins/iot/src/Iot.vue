@@ -3,17 +3,45 @@
   <div class="bimdata-iot m-y-12 p-x-12">
     <div class="select">
       <div @click="displayOptions = !displayOptions" class="select-content" :class="{ active: displayOptions }">
-      {{ selectedValue }}
-    </div>
-    <ul v-show="displayOptions" class="bimdata-list" v-if="systems.systems && systems.systems.length">
-      <li
-        v-for="system in systems.systems[0].children"
-        :key="system.uuid"
-        @click="getObjectId(system)"
-      >
-        {{ system.name }}
-      </li>
-    </ul>
+        <div class="system-icon">
+          <BIMDataIcon
+            class="icon-system"
+            icon-name="iconSystem"
+            width="13"
+            height="15"
+            x="23"
+            y="23"
+          >
+            <BIMDataSystemIcon />
+          </BIMDataIcon>
+        </div>
+        <span>
+          {{ selectedValue }}
+        </span>
+        <div class="select-icon">
+          <BIMDataIcon
+            class="icon-chevron"
+            icon-name="iconName"
+            width="12"
+            height="10"
+            x="23"
+            y="23"
+          >
+            <BIMDataChevronIcon />
+          </BIMDataIcon>
+        </div>
+      </div>
+      <transition name="slide-fade-up">
+        <ul v-show="displayOptions" class="bimdata-list" v-if="systems.systems && systems.systems.length">
+          <li
+            v-for="system in systems.systems[0].children"
+            :key="system.uuid"
+            @click="getObjectId(system)"
+          >
+            {{ system.name }}
+          </li>
+        </ul>
+      </transition>
     </div>
 
     <Graph v-if="dataTemp" :title="apiTemp.meter_name" :data="dataTemp" class="chart-temp"/>
@@ -27,12 +55,19 @@
 
 <script>
 import Graph from "./Graph.vue";
+import BIMDataSystemIcon from "./BIMDataSystemIcon.vue";
+
+import {BIMDataIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
+import {BIMDataChevronIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "iot",
   components: {
     Graph,
+    BIMDataSystemIcon,
+    BIMDataIcon,
+    BIMDataChevronIcon
   },
   data() {
     return {
@@ -176,6 +211,7 @@ export default {
       height: 44px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       font-size: 12px;
       line-height: 16px;
       background-color: white;
@@ -183,11 +219,33 @@ export default {
       padding: 6px 12px;
       border-radius: 3px;
       cursor: pointer;
+      &.active{
+        .select-icon{
+          svg{
+            transform: rotate(90deg);
+          }
+        }
+      }
+      & > .system-icon{
+        margin-right: 12px;
+      }
+      & > span{
+        width: calc(100% - 21px - 13px - 12px);
+      }
+      & > .select-icon{
+        width: 21px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-tertiary-lightest;
+        border-radius: 3px;
+      }
     }
     .bimdata-list{
       background-color: white;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 18px;
+      padding: 6px 12px;
       position: absolute;
       z-index: 1;
       width: 100%;
@@ -197,7 +255,7 @@ export default {
   }
   .bimdata-list{
     li{
-      margin: 6px;
+      margin: 6px 0;
       font-size: 12px;
       line-height: 16px;
       cursor: pointer;
