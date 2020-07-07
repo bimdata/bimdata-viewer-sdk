@@ -10,33 +10,34 @@
         {{ system.name }}
       </li>
     </ul>
-    <h4 v-if="apiTemp" class="m-x-12">
-      {{ JSON.stringify(apiTemp.measurement_name).replace(/\"/g, "") }}
-    </h4>
-    <div id="chartist-temp" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
+    </div>
 
-    <h4 v-if="apiPuissance" class="m-x-12">
-      {{ JSON.stringify(apiPuissance.measurement_name).replace(/\"/g, "") }}
-    </h4>
-    <div id="chartist-puissance" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
+    <Graph v-if="dataTemp" :title="apiTemp.meter_name" :data="dataTemp" class="chart-temp"/>
+
+    <Graph v-if="dataPuissance" :title="apiPuissance.meter_name" :data="dataPuissance" class="chart-puissance"/>
+
+    <Graph v-if="dataLora" :title="apiLora.meter_name" :data="dataLora" class="chart-lora"/>
+
   </div>
 </template>
 
 <script>
-import Chartist from "chartist";
-// import ChartistZoom from "chartist-plugin-zoom";
-//import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import Graph from "./Graph.vue";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "iot",
   components: {
-    //BIMDataButton,
+    Graph,
   },
   data() {
     return {
       apiTemp: null,
       apiPuissance: null,
+      apiLora: null,
+      dataTemp: null,
+      dataPuissance: null,
+      dataLora: null,
       systems: [],
     };
   },
@@ -48,46 +49,18 @@ export default {
       return objectNames;
     },
   },
-  watch: {
-    // apiTemp() {
-    //   if (this.apiTemp) {
-    //     console.log("ay");
-    //   } else {
-    //     console.log("nope");
-    //   }
-    // },
-  },
   async mounted() {
     this.$watch(
       "apiTemp",
       apiTemp => {
         if (apiTemp) {
-          const result = apiTemp.data.reduce(
+          this.dataTemp = apiTemp.data.reduce(
             (data, dataElement) => {
-              data.labels.push(dataElement.timestamp);
-              data.series[0].push(dataElement.value);
+              data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
               return data;
             },
-            { labels: [], series: [[]] }
+            { series: [[]] }
           );
-          const options = {
-            lineSmooth: false,
-            axisX: {
-              // type: Chartist.AutoScaleAxis,
-              labelInterpolationFnc: function (value) {
-                return value.slice(0, 10);
-              },
-            },
-            plugins: [
-              // ChartistZoom({
-              //resetOnRightMouseBtn: true,
-              // onZoom: function (chart, reset) {
-              //   storeReset(reset);
-              // },
-              // }),
-            ],
-          };
-          new Chartist.Line("#chartist-temp", result, options);
         }
       },
       {
@@ -98,23 +71,26 @@ export default {
       "apiPuissance",
       apiPuissance => {
         if (apiPuissance) {
-          const result = apiPuissance.data.reduce(
+          this.dataPuissance = apiPuissance.data.reduce(
             (data, dataElement) => {
-              data.labels.push(dataElement.timestamp);
-              data.series[0].push(dataElement.value);
+              data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
               return data;
             },
-            { labels: [], series: [[]] }
+            { series: [[]] }
           );
-          const options = {
-            lineSmooth: false,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value.slice(0, 10);
-              },
-            },
-          };
-          new Chartist.Line("#chartist-puissance", result, options);
+        }
+      },
+      {
+        immediate: true,
+      }
+    );
+    this.$watch(
+      "apiLora",
+      apiLora => {
+        if (apiLora && Object.entries(apiLora.data).length > 0) {
+          const data = Object.entries(apiLora.data);
+          const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
+          this.dataLora = { series };
         }
       },
       {
@@ -123,6 +99,7 @@ export default {
     );
     this.apiTemp = await import("./api/temperature.json");
     this.apiPuissance = await import("./api/puissance.json");
+    this.apiLora = await import("./api/lora.json");
     this.highlightObject();
     this.$hub.on("select-objects", this.fitIfcSelectedOnClick);
   },
@@ -131,6 +108,10 @@ export default {
     this.getSystems();
   },
   methods: {
+    onResetZoomClick() {
+      this.resetZoom();
+      this.resetZoom = null;
+    },
     highlightObject() {
       const selectedObjectIds = "0vNFceMkb8dezQiQhWAOcR";
       if (selectedObjectIds && selectedObjectIds.length) {
@@ -182,42 +163,56 @@ export default {
   li{
     margin: 6px;
     padding: 0 12px;
-    font-size: 12px;
-    line-height: 16px;
-    cursor: pointer;
+  .ct-perfect-fourth{
+    min-height: 320px;
   }
-}
-.ct-perfect-fourth{
-  min-height: 320px;
-}
-.ct-line {
-  stroke-width: 2px;
-}
-.ct-labels {
-  foreignObject:nth-child(2n) {
+  .ct-line {
+    stroke-width: 2px;
+  }
+  .ct-labels {
+    foreignObject:nth-child(2n) {
+      .ct-horizontal {
+        display: none;
+      }
+    }
     .ct-horizontal {
-      display: none;
+      width: 40px!important;
+      margin-top: 10px;
+      width: max-content;
+      transform: rotate(-45deg);
+      transform-origin: left bottom;
+      // transform-origin: right;
     }
   }
-  .ct-horizontal {
-    margin-top: 10px;
-    width: max-content;
-    transform: rotate(-45deg);
-    transform-origin: left bottom;
-    // transform-origin: right;
+  .ct-point {
+    stroke-width: 1px;
   }
-}
-.ct-point {
-  stroke-width: 1px;
-}
-.ct-series-a{
-  .ct-line{
-    stroke: $color-success;
+  .ct-zoom-rect {
+    fill: rgba(200, 100, 100, 0.3);
+    stroke: red;
   }
-}
-.annotation-marker{
-  &.low{
-    background-color: $color-white;
+  .chart-temp, .chart-puissance{
+    .ct-series-a{
+      .ct-line, .ct-point{
+        stroke: $color-success;
+      }
+    }
   }
-}
+  .chart-lora{
+    .ct-series-a{
+      .ct-line, .ct-point{
+        stroke: $color-neutral;
+      }
+    }
+    .ct-series-b{
+      .ct-line, .ct-point{
+        stroke: $color-warning;
+      }
+    }
+  }
+  .annotation-marker{
+    &.low{
+      background-color: $color-white;
+    }
+  }
 </style>
