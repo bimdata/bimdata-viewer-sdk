@@ -1,7 +1,11 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="m-y-24">
-    <ul class="bimdata-list" v-if="systems.systems && systems.systems.length">
+  <div class="bimdata-iot m-y-12 p-x-12">
+    <div class="select">
+      <div @click="displayOptions = !displayOptions" class="select-content" :class="{ active: displayOptions }">
+      {{ selectedValue }}
+    </div>
+    <ul v-show="displayOptions" class="bimdata-list" v-if="systems.systems && systems.systems.length">
       <li
         v-for="system in systems.systems[0].children"
         :key="system.uuid"
@@ -39,6 +43,8 @@ export default {
       dataPuissance: null,
       dataLora: null,
       systems: [],
+      selectedValue: "Tableau éléctrique:L1000XH800 P300, 0 V/400 V, Triphasé Phase, 3 Fils, Triangle:631658",
+      displayOptions: false
     };
   },
   computed: {
@@ -135,6 +141,8 @@ export default {
       const selectedObjectId = system.uuid;
       this.$hub.emit("select-objects", { ids: [selectedObjectId] });
       this.$hub.emit("fit-view-objects", { ids: [selectedObjectId] });
+      this.displayOptions = !this.displayOptions;
+      this.selectedValue = system.name;
     },
     fitIfcSelectedOnClick() {
       const selectedObjectIds = this.$utils.getSelectedObjectIds();
@@ -158,11 +166,43 @@ export default {
 <style lang="scss">
 /* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
 @import "~chartist/dist/chartist.min.css";
+//@import "~@bimdata/design-system/dist/css/design-system.css";
 @import "~@bimdata/design-system/dist/scss/BIMData.scss";
-.bimdata-list{
-  li{
-    margin: 6px;
-    padding: 0 12px;
+
+.bimdata-iot{
+  .select{
+    position: relative;
+    &-content{
+      height: 44px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      line-height: 16px;
+      background-color: white;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 6px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .bimdata-list{
+      background-color: white;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 18px;
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      left: 0;
+      top: calc(44px + 4px);
+    }
+  }
+  .bimdata-list{
+    li{
+      margin: 6px;
+      font-size: 12px;
+      line-height: 16px;
+      cursor: pointer;
+    }
+  }
   .ct-perfect-fourth{
     min-height: 320px;
   }
@@ -215,4 +255,5 @@ export default {
       background-color: $color-white;
     }
   }
+}
 </style>
