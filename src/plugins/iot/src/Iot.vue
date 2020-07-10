@@ -99,7 +99,7 @@ export default {
       } else if (apiUrl.includes('next')) {
         return 'https://iot-next.bimdata.io';
       }
-      return "http://82.65.34.131:8080";
+      return "http://localhost:4242";
       // return 'https://iot.bimdata.io';
   },
   async mounted() {
