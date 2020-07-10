@@ -109,7 +109,8 @@ export default {
     async getDataObject(selectedObjectId) {
       const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
       const meters = await res.json();
-      let apiRes = []
+      let apiRes = [];
+      this.datas = [];
       for (const meter of meters) {
         const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
         const json = await res.json();
@@ -145,6 +146,7 @@ export default {
       this.$hub.emit("fit-view-objects", { ids: [selectedObjectId] });
       this.displayOptions = !this.displayOptions;
       this.selectedValue = system.name;
+      this.getDataObject(system.uuid);
     },
     fitIfcSelectedOnClick() {
       const selectedObjectIds = this.$utils.getSelectedObjectIds();
