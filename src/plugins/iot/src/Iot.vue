@@ -258,8 +258,8 @@ export default {
     stroke-width: 1px;
   }
   .ct-zoom-rect {
-    fill: rgba(200, 100, 100, 0.3);
-    stroke: red;
+    fill: rgba(47, 55, 74, 0.3);
+    stroke: $color-primary;
   }
   .chart-temp, .chart-puissance{
     .ct-series-a{
