@@ -44,13 +44,7 @@
       </transition>
     </div>
 
-    <Graph v-if="dataTemp" :title="apiTemp.meter_name" :data="dataTemp" class="chart-temp"/>
-
-    <Graph v-if="dataPuissance" :title="apiPuissance.meter_name" :data="dataPuissance" class="chart-puissance"/>
-
-    <Graph v-if="dataLora" :title="apiLora.meter_name" :data="dataLora" class="chart-lora"/>
-
-    <Graph v-for="data in datas" :title="data.meter_name" :data="data.series" class="chart-lora" />
+    <Graph v-for="data in datas" :key="data.meter_name" :title="data.meter_name" :data="data.series" class="chart-lora" />
 
   </div>
 </template>
@@ -73,15 +67,10 @@ export default {
   },
   data() {
     return {
-      // apiTemp: null,
-      // apiPuissance: null,
-      // apiLora: null,
-      // dataTemp: null,
-      // dataPuissance: null,
-      // dataLora: null,
       datas: [],
       systems: [],
       selectedValue: "Tableau éléctrique:L1000XH800 P300, 0 V/400 V, Triphasé Phase, 3 Fils, Triangle:631658",
+      selectedObjectId: "0vNFceMkb8dezQiQhWAOcR",
       displayOptions: false
     };
   },
@@ -101,77 +90,11 @@ export default {
       }
       return "http://localhost:4242";
       // return 'https://iot.bimdata.io';
+    }
   },
   async mounted() {
-    // this.$watch(
-    //   "apiTemp",
-    //   apiTemp => {
-    //     if (apiTemp) {
-    //       this.dataTemp = apiTemp.data.reduce(
-    //         (data, dataElement) => {
-    //           data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
-    //           return data;
-    //         },
-    //         { series: [[]] }
-    //       );
-    //     }
-    //   },
-    //   {
-    //     immediate: true,
-    //   }
-    // );
-    // this.$watch(
-    //   "apiPuissance",
-    //   apiPuissance => {
-    //     if (apiPuissance) {
-    //       this.dataPuissance = apiPuissance.data.reduce(
-    //         (data, dataElement) => {
-    //           data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
-    //           return data;
-    //         },
-    //         { series: [[]] }
-    //       );
-    //     }
-    //   },
-    //   {
-    //     immediate: true,
-    //   }
-    // );
-    // this.$watch(
-    //   "apiLora",
-    //   apiLora => {
-    //     if (apiLora && Object.entries(apiLora.data).length > 0) {
-    //       const data = Object.entries(apiLora.data);
-    //       const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-    //       this.dataLora = { series };
-    //     }
-    //   },
-    //   {
-    //     immediate: true,
-    //   }
-    // );
-    const selectedObjectIds = "0vNFceMkb8dezQiQhWAOcR";
-    const hardBinding = {
-      23501: "dataLora",
-      23823: "dataPuissance",
-      23500: "dataTemp"
-    }
-    const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
-    const meters = res.json();
-    for (const meter of meters) {
-      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
-      const json = await res.json();
-      this.apiRes.append(json);
-      if (json && Object.entries(json.data).length > 0) {
-        const data = Object.entries(json.data);
-        const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-          datas.append({ meter_name: meter.meter_name, series: { series } });
-      }
-    }
-    // this.apiTemp = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23500/record/`).json();
-    // this.apiPuissance = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23823/record/`).json();
-    // this.apiLora = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23501/record/`).json();
-    this.highlightObject(selectedObjectIds);
+    await this.getDataObject(this.selectedObjectId);
+    this.highlightObject(this.selectedObjectId);
     this.$hub.on("select-objects", this.fitIfcSelectedOnClick);
   },
   created() {
@@ -183,19 +106,34 @@ export default {
       this.resetZoom();
       this.resetZoom = null;
     },
-    highlightObject(selectedObjectIds) {
-      if (selectedObjectIds && selectedObjectIds.length) {
-        // this.$hub.emit("isolate-objects", { ids: [selectedObjectIds] });
+    async getDataObject(selectedObjectId) {
+      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
+      const meters = await res.json();
+      let apiRes = []
+      for (const meter of meters) {
+        const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
+        const json = await res.json();
+        apiRes.push(json);
+        if (json && Object.entries(json.data).length > 0) {
+          const data = Object.entries(json.data);
+          const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
+            this.datas.push({ meter_name: meter.meter_name, series: { series } });
+        }
+      }
+    },
+    highlightObject(selectedObjectId) {
+      if (selectedObjectId && selectedObjectId.length) {
+        // this.$hub.emit("isolate-objects", { ids: [selectedObjectId] });
         this.$hub.emit("colorize-objects", {
-          ids: [selectedObjectIds],
+          ids: [selectedObjectId],
           color: [0, 1, 0],
         });
         this.$hub.emit("create-annotations", {
-          ids: [selectedObjectIds],
+          ids: [selectedObjectId],
           index: "",
           priority: "low",
         });
-        this.$hub.emit("fit-view-objects", { ids: [selectedObjectIds] });
+        this.$hub.emit("fit-view-objects", { ids: [selectedObjectId] });
       }
     },
     getObjectId(system) {
