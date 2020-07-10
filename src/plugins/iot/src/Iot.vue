@@ -106,21 +106,24 @@ export default {
       this.resetZoom();
       this.resetZoom = null;
     },
+    async request(selectedObjectId, meter) {
+      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
+      const json = await res.json();
+      if (json && Object.entries(json.data).length > 0) {
+        const data = Object.entries(json.data);
+        const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
+          this.datas.push({ meter_name: meter.meter_name, series: { series } });
+      }
+    },
     async getDataObject(selectedObjectId) {
       const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
       const meters = await res.json();
-      let apiRes = [];
       this.datas = [];
+      let promises = []
       for (const meter of meters) {
-        const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
-        const json = await res.json();
-        apiRes.push(json);
-        if (json && Object.entries(json.data).length > 0) {
-          const data = Object.entries(json.data);
-          const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-            this.datas.push({ meter_name: meter.meter_name, series: { series } });
-        }
+        promises.push(this.request(selectedObjectId, meter));
       }
+      Promise.all(promises)
     },
     highlightObject(selectedObjectId) {
       if (selectedObjectId && selectedObjectId.length) {
