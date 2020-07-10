@@ -50,6 +50,8 @@
 
     <Graph v-if="dataLora" :title="apiLora.meter_name" :data="dataLora" class="chart-lora"/>
 
+    <Graph v-for="data in datas" :title="data.meter_name" :data="data.series" class="chart-lora" />
+
   </div>
 </template>
 
@@ -71,12 +73,13 @@ export default {
   },
   data() {
     return {
-      apiTemp: null,
-      apiPuissance: null,
-      apiLora: null,
-      dataTemp: null,
-      dataPuissance: null,
-      dataLora: null,
+      // apiTemp: null,
+      // apiPuissance: null,
+      // apiLora: null,
+      // dataTemp: null,
+      // dataPuissance: null,
+      // dataLora: null,
+      datas: [],
       systems: [],
       selectedValue: "Tableau éléctrique:L1000XH800 P300, 0 V/400 V, Triphasé Phase, 3 Fils, Triangle:631658",
       displayOptions: false
@@ -89,59 +92,86 @@ export default {
         .map(object => ({ name: object.name, uuid: object.uuid }));
       return objectNames;
     },
+    iot_url() {
+      const apiUrl = this.$store.state.viewer.viewerComponent.cfg.apiUrl;
+      if (apiUrl.includes('staging')) {
+        return 'https://iot-staging.bimdata.io';
+      } else if (apiUrl.includes('next')) {
+        return 'https://iot-next.bimdata.io';
+      }
+      return "http://82.65.34.131:8080";
+      // return 'https://iot.bimdata.io';
   },
   async mounted() {
-    this.$watch(
-      "apiTemp",
-      apiTemp => {
-        if (apiTemp) {
-          this.dataTemp = apiTemp.data.reduce(
-            (data, dataElement) => {
-              data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
-              return data;
-            },
-            { series: [[]] }
-          );
-        }
-      },
-      {
-        immediate: true,
+    // this.$watch(
+    //   "apiTemp",
+    //   apiTemp => {
+    //     if (apiTemp) {
+    //       this.dataTemp = apiTemp.data.reduce(
+    //         (data, dataElement) => {
+    //           data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
+    //           return data;
+    //         },
+    //         { series: [[]] }
+    //       );
+    //     }
+    //   },
+    //   {
+    //     immediate: true,
+    //   }
+    // );
+    // this.$watch(
+    //   "apiPuissance",
+    //   apiPuissance => {
+    //     if (apiPuissance) {
+    //       this.dataPuissance = apiPuissance.data.reduce(
+    //         (data, dataElement) => {
+    //           data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
+    //           return data;
+    //         },
+    //         { series: [[]] }
+    //       );
+    //     }
+    //   },
+    //   {
+    //     immediate: true,
+    //   }
+    // );
+    // this.$watch(
+    //   "apiLora",
+    //   apiLora => {
+    //     if (apiLora && Object.entries(apiLora.data).length > 0) {
+    //       const data = Object.entries(apiLora.data);
+    //       const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
+    //       this.dataLora = { series };
+    //     }
+    //   },
+    //   {
+    //     immediate: true,
+    //   }
+    // );
+    const selectedObjectIds = "0vNFceMkb8dezQiQhWAOcR";
+    const hardBinding = {
+      23501: "dataLora",
+      23823: "dataPuissance",
+      23500: "dataTemp"
+    }
+    const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
+    const meters = res.json();
+    for (const meter of meters) {
+      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
+      const json = await res.json();
+      this.apiRes.append(json);
+      if (json && Object.entries(json.data).length > 0) {
+        const data = Object.entries(json.data);
+        const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
+          datas.append({ meter_name: meter.meter_name, series: { series } });
       }
-    );
-    this.$watch(
-      "apiPuissance",
-      apiPuissance => {
-        if (apiPuissance) {
-          this.dataPuissance = apiPuissance.data.reduce(
-            (data, dataElement) => {
-              data.series[0].push({y:dataElement.value, x: Date.parse(dataElement.timestamp)});
-              return data;
-            },
-            { series: [[]] }
-          );
-        }
-      },
-      {
-        immediate: true,
-      }
-    );
-    this.$watch(
-      "apiLora",
-      apiLora => {
-        if (apiLora && Object.entries(apiLora.data).length > 0) {
-          const data = Object.entries(apiLora.data);
-          const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-          this.dataLora = { series };
-        }
-      },
-      {
-        immediate: true,
-      }
-    );
-    this.apiTemp = await import("./api/temperature.json");
-    this.apiPuissance = await import("./api/puissance.json");
-    this.apiLora = await import("./api/lora.json");
-    this.highlightObject();
+    }
+    // this.apiTemp = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23500/record/`).json();
+    // this.apiPuissance = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23823/record/`).json();
+    // this.apiLora = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/23501/record/`).json();
+    this.highlightObject(selectedObjectIds);
     this.$hub.on("select-objects", this.fitIfcSelectedOnClick);
   },
   created() {
@@ -153,8 +183,7 @@ export default {
       this.resetZoom();
       this.resetZoom = null;
     },
-    highlightObject() {
-      const selectedObjectIds = "0vNFceMkb8dezQiQhWAOcR";
+    highlightObject(selectedObjectIds) {
       if (selectedObjectIds && selectedObjectIds.length) {
         // this.$hub.emit("isolate-objects", { ids: [selectedObjectIds] });
         this.$hub.emit("colorize-objects", {
