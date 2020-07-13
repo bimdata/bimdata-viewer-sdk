@@ -75,6 +75,12 @@ export default {
     };
   },
   computed: {
+    headers() {
+      return {
+        'Authorization': 'Bearer ' + this.$utils.getAccessToken(),
+        'Content-Type': 'application/json'
+      }
+    },
     objectName() {
       const objectNames = this.$utils
         .getAllObjectsOfType("building_element_proxy")
@@ -88,7 +94,7 @@ export default {
       } else if (apiUrl.includes('next')) {
         return 'https://iot-next.bimdata.io';
       }
-      return "http://localhost:4242";
+      return process.env.VUE_APP_IOT_API_URL;
       // return 'https://iot.bimdata.io';
     }
   },
@@ -107,7 +113,7 @@ export default {
       this.resetZoom = null;
     },
     async request(selectedObjectId, meter) {
-      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`);
+      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`, { headers: this.headers });
       const json = await res.json();
       if (json && Object.entries(json.data).length > 0) {
         const data = Object.entries(json.data);
@@ -116,7 +122,7 @@ export default {
       }
     },
     async getDataObject(selectedObjectId) {
-      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`);
+      const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`, { headers: this.headers });
       const meters = await res.json();
       this.datas = [];
       let promises = []
