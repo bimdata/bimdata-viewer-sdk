@@ -1,5 +1,4 @@
 <template>
-  <!-- https://vuejs.org/v2/guide/syntax.html -->
   <div class="bimdata-iot m-y-12 p-x-12">
     <div class="select">
       <div @click="displayOptions = !displayOptions" class="select-content" :class="{ active: displayOptions }">
@@ -37,14 +36,41 @@
             v-for="system in systems.systems[0].children"
             :key="system.uuid"
             @click="getObjectId(system)"
+            :class="{ error : system.uuid === errorObjectId }"
           >
+            <div v-if="system.uuid !== errorObjectId">
+              <BIMDataIcon
+                class="icon-chevron"
+                icon-name="successIcon"
+                width="12"
+                height="11"
+                x="23"
+                y="23"
+              >
+                <BIMDataSuccessIcon />
+              </BIMDataIcon>
+            </div>
+            <div v-if="system.uuid === errorObjectId">
+              <BIMDataIcon
+                class="icon-chevron"
+                icon-name="warningIcon"
+                width="12"
+                height="11"
+                x="23"
+                y="23"
+              >
+                <BIMDataWarningIcon />
+              </BIMDataIcon>
+            </div>
             {{ system.name }}
           </li>
         </ul>
       </transition>
     </div>
 
-    <Graph v-for="data in datas" :key="data.meter_name" :title="data.meter_name" :data="data.series" class="chart-lora" />
+    <Graph v-for="data in datas" :key="data.meter_name" :title="data.meter_name" :data="data.series" :class="`chart-${data.meter_id}`" />
+
+    <BIMDataLoading v-if="datas.length === 0"></BIMDataLoading>
 
   </div>
 </template>
@@ -55,15 +81,22 @@ import BIMDataSystemIcon from "./BIMDataSystemIcon.vue";
 
 import {BIMDataIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
 import {BIMDataChevronIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
+import {BIMDataSuccessIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
+import {BIMDataWarningIcon} from '@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js'
+
+
+import BIMDataLoading from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataLoading.js";
 
 export default {
-  // https://vuejs.org/v2/guide/components.html
   name: "iot",
   components: {
     Graph,
     BIMDataSystemIcon,
     BIMDataIcon,
-    BIMDataChevronIcon
+    BIMDataChevronIcon,
+    BIMDataLoading,
+    BIMDataSuccessIcon,
+    BIMDataWarningIcon
   },
   data() {
     return {
@@ -71,7 +104,8 @@ export default {
       systems: [],
       selectedValue: "Tableau éléctrique:L1000XH800 P300, 0 V/400 V, Triphasé Phase, 3 Fils, Triangle:631658",
       selectedObjectId: "0vNFceMkb8dezQiQhWAOcR",
-      displayOptions: false
+      errorObjectId : "0vNFceMkb8dezQiQhWAOcS",
+      displayOptions: false,
     };
   },
   computed: {
@@ -100,7 +134,8 @@ export default {
   },
   async mounted() {
     await this.getDataObject(this.selectedObjectId);
-    this.highlightObject(this.selectedObjectId);
+    this.greenObject(this.selectedObjectId);
+    this.redObject();
     this.$hub.on("select-objects", this.fitIfcSelectedOnClick);
   },
   created() {
@@ -118,7 +153,7 @@ export default {
       if (json && Object.entries(json.data).length > 0) {
         const data = Object.entries(json.data);
         const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-          this.datas.push({ meter_name: meter.meter_name, series: { series } });
+          this.datas.push({ meter_name: meter.meter_name, series: { series }, meter_id: meter.meter_id });
       }
     },
     async getDataObject(selectedObjectId) {
@@ -131,23 +166,22 @@ export default {
       }
       Promise.all(promises)
     },
-    highlightObject(selectedObjectId) {
+    greenObject(selectedObjectId) {
       if (selectedObjectId && selectedObjectId.length) {
-        // this.$hub.emit("isolate-objects", { ids: [selectedObjectId] });
         this.$hub.emit("colorize-objects", {
           ids: [selectedObjectId],
           color: [0, 1, 0],
         });
-        this.$hub.emit("create-annotations", {
-          ids: [selectedObjectId],
-          index: "",
-          priority: "low",
-        });
         this.$hub.emit("fit-view-objects", { ids: [selectedObjectId] });
       }
     },
+    redObject() {
+      this.$hub.emit("colorize-objects", {
+        ids: ["0vNFceMkb8dezQiQhWAOcS"],
+        color: [1, 0, 0],
+      });
+    },
     getObjectId(system) {
-      // this.$hub.emit("unisolate-all-objects");
       const selectedAllObjectsIds = this.$utils.getSelectedObjectIds();
       this.$hub.emit("deselect-objects", { ids: selectedAllObjectsIds });
       const selectedObjectId = system.uuid;
@@ -157,15 +191,17 @@ export default {
       this.selectedValue = system.name;
       this.getDataObject(system.uuid);
     },
-    fitIfcSelectedOnClick() {
+    fitIfcSelectedOnClick(system) {
       const selectedObjectIds = this.$utils.getSelectedObjectIds();
       this.$hub.emit("fit-view-objects", {
         ids: [selectedObjectIds],
       });
+      this.getDataObject(system.uuid);
     },
     async getSystems() {
       // TODO how to get ifc id... and could it be many of them ???
       const ifcId = 7516;
+      //const ifcId = this.$utils.getSelectedIfcs().map(ifc => ifc.id);
 
       const ifc = this.$utils.getSelectedIfcs().find(ifc => ifc.id === ifcId);
       if (ifc && ifc.systems_file) {
@@ -177,9 +213,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
 @import "~chartist/dist/chartist.min.css";
-//@import "~@bimdata/design-system/dist/css/design-system.css";
 @import "~@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot{
@@ -229,14 +263,28 @@ export default {
       width: 100%;
       left: 0;
       top: calc(44px + 4px);
-    }
-  }
-  .bimdata-list{
-    li{
-      margin: 6px 0;
-      font-size: 12px;
-      line-height: 16px;
-      cursor: pointer;
+      li{
+        margin: 6px 0;
+        display: flex;
+        color: $color-tertiary-darkest;
+        font-size: 12px;
+        line-height: 16px;
+        cursor: pointer;
+        & > div {
+          margin-right: 6px;
+          svg{
+            fill: $color-success;
+          }
+        }
+        &.error{
+          color: $color-high;
+          & > div {
+            svg{
+              fill: $color-high;
+            }
+          }
+        }
+      }
     }
   }
   .ct-perfect-fourth{
@@ -252,12 +300,28 @@ export default {
       }
     }
     .ct-horizontal {
-      width: 40px!important;
+      width: 34px!important;
       margin-top: 10px;
       width: max-content;
       transform: rotate(-45deg);
       transform-origin: left bottom;
-      // transform-origin: right;
+    }
+  }
+  .ct-grids{
+    .ct-horizontal{
+      display: none;
+      &:first-child{
+        display: block;
+        stroke-width: 2px;
+        stroke-dasharray: initial;
+      }
+    }
+    .ct-vertical{
+      stroke: $color-tertiary;
+      stroke-dasharray: initial;
+      &:first-child{
+        stroke-width: 2px;
+      }
     }
   }
   .ct-point {
@@ -267,14 +331,14 @@ export default {
     fill: rgba(47, 55, 74, 0.3);
     stroke: $color-primary;
   }
-  .chart-temp, .chart-puissance{
+  .chart-23823, .chart-23500{
     .ct-series-a{
       .ct-line, .ct-point{
         stroke: $color-success;
       }
     }
   }
-  .chart-lora{
+  .chart-23501{
     .ct-series-a{
       .ct-line, .ct-point{
         stroke: $color-neutral;
@@ -284,11 +348,6 @@ export default {
       .ct-line, .ct-point{
         stroke: $color-warning;
       }
-    }
-  }
-  .annotation-marker{
-    &.low{
-      background-color: $color-white;
     }
   }
 }
