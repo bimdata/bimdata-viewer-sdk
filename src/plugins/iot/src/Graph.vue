@@ -15,7 +15,6 @@
       height="28px"
       >reset zoom</BIMDataButton
     >
-    <!-- <BIMDataLoading></BIMDataLoading> -->
   </div>
 </template>
 
