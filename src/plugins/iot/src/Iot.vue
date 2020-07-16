@@ -68,9 +68,8 @@
       </transition>
     </div>
 
-    <Graph v-for="data in datas" :key="data.meter_name" :title="data.meter_name" :data="data.series" :class="`chart-${data.meter_id}`" />
-
-    <BIMDataLoading v-if="datas.length === 0"></BIMDataLoading>
+    <Graph v-for="serie in series" :key="serie.meter_name" :title="serie.meter_name" :data="serie.series" :class="`chart-${serie.meter_id}`" />
+    <BIMDataLoading v-if="series.length === 0"></BIMDataLoading>
 
   </div>
 </template>
@@ -100,7 +99,7 @@ export default {
   },
   data() {
     return {
-      datas: [],
+      series: [],
       systems: [],
       selectedValue: "Tableau éléctrique:L1000XH800 P300, 0 V/400 V, Triphasé Phase, 3 Fils, Triangle:631658",
       selectedObjectId: "0vNFceMkb8dezQiQhWAOcR",
@@ -123,13 +122,16 @@ export default {
     },
     iot_url() {
       const apiUrl = this.$store.state.viewer.viewerComponent.cfg.apiUrl;
-      if (apiUrl.includes('staging')) {
+
+      if (process.env.VUE_APP_IOT_API_URL) {
+        return process.env.VUE_APP_IOT_API_URL;
+      } else if (apiUrl.includes('staging')) {
         return 'https://iot-staging.bimdata.io';
       } else if (apiUrl.includes('next')) {
         return 'https://iot-next.bimdata.io';
+      } else if (apiUrl === "https://api.bimdata.io") {
+        return 'https://iot.bimdata.io';
       }
-      return process.env.VUE_APP_IOT_API_URL;
-      // return 'https://iot.bimdata.io';
     }
   },
   async mounted() {
@@ -143,28 +145,21 @@ export default {
     this.getSystems();
   },
   methods: {
-    onResetZoomClick() {
-      this.resetZoom();
-      this.resetZoom = null;
-    },
-    async request(selectedObjectId, meter) {
+    async getRecords(selectedObjectId, meter) {
       const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter/${meter.meter_id}/record`, { headers: this.headers });
       const json = await res.json();
       if (json && Object.entries(json.data).length > 0) {
         const data = Object.entries(json.data);
         const series = data.map(([, records]) => records.map(record => ({x: Date.parse(record.timestamp), y: record.value})));
-          this.datas.push({ meter_name: meter.meter_name, series: { series }, meter_id: meter.meter_id });
+        return { meter_name: meter.meter_name, meter_id: meter.meter_id, series: { series } };
       }
     },
     async getDataObject(selectedObjectId) {
       const res = await fetch(`${this.iot_url}/element/${selectedObjectId}/meter`, { headers: this.headers });
       const meters = await res.json();
-      this.datas = [];
-      let promises = []
-      for (const meter of meters) {
-        promises.push(this.request(selectedObjectId, meter));
-      }
-      Promise.all(promises)
+      const promises = meters.map(meter => this.getRecords(selectedObjectId, meter));
+      const series = await Promise.all(promises);
+      this.series = series.filter(serie => !!serie)
     },
     greenObject(selectedObjectId) {
       if (selectedObjectId && selectedObjectId.length) {
@@ -199,13 +194,15 @@ export default {
       this.getDataObject(system.uuid);
     },
     async getSystems() {
-      // TODO how to get ifc id... and could it be many of them ???
-      const ifcId = 7516;
-      //const ifcId = this.$utils.getSelectedIfcs().map(ifc => ifc.id);
-
-      const ifc = this.$utils.getSelectedIfcs().find(ifc => ifc.id === ifcId);
+      const ifc = this.$utils.getSelectedIfcs()[0];
       if (ifc && ifc.systems_file) {
-        this.systems = await fetch(ifc.systems_file).then(res => res.json());
+        const ifcApi = new this.$bimdataApiClient.IfcApi();
+
+        this.systems = await ifcApi.getSystems(
+          this.$utils.getCloudId(),
+          ifc.id,
+          this.$utils.getProjectId()
+        )
       }
     }
   },
@@ -213,8 +210,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~chartist/dist/chartist.min.css";
-@import "~@bimdata/design-system/dist/scss/BIMData.scss";
+@import "node_modules/chartist/dist/chartist.min.css";
+@import "node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot{
   .select{
