@@ -6,7 +6,7 @@
         class="select-content"
         :class="{ active: displayOptions }"
       >
-        <div class="system-icon" v-if="selectedSystem !== errorValue">
+        <div class="system-icon" v-if="selectedSystem.name !== errorValue">
           <BIMDataIcon
             class="icon-success color-success"
             icon-name="successIcon"
@@ -18,7 +18,7 @@
             <BIMDataSuccessIcon />
           </BIMDataIcon>
         </div>
-        <div class="system-icon" v-if="selectedSystem === errorValue">
+        <div class="system-icon" v-if="selectedSystem.name === errorValue">
           <BIMDataIcon
             class="icon-warning color-high"
             icon-name="warningIcon"
@@ -30,7 +30,7 @@
             <BIMDataWarningIcon />
           </BIMDataIcon>
         </div>
-        <span :class="{ error: selectedSystem === errorValue }">
+        <span :class="{ error: selectedSystem.name === errorValue }">
           {{ selectedSystem && selectedSystem.name }}
         </span>
         <div class="select-icon">
@@ -93,11 +93,12 @@
     </div>
 
     <Graph
-      v-for="data in datas"
-      :key="data.meterName"
-      :title="data.meterName"
-      :data="data.series"
-      :class="`chart-${data.meterId}`"
+      v-for="serie in series"
+      :key="serie.meterName"
+      :title="serie.meterName"
+      :data="serie.series"
+      class="m-y-12"
+      :class="`chart-${serie.meterId}`"
     />
 
     <BIMDataLoading v-if="loading"></BIMDataLoading>
@@ -131,7 +132,7 @@ export default {
   },
   data() {
     return {
-      datas: [],
+      series: [],
       systems: [],
       selectedSystem: null,
       errorValue: "Tableau éléctrique:L1000XH800 P300:631661",
@@ -152,12 +153,16 @@ export default {
     },
     iotUrl() {
       const apiUrl = this.$utils.getApiUrl();
-      if (apiUrl.includes("staging")) {
-        return "https://iot-staging.bimdata.io";
-      } else if (apiUrl.includes("next")) {
-        return "https://iot-next.bimdata.io";
+      if (process.env.VUE_APP_IOT_API_URL) {
+        return process.env.VUE_APP_IOT_API_URL;
+      } else if (apiUrl.includes('staging')) {
+        return 'https://iot-staging.bimdata.io';
+      } else if (apiUrl.includes('next')) {
+        return 'https://iot-next.bimdata.io';
+      } else if (apiUrl === "https://api.bimdata.io") {
+        return 'https://iot.bimdata.io';
       }
-      return process.env.VUE_APP_IOT_API_URL;
+      return null;
       // return 'https://iot.bimdata.io';
     },
     ...mapState({
@@ -201,45 +206,42 @@ export default {
       const res = await fetch(
         `${this.iotUrl}/element/${systemId}/meter/${meter.meter_id}/record`,
         { headers: this.headers }
-      ); // TODO get on apiClient instead
+      );
       const json = await res.json();
       if (json && Object.entries(json.data).length > 0) {
         const data = Object.entries(json.data);
         const series = data.map(([, records]) =>
           records.map(record => ({
             x: Date.parse(record.timestamp),
-            y: record && record.value,
+            y: record.value,
           }))
         );
-        this.datas.push({
+        return {
           meterName: meter.meter_name,
           series: { series },
           meterId: meter.meter_id,
-        });
+        };
       }
     },
     async getSystemData(systemId) {
-      this.datas = [];
-      const res = await fetch(
-        `${this.iotUrl}/element/${systemId}/meter`,
-        { headers: this.headers }
-      );
+      this.series = [];
+      const res = await fetch(`${this.iotUrl}/element/${systemId}/meter`, { headers: this.headers });
       const meters = await res.json();
-      for (const meter of meters) {
-        await this.getMeterData(systemId, meter);
-      }
+      const promises = meters.map(meter => this.getMeterData(systemId, meter));
+      const series = await Promise.all(promises);
+      this.series = series.filter(Boolean);
     },
     async getSystems() {
-      // TODO how to get ifc id... and could it be many of them ???
-      const ifcId = 2036;
-
-      const ifc = this.$utils.getSelectedIfcs().find((ifc) => ifc.id === ifcId);
+      const ifc = this.$utils.getSelectedIfcs()[0];
       if (ifc && ifc.systems_file) {
-        const systemsRes = await fetch(ifc.systems_file).then((res) =>
-          res.json()
-        );
-        this.systems =
-          systemsRes && systemsRes.systems && systemsRes.systems[0].children; // TODO ...
+        const systemsRes = await fetch(ifc.systems_file).then((res) => res.json());
+        this.systems = systemsRes && systemsRes.systems && systemsRes.systems[0].children;
+        // const ifcApi = new this.$bimdataApiClient.IfcApi();
+        // this.systems = await ifcApi.getSystems(
+        //   this.$utils.getCloudId(),
+        //   ifc.id,
+        //   this.$utils.getProjectId()
+        // );
         if (this.systems && this.systems.length) {
           this.selectedSystem = this.systems[0];
           this.$hub.emit("colorize-objects", {
@@ -258,8 +260,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~chartist/dist/chartist.min.css";
-@import "~@bimdata/design-system/dist/scss/BIMData.scss";
+@import "node_modules/chartist/dist/chartist.min.css";
+@import "node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot {
   .select {
@@ -284,7 +286,7 @@ export default {
         }
       }
       & > .system-icon {
-        margin-right: 12px;
+        margin-right: 6px;
       }
       & > span {
         width: calc(100% - 21px - 13px - 12px);
@@ -347,11 +349,12 @@ export default {
       }
     }
     .ct-horizontal {
-      width: 34px !important;
+      width: 32px !important;
       margin-top: 10px;
       width: max-content;
       transform: rotate(-45deg);
       transform-origin: left bottom;
+      word-break: break-word;
     }
   }
   .ct-grids {
