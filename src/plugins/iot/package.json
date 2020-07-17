@@ -23,6 +23,8 @@
     "chartist-plugin-zoom": "^0.6.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-url": "^4.0.2",
     "rollup": "^2.0.3",
     "rollup-plugin-scss": "^2.1.0",
