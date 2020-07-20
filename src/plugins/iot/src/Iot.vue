@@ -214,6 +214,7 @@ export default {
           records.map(record => ({
             x: Date.parse(record.timestamp),
             y: record.value,
+            meta: record.timestamp,
           }))
         );
         return {

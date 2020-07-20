@@ -21,6 +21,7 @@
 <script>
 import Chartist from "chartist";
 import ChartistZoom from "chartist-plugin-zoom";
+import ChartistTooltip from "chartist-plugin-tooltips-updated";
 import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 
 export default {
@@ -39,6 +40,7 @@ export default {
           type: Chartist.AutoScaleAxis,
         },
         plugins: [
+          ChartistTooltip(),
           ChartistZoom({
             resetOnRightMouseBtn: false,
             onZoom: (chart, reset) => {
