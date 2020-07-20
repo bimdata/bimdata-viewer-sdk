@@ -32,9 +32,7 @@ export default {
         lineSmooth: false,
         axisX: {
           type: Chartist.AutoScaleAxis,
-          labelInterpolationFnc: function(value) {
-            return new Date(value).toISOString().slice(0, 10);
-          },
+          labelInterpolationFnc: this.getFormatedDate,
         },
         axisY: {
           type: Chartist.AutoScaleAxis,
@@ -81,6 +79,19 @@ export default {
     onResetZoomClick() {
       this.resetZoom();
       this.resetZoom = null;
+    },
+    getFormatedDate(timestamp){
+      const date = new Date(timestamp);
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      if ( day < 10 ) {
+        day = `0${day}`;
+      }
+      if ( month < 10 ) {
+        month = `0${month}`;
+      }
+      const formatDate = `${day} ${month}`
+      return formatDate;
     },
   },
 };
