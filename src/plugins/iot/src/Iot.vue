@@ -373,7 +373,7 @@ export default {
     }
   }
   .ct-point {
-    stroke-width: 5px;
+    stroke-width: 4px;
   }
   .ct-zoom-rect {
     fill: rgba(47, 55, 74, 0.3);
@@ -404,6 +404,8 @@ export default {
   }
 }
 .chartist-tooltip{
+  display: none;
+  &.tooltip-show{
     position: absolute;
     display: block;
     min-width: 5em;
@@ -415,7 +417,6 @@ export default {
     text-align: center;
     pointer-events: none;
     z-index: 1;
-    transition: opacity .2s linear;
     &::before{
       content: "";
       position: absolute;
@@ -431,4 +432,6 @@ export default {
       display: none;
     }
   }
+}
+
 </style>
