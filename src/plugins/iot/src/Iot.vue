@@ -373,7 +373,7 @@ export default {
     }
   }
   .ct-point {
-    stroke-width: 1px;
+    stroke-width: 5px;
   }
   .ct-zoom-rect {
     fill: rgba(47, 55, 74, 0.3);
@@ -403,4 +403,32 @@ export default {
     }
   }
 }
+.chartist-tooltip{
+    position: absolute;
+    display: block;
+    min-width: 5em;
+    padding: 5px;
+    background: $color-secondary;
+    color: $color-primary;
+    font-family: $primary-font;
+    font-size: 11px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity .2s linear;
+    &::before{
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      margin-left: -8px;
+      border: 8px solid transparent;
+      border-top-color: $color-secondary;
+    }
+    .chartist-tooltip-value{
+      display: none;
+    }
+  }
 </style>
