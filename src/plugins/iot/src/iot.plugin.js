@@ -15,10 +15,10 @@ export default {
   },
   i18n: {
     en: {
-      tooltip: "Iot is awesome!",
+      tooltip: "IOT plugin",
     },
     fr: {
-      tooltip: "Iot est génial !",
+      tooltip: "Plugin IOT",
     },
   },
 };
