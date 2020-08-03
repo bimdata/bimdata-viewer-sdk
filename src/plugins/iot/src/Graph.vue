@@ -98,7 +98,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//@import "~@bimdata/design-system/dist/scss/BIMData.scss";
 .bimdata-btn{
   margin-left: auto;
   margin-right: 12px;
