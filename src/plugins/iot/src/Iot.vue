@@ -274,8 +274,8 @@ export default {
       justify-content: space-between;
       font-size: 12px;
       line-height: 16px;
-      background-color: white;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      background-color: $color-white;
+      box-shadow: 0px 2px 10px rgba($color-black, 0.1);
       padding: 6px 12px;
       border-radius: 3px;
       cursor: pointer;
@@ -303,8 +303,8 @@ export default {
       }
     }
     .bimdata-list {
-      background-color: white;
-      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      background-color: $color-white;
+      box-shadow: 0px 2px 10px rgba($color-black, 0.1);
       padding: 6px 12px;
       position: absolute;
       z-index: 1;
@@ -374,6 +374,7 @@ export default {
   }
   .ct-point {
     stroke-width: 4px;
+    opacity: 0;
   }
   .ct-zoom-rect {
     fill: rgba(47, 55, 74, 0.3);
