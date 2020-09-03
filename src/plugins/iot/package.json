@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/iot-viewer-plugin",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "iot BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
