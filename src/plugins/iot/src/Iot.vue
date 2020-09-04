@@ -163,7 +163,6 @@ export default {
         return 'https://iot.bimdata.io';
       }
       return null;
-      // return 'https://iot.bimdata.io';
     },
     ...mapState({
       selectedIfcs: state => state.selectedIfcs
@@ -233,7 +232,8 @@ export default {
       this.series = series.filter(Boolean);
     },
     async getSystems() {
-      const ifc = this.$utils.getSelectedIfcs()[0];
+      const ifcs = this.$utils.getSelectedIfcs();
+      const ifc = ifcs.find(ifc => ifc.name == "Mirabeau_ELEC.ifc") // When there is more than one ifc
       if (ifc && ifc.systems_file) {
         const systemsRes = await fetch(ifc.systems_file).then((res) => res.json());
         this.systems = systemsRes && systemsRes.systems && systemsRes.systems[0].children;
