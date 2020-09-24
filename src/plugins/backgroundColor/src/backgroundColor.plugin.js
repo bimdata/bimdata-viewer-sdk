@@ -3,7 +3,7 @@ import pickerModal from "./pickerModal.vue";
 export default {
   name: "BackgroundColorPlugin",
   startupScript($viewer) {
-    $viewer.contextMenu.registerContextCommand({
+    $viewer.contextMenu.registerCommand({
         get label() {
           return $viewer.vm.$t("title");
         },
