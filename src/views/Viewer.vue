@@ -16,6 +16,8 @@ import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.js";
 import { mapGetters } from "vuex";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
+import modalKroqi from "@/plugins/modalKroqi/src/modalKroqi.plugin.js";
+
 export default {
   components: {
     BimdataViewer,
@@ -43,6 +45,7 @@ export default {
       SplitPlugin,
       BimObjectPlugin,
       backgroundColor,
+      modalKroqi,
     ]);
   },
 };
