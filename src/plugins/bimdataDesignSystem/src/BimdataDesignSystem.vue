@@ -15,12 +15,8 @@
       titleHeader="header"
       submenuText="submenu"
     >
-      <template #headerIcons>
-        header icons
-      </template>
-      <template #content>
-        content here
-      </template>
+      <template #headerIcons> header icons </template>
+      <template #content> content here </template>
     </BIMDataCard>
 
     <!-- import BIMData CHECKBOX -->
@@ -61,7 +57,7 @@
 </template>
 
 <script>
-import BIMDataComponents from "@bimdata/design-system";
+import BIMDataComponents from "../node_modules/@bimdata/design-system";
 
 export default {
   // https://vuejs.org/v2/guide/components.html

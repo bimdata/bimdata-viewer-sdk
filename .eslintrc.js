@@ -13,15 +13,15 @@ module.exports = {
     SharedArrayBuffer: "readonly",
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
     indent: "off",
-    "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double", "avoid-escape"],
-    semi: ["error", "always"],
+    "linebreak-style": ["off", "unix"],
+    quotes: ["off", "double", "avoid-escape"],
+    semi: ["off", "always"],
     "vue/order-in-components": [
-      "error",
+      "warn",
       {
         order: [
           "el",
