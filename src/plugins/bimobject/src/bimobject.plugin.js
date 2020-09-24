@@ -3,15 +3,18 @@ import icon from "../assets/plugin-icon.svg";
 
 export default {
   name: "bimObjectPlugin",
-  component: BimobjectComponent,
-  display: {
-    iconPosition: "right",
-    content: "windowed",
-  },
-  keepActive: true,
-  tooltip: "bimObjectPlugin.tooltip",
-  icon: {
-    imgUri: icon,
+  ui: {
+    component: BimobjectComponent,
+    addToWindows: ["__all__"],
+    button: {
+      position: "right",
+      content: "panel",
+      keepOpen: true,
+      tooltip: "bimObjectPlugin.tooltip",
+      icon: {
+        imgUri: icon,
+      },
+    }
   },
   i18n: {
     en: {

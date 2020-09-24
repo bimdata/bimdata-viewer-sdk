@@ -63,7 +63,7 @@
         <BIMDataButton
           width="100%"
           @click="saveInBimdata"
-          :disabled="$utils.getSelectedObjectIds().length === 0"
+          :disabled="this.$viewer.state.selectedObjects.length === 0"
           class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
         >
           {{ $t("bimObjectPlugin.applySelected") }}
@@ -128,12 +128,12 @@ export default {
   computed: {
     headers() {
       return {
-        Authorization: "Bearer " + this.$utils.getAccessToken(),
+        Authorization: "Bearer " + this.$viewer.api.accessToken,
         "Content-Type": "application/json",
       };
     },
     bimobject_url() {
-      const apiUrl = this.$store.state.viewer.viewerComponent.cfg.apiUrl;
+      const apiUrl = this.$viewer.api.apiUrl;
       if (apiUrl.includes("staging")) {
         return "https://bimobject-staging.bimdata.io";
       } else if (apiUrl.includes("next")) {
@@ -176,13 +176,13 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$utils.getSelectedObjectIds();
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
         this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$hub.emit("updated-objects-properties", selectedObjectIds);
-      this.$hub.emit("alert", {
+      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.localContext.hub.emit("alert", {
         type: "success",
         message: this.$t("bimObjectPlugin.successMessage"),
       });
@@ -191,12 +191,12 @@ export default {
       if (this.propertySets.length === 0) {
         return;
       }
-      const loadedIfc = this.$utils.getSelectedIfcs()[0];
-      const apiClient = new this.$bimdataApiClient.IfcApi();
+      const loadedIfc = this.$viewer.state.ifcs[0];
+      const apiClient = new this.$viewer.api.apiClient.IfcApi();
       const propertySets = await apiClient.createPropertySet(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         this.propertySets
       );
       const psetIds = propertySets.map(pset => pset.id);
@@ -210,9 +210,9 @@ export default {
         []
       );
       await apiClient.createPropertySetElementRelations(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         elementsPsetsRelations
       );
     },
@@ -220,12 +220,12 @@ export default {
       if (this.classifications.length === 0) {
         return;
       }
-      const loadedIfc = this.$utils.getSelectedIfcs()[0];
-      const collaborationApi = new this.$bimdataApiClient.CollaborationApi();
-      const ifcApi = new this.$bimdataApiClient.IfcApi();
+      const loadedIfc = this.$viewer.state.ifcs[0];
+      const collaborationApi = new this.$viewer.api.apiClient.CollaborationApi();
+      const ifcApi = new this.$viewer.api.apiClient.IfcApi();
       const classifications = await collaborationApi.createClassification(
-        this.$utils.getCloudId(),
-        this.$utils.getProjectId(),
+        this.$viewer.api.cloudId,
+        this.$viewer.api.projectId,
         this.classifications
       );
       const classifIds = classifications.map(classif => classif.id);
@@ -239,9 +239,9 @@ export default {
         []
       );
       await ifcApi.createClassificationElementRelations(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         elementsClassifRelations
       );
     },
