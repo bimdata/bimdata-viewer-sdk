@@ -12,6 +12,7 @@ import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import { mapGetters } from "vuex";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
 // import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
+import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 
 export default {
   data() {
@@ -36,7 +37,7 @@ export default {
       },
     });
 
-    // bimdataViewer.registerPlugin(SvgExtractorPlugin);
+    bimdataViewer.registerPlugin(GltfExtractorPlugin);
     // bimdataViewer.registerPlugin(SnowflakesPlugin);
     // bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(BimObjectPlugin);

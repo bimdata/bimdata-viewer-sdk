@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     downloadGltf() {
-      const ifc = this.$utils.getSelectedIfcs()[0]
+      const ifc = this.$viewer.state.ifcs[0];
       window.location.href = ifc.gltf_file;
     }
   }
