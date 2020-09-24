@@ -11,7 +11,7 @@ import makeBIMDataViewer from "@bimdata/viewer";
 import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import { mapGetters } from "vuex";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
-// import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
+import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 
 export default {
@@ -37,6 +37,7 @@ export default {
       },
     });
 
+    bimdataViewer.registerPlugin(SvgExtractorPlugin);
     bimdataViewer.registerPlugin(GltfExtractorPlugin);
     // bimdataViewer.registerPlugin(SnowflakesPlugin);
     // bimdataViewer.registerPlugin(SplitPlugin);

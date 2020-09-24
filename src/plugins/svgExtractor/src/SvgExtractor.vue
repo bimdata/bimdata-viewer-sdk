@@ -23,11 +23,11 @@ export default {
   },
   methods: {
     downloadSvg() {
-      const ifc = this.$utils.getSelectedIfcs()[0];
+      const ifc = this.$viewer.state.ifcs[0];
       if (ifc.map_file) {
         window.location.href = ifc.map_file;
       } else {
-        this.$hub.emit("alert", {
+        this.$viewer.localContext.hub.emit("alert", {
           type: "error",
           message: this.$t("no_svg_error"),
         });
