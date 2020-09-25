@@ -1,9 +1,9 @@
-import btnModalKroqiComponent from "./BtnModalKroqi.vue";
+import BtnPlatformDemoComponent from "./BtnPlatformDemo.vue";
 import icon from "../assets/icon.svg";
 
 export default {
   name: "btnModalKroqiComponent",
-  component: btnModalKroqiComponent,
+  component: BtnPlatformDemoComponent,
   display: {
     iconPosition: "right",
     content: "free",

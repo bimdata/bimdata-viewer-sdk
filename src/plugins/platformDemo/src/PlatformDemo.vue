@@ -1,26 +1,26 @@
 <template>
-  <div class="kroqi-modal">
-    <div class="kroqi-modal__header flex items-center justify-center">
+  <div class="platform-demo">
+    <div class="platform-demo__header flex items-center justify-center">
       <img src="../assets/img-square-blur.svg" alt="" class="square-blur" />
       <img src="../assets/logo-bimdata.svg" alt="" />
       <img src="../assets/img-square-3d.svg" alt="" class="square-3d" />
     </div>
-    <div class="kroqi-modal__content">
+    <div class="platform-demo__content">
       <div class="flex">
         <div
-          class="kroqi-modal__content__card flex flex-col items-center justify-center m-x-24"
+          class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-bcf-manager.svg" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleBcf") }}</h5>
         </div>
         <div
-          class="kroqi-modal__content__card flex flex-col items-center justify-center m-x-24"
+          class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-edit-ifc.svg" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleEditIfc") }}</h5>
         </div>
         <div
-          class="kroqi-modal__content__card flex flex-col items-center justify-center m-x-24"
+          class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-viewer.svg" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleViewer") }}</h5>
@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: "ModalKroqi",
+  name: "PlatformDemo",
   methods: {
     bimdata_url() {
       const apiUrl = this.$store.state.viewer.viewerComponent.cfg.apiUrl;
@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
-.kroqi-modal {
+.platform-demo {
   &__header {
     padding: 40px;
     position: relative;

@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .color-picker-modal {
   width: 500px;

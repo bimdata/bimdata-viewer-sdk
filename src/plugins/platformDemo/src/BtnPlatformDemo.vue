@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import modalKroqi from "./ModalKroqi.vue";
+import PlatformDemo from "./PlatformDemo.vue";
 
 export default {
-  name: "BtnModalKroqi",
+  name: "BtnPlatformDemo",
   props: {
     active: Boolean,
   },
@@ -17,7 +17,7 @@ export default {
     active: {
       handler(active) {
         if (active) {
-          this.$plugins.modalManager.pushModal(modalKroqi);
+          this.$plugins.modalManager.pushModal(PlatformDemo);
         }
       },
     },
