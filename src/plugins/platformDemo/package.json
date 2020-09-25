@@ -1,13 +1,13 @@
 {
   "name": "@bimdata/platform-demo-viewer-plugin",
   "version": "0.0.1",
-  "description": "modalKroqi BIMData Viewer Plugin",
+  "description": "platformDemo BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "watch": "rollup --watch -c",
     "prepublishOnly": "npm run build"
   },
-  "main": "dist/modalKroqi.plugin.js",
+  "main": "dist/platformDemo.plugin.js",
   "files": [
     "dist"
   ],
@@ -15,7 +15,7 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "modalKroqi"
+    "platformDemo"
   ],
   "dependencies": {
     "@bimdata/design-system": "0.0.35"

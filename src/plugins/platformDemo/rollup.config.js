@@ -1,11 +1,11 @@
-import VuePlugin from 'rollup-plugin-vue';
-import scssPlugin from 'rollup-plugin-scss';
-import url from '@rollup/plugin-url';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
+import VuePlugin from "rollup-plugin-vue";
+import scssPlugin from "rollup-plugin-scss";
+import url from "@rollup/plugin-url";
+import { terser } from "rollup-plugin-terser";
+import commonjs from "rollup-plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
 
-const isProduction = (process.env.BUILD === 'production');
+const isProduction = process.env.BUILD === "production";
 
 const plugins = [
   VuePlugin(),
@@ -13,8 +13,8 @@ const plugins = [
   commonjs(),
   resolve(),
   url({
-    limit: 100 * 1024 *1024,
-    include: ['assets/*']
+    limit: 100 * 1024 * 1024,
+    include: ["assets/*"],
   }),
 ];
 
@@ -23,11 +23,11 @@ if (isProduction) {
 }
 
 export default {
-  input: 'src/modalKroqi.plugin.js',
+  input: "src/platformDemo.plugin.js",
   output: {
-    file: 'dist/modalKroqi.plugin.js',
-    format: 'esm',
-    sourcemap: !isProduction
+    file: "dist/platformDemo.plugin.js",
+    format: "esm",
+    sourcemap: !isProduction,
   },
-  plugins
+  plugins,
 };
