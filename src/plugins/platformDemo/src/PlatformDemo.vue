@@ -10,19 +10,19 @@
         <div
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
-          <img src="../assets/img-bcf-manager.svg" alt="" />
+          <img src="../assets/img-bcf-manager.png" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleBcf") }}</h5>
         </div>
         <div
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
-          <img src="../assets/img-edit-ifc.svg" alt="" />
+          <img src="../assets/img-edit-ifc.png" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleEditIfc") }}</h5>
         </div>
         <div
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
-          <img src="../assets/img-viewer.svg" alt="" />
+          <img src="../assets/img-viewer.png" alt="" />
           <h5>{{ $t("modalKorqiPlugin.titleViewer") }}</h5>
         </div>
       </div>
