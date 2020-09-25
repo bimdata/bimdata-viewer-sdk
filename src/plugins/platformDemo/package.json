@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/platform-demo-viewer-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "platformDemo BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
