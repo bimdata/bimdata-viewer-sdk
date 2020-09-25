@@ -16,7 +16,7 @@ export default {
   i18n: {
     en: {
       modalKorqiPlugin: {
-        tooltip: "Kroqi",
+        tooltip: "BIMData Platform",
         titleBcf: "BCF manager (import / export)",
         titleEditIfc: "Edit properties and export ifc",
         titleViewer: "A 3D / 2D BIM viewer",
@@ -25,7 +25,7 @@ export default {
     },
     fr: {
       modalKorqiPlugin: {
-        tooltip: "Kroqi",
+        tooltip: "Plateforme BIMData",
         titleBcf: "BCF manager (import / export)",
         titleEditIfc: "Editer des propriétés et exporter des ifc",
         titleViewer: "Une visionneuse BIM 3D/2D ",
