@@ -20,29 +20,21 @@ export default {
       canvas: null, // Reference to the Canvas to change the background color
     };
   },
-  watch: {
-    active: {
-      async handler(active) {
-        if (active) {
-          // Is plugin activated
-          this.canvas.style.setProperty("background-color", "lightgrey"); // Change background color
-          await Promise.all(
-            Array.from({ length: this.maxFlakes }).map(this.letItSnow)
-          ); // Call the snowflakes generation
-          this.$emit("loading-end");
-        } else {
-          this.events.forEach(event => this.xeokit.scene.off(event)); // remove all events
-          this.events = [];
-          this.models.forEach(model => model.destroy()); // remove all snowflakes
-          this.models = [];
-          this.canvas.style.removeProperty("background-color"); // reset the background
-          this.$emit("unloading-end");
-        }
-      },
-    },
+  async onOpen() {
+    this.canvas.style.setProperty("background-color", "lightgrey"); // Change background color
+    return Promise.all(
+      Array.from({ length: this.maxFlakes }).map(this.letItSnow)
+    ); // Call the snowflakes generation
+  },
+  onClose() {
+    this.events.forEach(event => this.xeokit.scene.off(event)); // remove all events
+    this.events = [];
+    this.models.forEach(model => model.destroy()); // remove all snowflakes
+    this.models = [];
+    this.canvas.style.removeProperty("background-color"); // reset the background
   },
   mounted() {
-    const viewer3D = this.$store.state.viewer.plugins.get("viewer3D"); // Get the Viewer3D plugin
+    const viewer3D = this.$viewer.globalContext.getPlugins('viewer3d')[0]; // Get the first Viewer3D plugin
     this.loader = viewer3D.gltfLoader;
     this.xeokit = viewer3D.xeokit;
     this.canvas = viewer3D.xeokit.scene.canvas.canvas;

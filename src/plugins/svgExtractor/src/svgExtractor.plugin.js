@@ -3,17 +3,15 @@ import icon from "../assets/export-svg.svg";
 
 export default {
   name: "SvgExtractorPlugin",
-  ui: {
-    component: SvgExtractorComponent,
-    addToWindows: ["2d"],
-    button: {
-      position: 'right',
-      content: 'simple', // How the viewer show the plugin content. Value can be "windowed", "simple" of "free"
-      keepOpen: true,
-      tooltip: 'tooltip', // Can be an i18n path or a string shown in all languages
-      icon: {
-        imgUri: icon,
-      },
+  component: SvgExtractorComponent,
+  addToWindows: ["2d"],
+  button: {
+    position: 'right',
+    content: 'simple', // How the viewer show the plugin content. Value can be "windowed", "simple" of "free"
+    keepOpen: true,
+    tooltip: 'tooltip', // Can be an i18n path or a string shown in all languages
+    icon: {
+      imgUri: icon,
     },
   },
   i18n: {
