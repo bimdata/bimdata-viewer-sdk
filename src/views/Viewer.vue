@@ -13,6 +13,7 @@ import { mapGetters } from "vuex";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
+import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 
 export default {
   data() {
@@ -43,8 +44,15 @@ export default {
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
+    bimdataViewer.registerPlugin(HolusionPlugin);
 
-    bimdataViewer.mount(`#${this.viewerId}`);
+
+    const layout = {
+      ratios: [50, 25, 25],
+      direction: "row",
+      children: ["3d", "structure", "holusion"]
+    };
+    bimdataViewer.mount(`#${this.viewerId}`, layout);
   },
 };
 </script>
