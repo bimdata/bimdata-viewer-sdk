@@ -27,6 +27,10 @@ export default {
   },
   mounted() {
     const bimdataViewer = makeBIMDataViewer({
+      ui: {
+        headerVisible: false,
+        bimdataLogo: false,
+      },
       api: {
         cloudId: this.$route.query.cloudId,
         projectId: this.$route.query.projectId,
@@ -35,7 +39,9 @@ export default {
         accessToken: this.oidcAccessToken,
       },
       plugins: {
-        // Custom plugin config here
+        viewer3d: {
+          navCube: false
+        },
       },
     });
 
@@ -48,11 +54,14 @@ export default {
     bimdataViewer.registerPlugin(backgroundColor);
     bimdataViewer.registerPlugin(HolusionPlugin);
 
+    bimdataViewer.registerWindow({name: "structure", plugins: ["structure"]});
+    bimdataViewer.unregisterWindow('3d');
+    bimdataViewer.registerWindow({name: "holusionViewer3d", plugins: ["viewer3d"]});
 
     const layout = {
       ratios: [50, 25, 25],
       direction: "row",
-      children: ["3d", "structure", "holusion"]
+      children: ["holusionViewer3d", "structure", "holusion"]
     };
     bimdataViewer.mount(`#${this.viewerId}`, layout);
   },
