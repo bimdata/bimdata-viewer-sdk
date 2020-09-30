@@ -111,6 +111,17 @@
       Redo
     </BIMDataButton>
 
+    <BIMDataButton
+      width="32px"
+      height="32px"
+      color="primary"
+      fill
+      radius
+      @click="toogleSpaces">
+      <BIMDataIcon name="chevron" size="xxxs" />
+      Hide/show Spaces
+    </BIMDataButton>
+
 
   </div>
 </template>
@@ -121,6 +132,8 @@ import {
   BIMDataIcon,
 } from "@bimdata/design-system/components.js";
 
+const PIVOT_SPEED = 30 * 1000 // one rotation in 10 second
+
 export default {
   name: "command",
   components: {
@@ -130,6 +143,7 @@ export default {
   data() {
     return {
       isOrbiting: false,
+      spacesShown: true,
       orbitEventInterval: null,
       viewer3dPlugin: null,
       xeokit: null,
@@ -144,31 +158,28 @@ export default {
   mounted() {
     this.viewer3dPlugin = this.$viewer.globalContext.getPlugins('viewer3d')[0];
     this.xeokit = this.viewer3dPlugin.xeokit;
+    window.xeokit = this.xeokit
     const canvas = document.getElementById(this.viewer3dPlugin.engine3dCanvasId);
     canvas.style.setProperty("background-color", "rgb(0, 0, 0)");
   },
   methods: {
     tooglePivot() {
-      if (!this.pivoting) {
-        this.pivoting = true;
+      if (!this.isOrbiting) {
+        this.isOrbiting = true;
         this.startOrbit();
       } else {
-        this.pivoting = false;
+        this.isOrbiting = false;
         this.stopOrbit();
       }
     },
     startOrbit() {
-      this.isOrbiting = true;
-      this.fitView();
-      this.orbitEventInterval = setInterval(() => {
-        this.xeokit.scene.camera.orbitYaw(1);
-      }, 1000 / 60);
+      this.orbitEventInterval = this.xeokit.scene.on("tick", ({deltaTime}) => {
+        const pivotAngle = (deltaTime * 360) / PIVOT_SPEED;
+        this.xeokit.scene.camera.orbitYaw(pivotAngle);
+      });
     },
     stopOrbit() {
-      if (this.isOrbiting) {
-        this.isOrbiting = false;
-        clearInterval(this.orbitEventInterval);
-      }
+      this.xeokit.scene.off(this.orbitEventInterval);
     },
     fitView() {
       if(this.xeokit.scene.selectedObjectIds.length > 0) {
@@ -213,7 +224,19 @@ export default {
         clearInterval(this.pivotEvents[direction]);
         this.pivotEvents[direction] = null;
       }
-    }
+    },
+    toogleSpaces() {
+      const spaces = this.$viewer.state.objects
+        .filter(object => object.type === "space")
+        .map(object => object.id);
+      if (this.spacesShown) {
+        this.$viewer.state.hideObjects(spaces);
+        this.spacesShown = false;
+      } else {
+        this.$viewer.state.showObjects(spaces);
+        this.spacesShown = true;
+      }
+    },
   },
   destroy() {
     if (this.orbitEventInterval) {

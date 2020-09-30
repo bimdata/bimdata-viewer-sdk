@@ -40,7 +40,7 @@ export default {
       },
       plugins: {
         viewer3d: {
-          navCube: false
+          navCube: false,
         },
       },
     });
