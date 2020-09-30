@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <div>
+  <div class="home p-24">
+    <h2>BIMData SDK</h2>
+    <div class="m-y-6">
       <select v-model="selectedCloud" :disabled="fetchingClouds">
         <option disabled :value="null">{{
           fetchingClouds ? "Fetching clouds" : "Select a cloud"
@@ -10,7 +11,7 @@
         }}</option>
       </select>
     </div>
-    <div>
+    <div class="m-y-6">
       <select
         v-model="selectedProject"
         :disabled="!selectedCloud || fetchingProjects"
@@ -26,7 +27,7 @@
         >
       </select>
     </div>
-    <div>
+    <div class="m-y-6">
       <select
         v-model="selectedIfc"
         :disabled="!selectedProject || fetchingIfcs"
@@ -39,7 +40,11 @@
         }}</option>
       </select>
     </div>
-    <button :disabled="!selectedCloud || !selectedProject" @click="go">
+    <button
+      class="m-t-12"
+      :disabled="!selectedCloud || !selectedProject"
+      @click="go"
+    >
       Go
     </button>
   </div>
@@ -135,7 +140,37 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home {
+  margin: auto;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  select {
+    width: 150px;
+    height: 32px;
+    border: none;
+    background-color: white;
+    border-bottom: 1px solid;
+    outline: none;
+    cursor: pointer;
+  }
+  button {
+    width: 150px;
+    height: 32px;
+    background-color: #2f374a;
+    color: #fff;
+    border-radius: 3px;
+    background-origin: none;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #3b455d;
+    }
+  }
 }
 </style>
