@@ -1,115 +1,127 @@
 <template>
-  <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div>
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="tooglePivot">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Toogle Pivot
-    </BIMDataButton>
+  <div class="holusion p-24">
+    <div class="flex justify-between items-center">
+      <BIMDataButton
+        width="192px"
+        height="105px"
+        color="default"
+        fill
+        radius
+        @click="reset">
+        <img src="../assets/icon-reset.svg" alt="" class="m-r-12" />
+        <span>Reset</span>
+      </BIMDataButton>
+      <BIMDataButton
+        width="32px"
+        height="32px"
+        color="primary"
+        fill
+        radius
+        @click="tooglePivot">
+        <BIMDataIcon name="chevron" size="xxxs" />
+        Toogle Pivot
+      </BIMDataButton>
+    </div>
 
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="fitView">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Fit View
-    </BIMDataButton>
+    <div class="flex m-t-24">
+      <div class="flex flex-col justify-around m-r-24">
+        <BIMDataButton
+          width="192px"
+          height="105px"
+          color="default"
+          fill
+          radius
+          @click="fitView">
+          <img src="../assets/icon-fitview.svg" alt="" class="m-r-12" />
+          <span>Fit View</span>
+        </BIMDataButton>
 
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="isolate">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Isolate
-    </BIMDataButton>
+        <BIMDataButton
+          width="192px"
+          height="105px"
+          color="default"
+          fill
+          radius
+          @click="isolate">
+          <BIMDataIcon name="isolate" size="xxl" />
+          <span>Isolate</span>
+        </BIMDataButton>
+      </div>
 
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="reset">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Reset
-    </BIMDataButton>
+      <div class="holusion-content-center flex items-center justify-center">
+        <div>
+          <BIMDataButton
+            width="83px"
+            height="83px"
+            color="default"
+            fill
+            radius
+            class="m-r-24"
+            @mousedown.native="startOrbitButton('left')" @mouseleave.native="stopOrbitButton('left')" @mouseup.native="stopOrbitButton('left')" @touchstart.native="startOrbitButton('left')" @touchend.native="stopOrbitButton('left')" @touchcancel.native="stopOrbitButton('left')">
+            <img src="../assets/icon-left.svg" alt="" />
+          </BIMDataButton>
+        </div>
+        <div class="flex flex-col items-center">
+          <BIMDataButton
+            width="83px"
+            height="83px"
+            color="default"
+            fill
+            radius
+            class="m-b-24"
+            @mousedown.native="startOrbitButton('up')" @mouseleave.native="stopOrbitButton('up')" @mouseup.native="stopOrbitButton('up')" @touchstart.native="startOrbitButton('up')" @touchend.native="stopOrbitButton('up')" @touchcancel.native="stopOrbitButton('up')">
+            <img src="../assets/icon-up.svg" alt="" />
+          </BIMDataButton>
+          <img src="../assets/illu-holusion.png" alt="" />
+          <BIMDataButton
+            width="83px"
+            height="83px"
+            color="default"
+            fill
+            radius
+            class="m-t-24"
+            @mousedown.native="startOrbitButton('down')" @mouseleave.native="stopOrbitButton('down')" @mouseup.native="stopOrbitButton('down')" @touchstart.native="startOrbitButton('down')" @touchend.native="stopOrbitButton('down')" @touchcancel.native="stopOrbitButton('down')">
+            <img src="../assets/icon-down.svg" alt="" />
+          </BIMDataButton>
+        </div>
+        <div>
+          <BIMDataButton
+            width="83px"
+            height="83px"
+            color="default"
+            fill
+            radius
+            class="m-l-24"
+            @mousedown.native="startOrbitButton('right')" @mouseleave.native="stopOrbitButton('right')" @mouseup.native="stopOrbitButton('right')" @touchstart.native="startOrbitButton('right')" @touchend.native="stopOrbitButton('right')" @touchcancel.native="stopOrbitButton('right')">
+            <img src="../assets/icon-right.svg" alt="" />
+          </BIMDataButton>
+        </div>
+      </div>
 
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @mousedown.native="startOrbitButton('up')" @mouseleave.native="stopOrbitButton('up')" @mouseup.native="stopOrbitButton('up')" @touchstart.native="startOrbitButton('up')" @touchend.native="stopOrbitButton('up')" @touchcancel.native="stopOrbitButton('up')">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Up
-    </BIMDataButton>
+      <div class="flex flex-col justify-around m-l-24">
+        <BIMDataButton
+          width="192px"
+          height="105px"
+          color="default"
+          fill
+          radius
+          @click="undo">
+          <img src="../assets/icon-undo.svg" alt="" class="m-r-12" />
+          <span>Undo</span>
+        </BIMDataButton>
 
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @mousedown.native="startOrbitButton('down')" @mouseleave.native="stopOrbitButton('down')" @mouseup.native="stopOrbitButton('down')" @touchstart.native="startOrbitButton('down')" @touchend.native="stopOrbitButton('down')" @touchcancel.native="stopOrbitButton('down')">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Down
-    </BIMDataButton>
-
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @mousedown.native="startOrbitButton('right')" @mouseleave.native="stopOrbitButton('right')" @mouseup.native="stopOrbitButton('right')" @touchstart.native="startOrbitButton('right')" @touchend.native="stopOrbitButton('right')" @touchcancel.native="stopOrbitButton('right')">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Right
-    </BIMDataButton>
-
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @mousedown.native="startOrbitButton('left')" @mouseleave.native="stopOrbitButton('left')" @mouseup.native="stopOrbitButton('left')" @touchstart.native="startOrbitButton('left')" @touchend.native="stopOrbitButton('left')" @touchcancel.native="stopOrbitButton('left')">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Left
-    </BIMDataButton>
-
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="undo">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Undo
-    </BIMDataButton>
-
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="redo">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Redo
-    </BIMDataButton>
+        <BIMDataButton
+          width="192px"
+          height="105px"
+          color="default"
+          fill
+          radius
+          @click="redo">
+          <img src="../assets/icon-redo.svg" alt="" class="m-r-12" />
+          <span>Redo</span>
+        </BIMDataButton>
+      </div>
+    </div>
 
     <BIMDataButton
       width="32px"
@@ -121,7 +133,6 @@
       <BIMDataIcon name="chevron" size="xxxs" />
       Hide/show Spaces
     </BIMDataButton>
-
 
   </div>
 </template>
@@ -247,4 +258,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.holusion{
+  .bimdata-btn{
+    span{
+      font-size: 16px;
+    }
+  }
+  &-content-center{
+    flex: 1;
+  }
+}
 </style>
