@@ -51,7 +51,7 @@
       color="primary"
       fill
       radius
-      @mousedown="startOrbitButton('up')" @mouseleave="stopOrbitButton('up')" @mouseup="stopOrbitButton('up')" @touchstart="startOrbitButton('up')" @touchend="stopOrbitButton('up')" @touchcancel="stopOrbitButton('up')">
+      @mousedown.native="startOrbitButton('up')" @mouseleave.native="stopOrbitButton('up')" @mouseup.native="stopOrbitButton('up')" @touchstart.native="startOrbitButton('up')" @touchend.native="stopOrbitButton('up')" @touchcancel.native="stopOrbitButton('up')">
       <BIMDataIcon name="chevron" size="xxxs" />
       Up
     </BIMDataButton>
@@ -62,7 +62,7 @@
       color="primary"
       fill
       radius
-      @mousedown="startOrbitButton('down')" @mouseleave="stopOrbitButton('down')" @mouseup="stopOrbitButton('down')" @touchstart="startOrbitButton('down')" @touchend="stopOrbitButton('down')" @touchcancel="stopOrbitButton('down')">
+      @mousedown.native="startOrbitButton('down')" @mouseleave.native="stopOrbitButton('down')" @mouseup.native="stopOrbitButton('down')" @touchstart.native="startOrbitButton('down')" @touchend.native="stopOrbitButton('down')" @touchcancel.native="stopOrbitButton('down')">
       <BIMDataIcon name="chevron" size="xxxs" />
       Down
     </BIMDataButton>
@@ -73,7 +73,7 @@
       color="primary"
       fill
       radius
-      @mousedown="startOrbitButton('right')" @mouseleave="stopOrbitButton('right')" @mouseup="stopOrbitButton('right')" @touchstart="startOrbitButton('right')" @touchend="stopOrbitButton('right')" @touchcancel="stopOrbitButton('right')">
+      @mousedown.native="startOrbitButton('right')" @mouseleave.native="stopOrbitButton('right')" @mouseup.native="stopOrbitButton('right')" @touchstart.native="startOrbitButton('right')" @touchend.native="stopOrbitButton('right')" @touchcancel.native="stopOrbitButton('right')">
       <BIMDataIcon name="chevron" size="xxxs" />
       Right
     </BIMDataButton>
@@ -84,12 +84,10 @@
       color="primary"
       fill
       radius
-      @mousedown="startOrbitButton('left')" @mouseleave="stopOrbitButton('left')" @mouseup="stopOrbitButton('left')" @touchstart="startOrbitButton('left')" @touchend="stopOrbitButton('left')" @touchcancel="stopOrbitButton('left')">
+      @mousedown.native="startOrbitButton('left')" @mouseleave.native="stopOrbitButton('left')" @mouseup.native="stopOrbitButton('left')" @touchstart.native="startOrbitButton('left')" @touchend.native="stopOrbitButton('left')" @touchcancel.native="stopOrbitButton('left')">
       <BIMDataIcon name="chevron" size="xxxs" />
       Left
     </BIMDataButton>
-
-    <button @mousedown="startOrbitButton('left')" @mouseleave="stopOrbitButton('left')" @mouseup="stopOrbitButton('left')" @touchstart="startOrbitButton('left')" @touchend="stopOrbitButton('left')" @touchcancel="stopOrbitButton('left')">TOURNE</button>
 
     <BIMDataButton
       width="32px"
@@ -163,7 +161,7 @@ export default {
       this.isOrbiting = true;
       this.fitView();
       this.orbitEventInterval = setInterval(() => {
-        this.xeokit.scene.camera.orbitYaw(2);
+        this.xeokit.scene.camera.orbitYaw(1);
       }, 1000 / 60);
     },
     stopOrbit() {
@@ -190,13 +188,13 @@ export default {
     getPivotMethod(direction) {
       switch(direction) {
         case "up":
-          return () => this.xeokit.scene.camera.orbitPitch(4);
+          return () => this.xeokit.scene.camera.orbitPitch(2);
         case "down":
-          return () => this.xeokit.scene.camera.orbitPitch(-4);
+          return () => this.xeokit.scene.camera.orbitPitch(-2);
         case "right":
-          return () => this.xeokit.scene.camera.orbitYaw(4);
+          return () => this.xeokit.scene.camera.orbitYaw(2);
         case "left":
-          return () => this.xeokit.scene.camera.orbitYaw(-4);
+          return () => this.xeokit.scene.camera.orbitYaw(-2);
       };
     },
     undo() {

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="./node_modules/@bimdata/design-system/dist/css/fonts.css"
+    />
+    <title>BIMDataViewer - Example</title>
+  </head>
+
+  <body>
+    <div style="height: 95vh;">
+      <div id="app"></div>
+    </div>
+    <script type="module">
+import makeBIMDataViewer from "./dist/bimdata-viewer.esm.min.js";
+
+async function main(sw = false) {
+  if (sw) {
+    await navigator.serviceWorker.register("./sw.js");
+  }
+
+  const bimdataViewer = makeBIMDataViewer({
+    api: {
+      ifcIds: [2283],
+      cloudId: 515,
+      projectId: 756,
+      accessToken: "fc83e49ca9444d3ea41d212599f39040",
+      apiUrl: "https://api-staging.bimdata.io",
+    },
+    ui: {
+      style: {
+        backgroundColor: "#EFEFEF",
+      },
+      // headerVisible: false,
+      // windowManager: false,
+      // version: false,
+      // bimdataLogo: false,
+    },
+    plugins: {
+      split: true,
+      structure: {
+        merge: true,
+        export: true,
+        editProperties: true,
+      },
+    },
+  });
+
+  bimdataViewer.registerPlugin({
+    name: "command",
+    ui: {
+      component: {
+        name: "command",
+        inject: ["$area"],
+        data() {
+          return {
+            isOrbiting: false,
+            orbitEventInterval: null,
+            xeokit: null,
+          };
+        },
+        mounted() {
+          this.viewer3d = this.$viewer.globalContext.getPlugins('viewer3d')[0];
+          this.xeokit = this.viewer3d.xeokit;
+        },
+        methods: {
+          tooglePivot() {
+            if (!this.pivoting) {
+              this.pivoting = true;
+              this.startOrbit();
+            } else {
+              this.pivoting = false;
+              this.stopOrbit();
+            }
+          },
+          startOrbit() {
+            this.isOrbiting = true;
+            const selectedObjectIds = this.xeokit.scene.selectedObjectIds;
+            if (selectedObjectIds.length) {
+              const aabb = this.xeokit.scene.getAABB(selectedObjectIds);
+              this.xeokit.cameraFlight.flyTo(aabb);
+            }
+            this.orbitEventInterval = setInterval(() => {
+              this.xeokit.scene.camera.orbitYaw(2);
+            }, 1000 / 60);
+          },
+          stopOrbit() {
+            if (this.isOrbiting) {
+              this.isOrbiting = false;
+              clearInterval(this.orbitEventInterval);
+            }
+          },
+          fitView() {
+            this.viewer3d.fitViewObjects(this.xeokit.scene.selectedObjectIds);
+          },
+        },
+        destroy() {
+          if (this.orbitEventInterval) {
+            clearInterval(this.orbitEventInterval);
+          }
+        },
+        template: `
+          <div>
+            <button type="button" @click="tooglePivot">Toogle Pivot</button>
+            <button type="button" @click="fitView">Fit View</button>
+            <button type="button" @click="isolate">Isolate</button>
+            <button type="button" @click="fitView">Hide</button>
+            <button type="button" @click="fitView">Reset</button>
+            <button type="button" @click="fitView">Up</button>
+            <button type="button" @click="fitView">Down</button>
+            <button type="button" @click="fitView">Right</button>
+            <button type="button" @click="fitView">Left</button>
+          </div>`,
+      },
+      createSelfWindows: ["command"],
+    },
+  });
+  bimdataViewer.registerWindow({name: "viewer", plugins: ["viewer3d"]});
+
+  const vm = bimdataViewer.mount("#app", {
+    ratios: [50, 25, 25],
+    direction: "row",
+    children: ["viewer", "structure", "command"],
+  });
+  window.vm = vm;
+}
+
+main(false);
+</script>
+  </body>
+</html>
+
+<!-- export default pluginManager => ({
+  ratios: [50, 50],
+  children: [
+    pluginManager.getPluginsTemplate("3d"),
+    {
+      ratios: [70, 30],
+      direction: "column",
+      children: [
+        pluginManager.getPluginsTemplate("2d"),
+        {
+          plugins: [],
+        },
+      ],
+    },
+  ],
+}); -->
