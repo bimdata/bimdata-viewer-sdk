@@ -1,13 +1,13 @@
 {
-  "name": "holusion",
-  "version": "0.0.1",
-  "description": "holusion BIMData Viewer Plugin",
+  "name": "@bimdata/platform-demo-viewer-plugin",
+  "version": "0.0.3",
+  "description": "platformDemo BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "watch": "rollup --watch -c",
     "prepublishOnly": "npm run build"
   },
-  "main": "dist/holusion.plugin.js",
+  "main": "dist/platformDemo.plugin.js",
   "files": [
     "dist"
   ],
@@ -15,11 +15,12 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "holusion"
+    "platformDemo"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@bimdata/design-system": "0.0.36"
+  },
   "devDependencies": {
-    "@bimdata/design-system": "0.0.36",
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@rollup/plugin-url": "^5.0.0",
     "rollup": "^2.10.5",

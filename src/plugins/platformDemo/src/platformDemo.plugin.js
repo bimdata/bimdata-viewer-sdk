@@ -1,0 +1,37 @@
+import BtnPlatformDemoComponent from "./BtnPlatformDemo.vue";
+import icon from "../assets/icon.svg";
+
+export default {
+  name: "btnModalKroqiComponent",
+  component: BtnPlatformDemoComponent,
+  addToWindows: ["3d"],
+  button: {
+    position: "right",
+    content: "free",
+    tooltip: "modalKorqiPlugin.tooltip",
+    keepOpen: false,
+    icon: {
+      imgUri: icon,
+    },
+  },
+  i18n: {
+    en: {
+      modalKorqiPlugin: {
+        tooltip: "BIMData Platform",
+        titleBcf: "BCF manager (import / export)",
+        titleEditIfc: "Edit properties and export ifc",
+        titleViewer: "A 3D / 2D BIM viewer",
+        btnSpace: "Access your space",
+      },
+    },
+    fr: {
+      modalKorqiPlugin: {
+        tooltip: "Plateforme BIMData",
+        titleBcf: "BCF manager (import / export)",
+        titleEditIfc: "Editer des propriétés et exporter des ifc",
+        titleViewer: "Une visionneuse BIM 3D/2D ",
+        btnSpace: "Accéder à votre espace",
+      },
+    },
+  },
+};

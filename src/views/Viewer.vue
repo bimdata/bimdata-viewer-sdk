@@ -14,6 +14,7 @@ import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugi
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
+import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 
 export default {
   data() {
@@ -38,6 +39,7 @@ export default {
       },
     });
 
+    bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
     bimdataViewer.registerPlugin(GltfExtractorPlugin);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
