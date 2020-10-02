@@ -7,20 +7,29 @@
         color="default"
         fill
         radius
-        @click="reset">
-        <img src="../assets/icon-reset.svg" alt="" class="m-r-12" />
+        @click="reset"
+      >
+        <BIMDataIcon name="reset" size="xl" />
         <span>Reset</span>
       </BIMDataButton>
-      <BIMDataButton
-        width="32px"
-        height="32px"
-        color="primary"
-        fill
-        radius
-        @click="tooglePivot">
-        <BIMDataIcon name="chevron" size="xxxs" />
-        Toogle Pivot
-      </BIMDataButton>
+      <div class="flex flex-col items-end">
+        <BIMDataToggle
+          class="m-b-18"
+          v-model="toggledPivot"
+          @input="tooglePivot"
+        >
+          <span>Toggle Pivot</span>
+        </BIMDataToggle>
+        <BIMDataToggle
+          class="m-t-18"
+          v-model="toogledSpaces"
+          @input="toogleSpaces"
+          enableLabel="espaces masqués"
+          disabledLabel="espaces affichés"
+        >
+          <span>{{ toogledSpaces ? "Hide spaces" : "Show spaces" }}</span>
+        </BIMDataToggle>
+      </div>
     </div>
 
     <div class="flex m-t-24">
@@ -31,8 +40,9 @@
           color="default"
           fill
           radius
-          @click="fitView">
-          <img src="../assets/icon-fitview.svg" alt="" class="m-r-12" />
+          @click="fitView"
+        >
+          <BIMDataIcon name="fitView" size="xl" />
           <span>Fit View</span>
         </BIMDataButton>
 
@@ -42,7 +52,8 @@
           color="default"
           fill
           radius
-          @click="isolate">
+          @click="isolate"
+        >
           <BIMDataIcon name="isolate" size="xxl" />
           <span>Isolate</span>
         </BIMDataButton>
@@ -57,8 +68,14 @@
             fill
             radius
             class="m-r-24"
-            @mousedown.native="startOrbitButton('left')" @mouseleave.native="stopOrbitButton('left')" @mouseup.native="stopOrbitButton('left')" @touchstart.native="startOrbitButton('left')" @touchend.native="stopOrbitButton('left')" @touchcancel.native="stopOrbitButton('left')">
-            <img src="../assets/icon-left.svg" alt="" />
+            @mousedown.native="startOrbitButton('left')"
+            @mouseleave.native="stopOrbitButton('left')"
+            @mouseup.native="stopOrbitButton('left')"
+            @touchstart.native="startOrbitButton('left')"
+            @touchend.native="stopOrbitButton('left')"
+            @touchcancel.native="stopOrbitButton('left')"
+          >
+            <BIMDataIcon name="left" size="l" />
           </BIMDataButton>
         </div>
         <div class="flex flex-col items-center">
@@ -69,8 +86,14 @@
             fill
             radius
             class="m-b-24"
-            @mousedown.native="startOrbitButton('up')" @mouseleave.native="stopOrbitButton('up')" @mouseup.native="stopOrbitButton('up')" @touchstart.native="startOrbitButton('up')" @touchend.native="stopOrbitButton('up')" @touchcancel.native="stopOrbitButton('up')">
-            <img src="../assets/icon-up.svg" alt="" />
+            @mousedown.native="startOrbitButton('up')"
+            @mouseleave.native="stopOrbitButton('up')"
+            @mouseup.native="stopOrbitButton('up')"
+            @touchstart.native="startOrbitButton('up')"
+            @touchend.native="stopOrbitButton('up')"
+            @touchcancel.native="stopOrbitButton('up')"
+          >
+            <BIMDataIcon name="up" size="l" />
           </BIMDataButton>
           <img src="../assets/illu-holusion.png" alt="" />
           <BIMDataButton
@@ -80,8 +103,14 @@
             fill
             radius
             class="m-t-24"
-            @mousedown.native="startOrbitButton('down')" @mouseleave.native="stopOrbitButton('down')" @mouseup.native="stopOrbitButton('down')" @touchstart.native="startOrbitButton('down')" @touchend.native="stopOrbitButton('down')" @touchcancel.native="stopOrbitButton('down')">
-            <img src="../assets/icon-down.svg" alt="" />
+            @mousedown.native="startOrbitButton('down')"
+            @mouseleave.native="stopOrbitButton('down')"
+            @mouseup.native="stopOrbitButton('down')"
+            @touchstart.native="startOrbitButton('down')"
+            @touchend.native="stopOrbitButton('down')"
+            @touchcancel.native="stopOrbitButton('down')"
+          >
+            <BIMDataIcon name="down" size="l" />
           </BIMDataButton>
         </div>
         <div>
@@ -92,8 +121,14 @@
             fill
             radius
             class="m-l-24"
-            @mousedown.native="startOrbitButton('right')" @mouseleave.native="stopOrbitButton('right')" @mouseup.native="stopOrbitButton('right')" @touchstart.native="startOrbitButton('right')" @touchend.native="stopOrbitButton('right')" @touchcancel.native="stopOrbitButton('right')">
-            <img src="../assets/icon-right.svg" alt="" />
+            @mousedown.native="startOrbitButton('right')"
+            @mouseleave.native="stopOrbitButton('right')"
+            @mouseup.native="stopOrbitButton('right')"
+            @touchstart.native="startOrbitButton('right')"
+            @touchend.native="stopOrbitButton('right')"
+            @touchcancel.native="stopOrbitButton('right')"
+          >
+            <BIMDataIcon name="right" size="l" />
           </BIMDataButton>
         </div>
       </div>
@@ -105,8 +140,9 @@
           color="default"
           fill
           radius
-          @click="undo">
-          <img src="../assets/icon-undo.svg" alt="" class="m-r-12" />
+          @click="undo"
+        >
+          <BIMDataIcon name="undo" size="l" />
           <span>Undo</span>
         </BIMDataButton>
 
@@ -116,24 +152,13 @@
           color="default"
           fill
           radius
-          @click="redo">
-          <img src="../assets/icon-redo.svg" alt="" class="m-r-12" />
+          @click="redo"
+        >
+          <BIMDataIcon name="redo" size="l" />
           <span>Redo</span>
         </BIMDataButton>
       </div>
     </div>
-
-    <BIMDataButton
-      width="32px"
-      height="32px"
-      color="primary"
-      fill
-      radius
-      @click="toogleSpaces">
-      <BIMDataIcon name="chevron" size="xxxs" />
-      Hide/show Spaces
-    </BIMDataButton>
-
   </div>
 </template>
 
@@ -141,18 +166,22 @@
 import {
   BIMDataButton,
   BIMDataIcon,
+  BIMDataToggle,
 } from "@bimdata/design-system/components.js";
 
-const PIVOT_SPEED = 30 * 1000 // one rotation in 10 second
+const PIVOT_SPEED = 30 * 1000; // one rotation in 10 second
 
 export default {
   name: "command",
   components: {
     BIMDataButton,
     BIMDataIcon,
+    BIMDataToggle,
   },
   data() {
     return {
+      toggledPivot: false,
+      toogledSpaces: false,
       isOrbiting: false,
       spacesShown: true,
       orbitEventInterval: null,
@@ -162,15 +191,17 @@ export default {
         up: null,
         down: null,
         left: null,
-        right: null
-      }
+        right: null,
+      },
     };
   },
   mounted() {
-    this.viewer3dPlugin = this.$viewer.globalContext.getPlugins('viewer3d')[0];
+    this.viewer3dPlugin = this.$viewer.globalContext.getPlugins("viewer3d")[0];
     this.xeokit = this.viewer3dPlugin.xeokit;
-    window.xeokit = this.xeokit
-    const canvas = document.getElementById(this.viewer3dPlugin.engine3dCanvasId);
+    window.xeokit = this.xeokit;
+    const canvas = document.getElementById(
+      this.viewer3dPlugin.engine3dCanvasId
+    );
     canvas.style.setProperty("background-color", "rgb(0, 0, 0)");
   },
   methods: {
@@ -184,31 +215,40 @@ export default {
       }
     },
     startOrbit() {
-      this.orbitEventInterval = this.xeokit.scene.on("tick", ({deltaTime}) => {
-        const pivotAngle = (deltaTime * 360) / PIVOT_SPEED;
-        this.xeokit.scene.camera.orbitYaw(pivotAngle);
-      });
+      this.orbitEventInterval = this.xeokit.scene.on(
+        "tick",
+        ({ deltaTime }) => {
+          const pivotAngle = (deltaTime * 360) / PIVOT_SPEED;
+          this.xeokit.scene.camera.orbitYaw(pivotAngle);
+        }
+      );
     },
     stopOrbit() {
       this.xeokit.scene.off(this.orbitEventInterval);
     },
     fitView() {
-      if(this.xeokit.scene.selectedObjectIds.length > 0) {
-        this.viewer3dPlugin.fitViewObjects(this.$viewer.state.selectedObjects.map(object => object.uuid));
+      if (this.xeokit.scene.selectedObjectIds.length > 0) {
+        this.viewer3dPlugin.fitViewObjects(
+          this.$viewer.state.selectedObjects.map(object => object.uuid)
+        );
       } else {
-        this.viewer3dPlugin.fitViewObjects(this.$viewer.state.visibleObjects.map(object => object.uuid));
+        this.viewer3dPlugin.fitViewObjects(
+          this.$viewer.state.visibleObjects.map(object => object.uuid)
+        );
       }
     },
     isolate() {
-      if(this.$viewer.state.selectedObjects.length > 0) {
-        this.$viewer.state.hideObjects(this.$viewer.state.deselectedObjects.map(object => object.id))
+      if (this.$viewer.state.selectedObjects.length > 0) {
+        this.$viewer.state.hideObjects(
+          this.$viewer.state.deselectedObjects.map(object => object.id)
+        );
       }
     },
     reset() {
       document.location.reload();
     },
     getPivotMethod(direction) {
-      switch(direction) {
+      switch (direction) {
         case "up":
           return () => this.xeokit.scene.camera.orbitPitch(2);
         case "down":
@@ -217,7 +257,7 @@ export default {
           return () => this.xeokit.scene.camera.orbitYaw(2);
         case "left":
           return () => this.xeokit.scene.camera.orbitYaw(-2);
-      };
+      }
     },
     undo() {
       this.$viewer.commandManager.undo();
@@ -226,12 +266,15 @@ export default {
       this.$viewer.commandManager.redo();
     },
     startOrbitButton(direction) {
-      if(!this.pivotEvents[direction]) {
-        this.pivotEvents[direction] = setInterval(this.getPivotMethod(direction), 1000/60);
+      if (!this.pivotEvents[direction]) {
+        this.pivotEvents[direction] = setInterval(
+          this.getPivotMethod(direction),
+          1000 / 60
+        );
       }
     },
     stopOrbitButton(direction) {
-      if(this.pivotEvents[direction]) {
+      if (this.pivotEvents[direction]) {
         clearInterval(this.pivotEvents[direction]);
         this.pivotEvents[direction] = null;
       }
@@ -258,13 +301,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.holusion{
-  .bimdata-btn{
-    span{
+.holusion {
+  .bimdata-btn {
+    span {
       font-size: 16px;
     }
   }
-  &-content-center{
+  &-content-center {
     flex: 1;
   }
 }
