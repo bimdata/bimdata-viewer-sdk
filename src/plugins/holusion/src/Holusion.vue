@@ -10,7 +10,7 @@
         @click="reset"
       >
         <BIMDataIcon name="reset" size="xl" />
-        <span>Reset</span>
+        <span>{{ $t("holusionPlugin.reset") }}</span>
       </BIMDataButton>
       <div class="flex flex-col items-end">
         <BIMDataToggle
@@ -18,16 +18,18 @@
           v-model="toggledPivot"
           @input="tooglePivot"
         >
-          <span>Toggle Pivot</span>
+          <span>{{ $t("holusionPlugin.togglePivot") }}</span>
         </BIMDataToggle>
         <BIMDataToggle
           class="m-t-18"
           v-model="toogledSpaces"
           @input="toogleSpaces"
-          enableLabel="espaces masqués"
-          disabledLabel="espaces affichés"
         >
-          <span>{{ toogledSpaces ? "Hide spaces" : "Show spaces" }}</span>
+          <span>{{
+            toogledSpaces
+              ? $t("holusionPlugin.hideSpaces")
+              : $t("holusionPlugin.showSpaces")
+          }}</span>
         </BIMDataToggle>
       </div>
     </div>
@@ -43,7 +45,7 @@
           @click="fitView"
         >
           <BIMDataIcon name="fitView" size="xl" />
-          <span>Fit View</span>
+          <span>{{$t('holusionPlugin.fitView')}}</span>
         </BIMDataButton>
 
         <BIMDataButton
@@ -55,7 +57,7 @@
           @click="isolate"
         >
           <BIMDataIcon name="isolate" size="xxl" />
-          <span>Isolate</span>
+          <span>{{$t('holusionPlugin.isolate')}}</span>
         </BIMDataButton>
       </div>
 
@@ -143,7 +145,7 @@
           @click="undo"
         >
           <BIMDataIcon name="undo" size="l" />
-          <span>Undo</span>
+          <span>{{$t('holusionPlugin.undo')}}</span>
         </BIMDataButton>
 
         <BIMDataButton
@@ -155,7 +157,7 @@
           @click="redo"
         >
           <BIMDataIcon name="redo" size="l" />
-          <span>Redo</span>
+          <span>{{$t('holusionPlugin.redo')}}</span>
         </BIMDataButton>
       </div>
     </div>
