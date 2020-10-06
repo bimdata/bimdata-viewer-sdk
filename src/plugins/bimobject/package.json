@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/bimobject-viewer-plugin",
-  "version": "0.2.4",
+  "version": "1.0.0",
   "description": "bimobject BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",

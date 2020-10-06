@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/snowflakes-viewer-plugin",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "snowflakes BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
