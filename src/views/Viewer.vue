@@ -45,8 +45,10 @@ export default {
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
-
     bimdataViewer.mount(`#${this.viewerId}`);
+
+    this.$watch(() => this.oidcAccessToken, token => { bimdataViewer.setAccessToken(token) });
+
   },
 };
 </script>
