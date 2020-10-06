@@ -17,28 +17,24 @@ export default {
   },
   i18n: {
     en: {
-      holusionPlugin: {
-        reset: "Reset",
-        togglePivot: "Toggle pivot",
-        hideSpaces: "Hide spaces",
-        showSpaces: "Show spaces",
-        fitView: "Fit view",
-        isolate: "Isolate",
-        undo: "Undo",
-        redo: "Redo"
-      },
+      reset: "Reset",
+      togglePivot: "Toggle pivot",
+      hideSpaces: "Hide spaces",
+      showSpaces: "Show spaces",
+      fitView: "Fit view",
+      isolate: "Isolate",
+      undo: "Undo",
+      redo: "Redo"
     },
     fr: {
-      holusionPlugin: {
-        reset: "Réinitialiser",
-        togglePivot: "Rotation automatique",
-        hideSpaces: "Espaces masqués",
-        showSpaces: "Espaces affichés",
-        fitView: "Ajuster la vue",
-        isolate: "Isoler",
-        undo: "Annuler",
-        redo: "Refaire"
-      },
+      reset: "Réinitialiser",
+      togglePivot: "Rotation automatique",
+      hideSpaces: "Espaces masqués",
+      showSpaces: "Espaces affichés",
+      fitView: "Ajuster la vue",
+      isolate: "Isoler",
+      undo: "Annuler",
+      redo: "Refaire"
     },
   },
 };

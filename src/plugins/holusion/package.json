@@ -1,6 +1,6 @@
 {
-  "name": "holusion",
-  "version": "0.0.1",
+  "name": "@bimdata/holusion-viewer-plugin",
+  "version": "0.0.2",
   "description": "holusion BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
