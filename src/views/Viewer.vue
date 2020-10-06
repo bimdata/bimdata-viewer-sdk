@@ -13,6 +13,7 @@ import { mapGetters } from "vuex";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
+import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 
 export default {
@@ -34,7 +35,6 @@ export default {
         accessToken: this.oidcAccessToken,
       },
       plugins: {
-        // Custom plugin config here
       },
     });
 
@@ -45,10 +45,13 @@ export default {
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
+    bimdataViewer.registerPlugin(HolusionPlugin);
+
+    bimdataViewer.registerWindow({name: "structure", plugins: ["structure"]});
+
     bimdataViewer.mount(`#${this.viewerId}`);
 
     this.$watch(() => this.oidcAccessToken, token => { bimdataViewer.setAccessToken(token) });
-
   },
 };
 </script>
