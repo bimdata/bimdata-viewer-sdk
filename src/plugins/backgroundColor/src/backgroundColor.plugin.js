@@ -5,7 +5,7 @@ export default {
   startupScript($viewer) {
     $viewer.contextMenu.registerCommand({
         get label() {
-          return $viewer.vm.$t("title");
+          return $viewer.vm.$t("BackgroundColorPlugin.title");
         },
         execute: () => $viewer.globalContext.modals.pushModal(pickerModal),
       });

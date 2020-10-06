@@ -4,7 +4,7 @@
     <BIMDataButton
       @click="downloadSvg"
       class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      >{{ $t("action") }}</BIMDataButton
+      >{{ $t("SvgExtractorPlugin.action") }}</BIMDataButton
     >
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
       } else {
         this.$viewer.localContext.hub.emit("alert", {
           type: "error",
-          message: this.$t("no_svg_error"),
+          message: this.$t("SvgExtractorPlugin.no_svg_error"),
         });
       }
     },

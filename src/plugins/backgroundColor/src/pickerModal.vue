@@ -11,12 +11,12 @@
       <BIMDataButton
         @click="validateColorPicker"
         class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-        >{{ $t("apply") }}</BIMDataButton
+        >{{ $t("BackgroundColorPlugin.apply") }}</BIMDataButton
       >
       <BIMDataButton
         @click="cancelColorPicker"
         class="bimdata-btn__ghost bimdata-btn__radius"
-        >{{ $t("close") }}</BIMDataButton
+        >{{ $t("BackgroundColorPlugin.close") }}</BIMDataButton
       >
     </div>
   </div>

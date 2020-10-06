@@ -11,19 +11,19 @@
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-bcf-manager.png" alt="" />
-          <h5>{{ $t("modalKorqiPlugin.titleBcf") }}</h5>
+          <h5>{{ $t("PlatformDemo.titleBcf") }}</h5>
         </div>
         <div
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-edit-ifc.png" alt="" />
-          <h5>{{ $t("modalKorqiPlugin.titleEditIfc") }}</h5>
+          <h5>{{ $t("PlatformDemo.titleEditIfc") }}</h5>
         </div>
         <div
           class="platform-demo__content__card flex flex-col items-center justify-center m-x-24"
         >
           <img src="../assets/img-viewer.png" alt="" />
-          <h5>{{ $t("modalKorqiPlugin.titleViewer") }}</h5>
+          <h5>{{ $t("PlatformDemo.titleViewer") }}</h5>
         </div>
       </div>
       <div class="flex items-center justify-center">
@@ -32,7 +32,7 @@
           target="_blank"
           rel="noopener noreferrer"
           class="bimdata-btn bimdata-btn__fill bimdata-btn__fill--secondary bimdata-btn__radius"
-          >{{ $t("modalKorqiPlugin.btnSpace") }}</a
+          >{{ $t("PlatformDemo.btnSpace") }}</a
         >
       </div>
     </div>
