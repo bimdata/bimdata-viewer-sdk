@@ -6,6 +6,15 @@ export default {
   window: {
     name: "holusion",
   },
+  startupScript() {
+    // TODO - may not be the best solution but... It WORKS
+    const treeContentElements = Array.from(document.getElementsByClassName("tree-content"));
+    treeContentElements.forEach(element => {
+      element.style.fontSize = "16px";
+    });
+
+    document.styleSheets[document.styleSheets.length - 1].insertRule(".node-template { height: 36px }", 0);
+  },
   i18n: {
     en: {
       holusionPlugin: {
