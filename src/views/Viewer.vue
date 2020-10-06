@@ -64,6 +64,10 @@ export default {
       children: ["holusionViewer3d", "structure", "holusion"]
     };
     bimdataViewer.mount(`#${this.viewerId}`, layout);
+
+
+    this.$watch(() => this.oidcAccessToken, token => { bimdataViewer.setAccessToken(token) });
+
   },
 };
 </script>
