@@ -25,6 +25,19 @@ import ChartistTooltip from "chartist-plugin-tooltips-updated";
 import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 
 export default {
+  components: {
+    BIMDataButton
+  },
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       resetZoom: null,
@@ -48,19 +61,6 @@ export default {
         ],
       },
     };
-  },
-  components: {
-    BIMDataButton
-  },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
   },
   mounted() {
     this.$watch(

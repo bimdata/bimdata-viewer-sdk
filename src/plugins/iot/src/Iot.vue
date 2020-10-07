@@ -5,8 +5,9 @@
         @click="displayOptions = !displayOptions"
         class="select-content"
         :class="{ active: displayOptions }"
+        v-if="selectedElement"
       >
-        <div class="system-icon" v-if="selectedSystem.name !== errorValue">
+        <div class="system-icon" v-if="selectedElement.name !== errorValue">
           <BIMDataIcon
             class="icon-success color-success"
             icon-name="successIcon"
@@ -18,7 +19,7 @@
             <BIMDataSuccessIcon />
           </BIMDataIcon>
         </div>
-        <div class="system-icon" v-if="selectedSystem.name === errorValue">
+        <div class="system-icon" v-if="selectedElement.name === errorValue">
           <BIMDataIcon
             class="icon-warning color-high"
             icon-name="warningIcon"
@@ -30,8 +31,8 @@
             <BIMDataWarningIcon />
           </BIMDataIcon>
         </div>
-        <span :class="{ error: selectedSystem.name === errorValue }">
-          {{ selectedSystem && selectedSystem.name }}
+        <span :class="{ error: selectedElement.name === errorValue }">
+          {{ selectedElement.name }}
         </span>
         <div class="select-icon">
           <BIMDataIcon
@@ -47,14 +48,14 @@
         </div>
       </div>
       <transition name="slide-fade-up">
-        <ul v-show="displayOptions" class="bimdata-list" v-if="systems">
+        <ul v-show="displayOptions" class="bimdata-list" v-if="monitoredElements">
           <li
             @click="displayOptions = false"
-            v-for="system in systems"
-            :key="system.uuid"
-            :class="{ error: system.uuid === errorObjectId }"
+            v-for="element in monitoredElements"
+            :key="element.uuid"
+            :class="{ error: element.uuid === errorObjectId }"
           >
-            <div v-if="system.uuid !== errorObjectId">
+            <div v-if="element.uuid !== errorObjectId">
               <BIMDataIcon
                 class="icon-chevron color-success"
                 icon-name="successIcon"
@@ -66,7 +67,7 @@
                 <BIMDataSuccessIcon />
               </BIMDataIcon>
             </div>
-            <div v-if="system.uuid === errorObjectId">
+            <div v-if="element.uuid === errorObjectId">
               <BIMDataIcon
                 class="icon-chevron color-high"
                 icon-name="warningIcon"
@@ -81,12 +82,12 @@
 
             <input
               type="radio"
-              v-model="selectedSystem"
-              :name="`system-iot-${_uid}`"
-              :id="system.uuid"
-              :value="system"
+              v-model="selectedElement"
+              :name="`element-iot-${_uid}`"
+              :id="element.uuid"
+              :value="element"
             />
-            <label>{{ system.name }}</label>
+            <label>{{ element.name }}</label>
           </li>
         </ul>
       </transition>
@@ -115,10 +116,6 @@ import { BIMDataWarningIcon } from "@bimdata/design-system/dist/js/BIMDataCompon
 
 import BIMDataLoading from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataLoading.js";
 
-import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers(
-  "viewer"
-);
 
 export default {
   name: "iot",
@@ -133,26 +130,24 @@ export default {
   data() {
     return {
       series: [],
-      systems: [],
-      selectedSystem: null,
+      monitoredElements: [],
+      selectedElement: null,
       errorValue: "Tableau éléctrique:L1000XH800 P300:631661",
       errorObjectId: "0vNFceMkb8dezQiQhWAOcS",
       displayOptions: false,
       loading: false,
+      viewer3dPlugin: null,
     };
   },
   computed: {
-    selectedSystemId() {
-      return this.selectedSystem && this.selectedSystem.uuid;
-    },
     headers() {
       return {
-        Authorization: "Bearer " + this.$utils.getAccessToken(),
+        Authorization: "Bearer " + this.$viewer.api.accessToken,
         "Content-Type": "application/json",
       };
     },
     iotUrl() {
-      const apiUrl = this.$utils.getApiUrl();
+      const apiUrl = this.$viewer.api.apiUrl;
       if (process.env.VUE_APP_IOT_API_URL) {
         return process.env.VUE_APP_IOT_API_URL;
       } else if (apiUrl.includes('staging')) {
@@ -164,46 +159,44 @@ export default {
       }
       return null;
     },
-    ...mapState({
-      selectedIfcs: state => state.selectedIfcs
-    }),
   },
   watch: {
-    async selectedSystem(newSelectedSystem) {
-      if (newSelectedSystem) {
-        this.$hub.emit("fit-view-objects", { ids: [newSelectedSystem.uuid] });
-        this.$hub.emit("deselect-objects", { ids: this.$utils.getSelectedObjectIds()});
-        this.$hub.emit("select-objects", { ids: [newSelectedSystem.uuid]});
+    async selectedElement(newSelectedElement) {
+      if (newSelectedElement) {
+        this.viewer3dPlugin.fitViewObjects([newSelectedElement.uuid]);
+        this.$viewer.state.deselectObjects(this.$viewer.state.selectedObjects.map(obj=> obj.id));
+        const objects = this.$viewer.state.getObjectsByUUIDs([newSelectedElement.uuid]);
+        this.$viewer.state.selectObjects(objects.map(obj=> obj.id));
         this.loading = true;
-        await this.getSystemData(newSelectedSystem.uuid);
+        await this.getElementData(newSelectedElement.uuid);
         this.loading = false;
       }
     },
-    selectedIfcs() { // TODO POC only
-      if (this.systems.length === 0) {
-        this.getSystems();
-      }
-    }
   },
-  created() {
-    this.$emit("set-active");
-    this.getSystems();
-    this.$hub.on("select-objects", this.onObjectsSelected);
+  mounted() {
+    this.viewer3dPlugin = this.$viewer.globalContext.getPlugins("viewer3d")[0];
+    setTimeout(() => {
+      this.$open();
+      this.getMonitoredElements();
+    }, 10000)
+    this.$viewer.state.hub.on("objects-selected", ({ objects }) => {
+      this.onObjectsSelected(objects.map(obj => obj.uuid))
+    });
   },
   methods: {
-    onObjectsSelected({ids}) {
-      const selectedSystemsIds = Array.from(ids).filter(id => this.systems.some(system => system.uuid === id));
-      if (selectedSystemsIds.length > 0) {
-        this.selectedSystem = this.systems.find(system => system.uuid === selectedSystemsIds[0]);
+    onObjectsSelected(uuids) {
+      const selectedAndMonitoredElements = uuids.filter(uuid => this.monitoredElements.some(element => element.uuid === uuid));
+      if (selectedAndMonitoredElements.length > 0) {
+        this.selectedElement = this.monitoredElements.find(element => element.uuid === selectedAndMonitoredElements[0]);
       }
     },
     onResetZoomClick() {
       this.resetZoom();
       this.resetZoom = null;
     },
-    async getMeterData(systemId, meter) {
+    async getMeterData(elementId, meter) {
       const res = await fetch(
-        `${this.iotUrl}/element/${systemId}/meter/${meter.meter_id}/record`,
+        `${this.iotUrl}/element/${elementId}/meter/${meter.meter_id}/record`,
         { headers: this.headers }
       );
       const json = await res.json();
@@ -223,36 +216,32 @@ export default {
         };
       }
     },
-    async getSystemData(systemId) {
+    async getElementData(elementId) {
       this.series = [];
-      const res = await fetch(`${this.iotUrl}/element/${systemId}/meter`, { headers: this.headers });
+      const res = await fetch(`${this.iotUrl}/element/${elementId}/meter`, { headers: this.headers });
       const meters = await res.json();
-      const promises = meters.map(meter => this.getMeterData(systemId, meter));
+      const promises = meters.map(meter => this.getMeterData(elementId, meter));
       const series = await Promise.all(promises);
       this.series = series.filter(Boolean);
     },
-    async getSystems() {
-      const ifcs = this.$utils.getSelectedIfcs();
-      const ifc = ifcs.find(ifc => ifc.name == "Mirabeau_ELEC.ifc") // When there is more than one ifc
-      if (ifc && ifc.systems_file) {
-        const systemsRes = await fetch(ifc.systems_file).then((res) => res.json());
-        this.systems = systemsRes && systemsRes.systems && systemsRes.systems[0].children;
-        // const ifcApi = new this.$bimdataApiClient.IfcApi();
-        // this.systems = await ifcApi.getSystems(
-        //   this.$utils.getCloudId(),
-        //   ifc.id,
-        //   this.$utils.getProjectId()
-        // );
-        if (this.systems && this.systems.length) {
-          this.selectedSystem = this.systems[0];
-          this.$hub.emit("colorize-objects", {
-            ids: [this.selectedSystem.uuid],
-            color: [0, 1, 0],
-          });
-          this.$hub.emit("colorize-objects", {
-            ids: ["0vNFceMkb8dezQiQhWAOcS"],
-            color: [1, 0, 0],
-          });
+    async getMonitoredElements() {
+      const ifcs = this.$viewer.state.ifcs;
+      const ifc = ifcs.find(ifc => ifc.name == "Mirabeau_ELEC.ifc"); // When there is more than one ifc
+      if (ifc) {
+        const apiClient = new this.$viewer.api.apiClient.IfcApi();
+        const systems = await apiClient.getSystems(
+          this.$viewer.api.cloudId,
+          ifc.id,
+          this.$viewer.api.projectId,
+        );
+        if (systems.length) {
+          const elementUuids = systems[0].elements;
+          this.monitoredElements = this.$viewer.state.getObjectsByUUIDs(elementUuids);
+          this.selectedElement = this.monitoredElements[0];
+          if(this.selectedElement) {
+            this.viewer3dPlugin.xeokit.scene.setObjectsColorized([this.selectedElement.uuid], [0, 1, 0]);
+            this.viewer3dPlugin.xeokit.scene.setObjectsColorized(["0vNFceMkb8dezQiQhWAOcS"], [1, 0, 0]);
+          }
         }
       }
     },
@@ -261,8 +250,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "node_modules/chartist/dist/chartist.min.css";
-@import "node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+@import "../node_modules/chartist/dist/chartist.min.css";
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot {
   .select {

@@ -1,27 +1,52 @@
 <template>
-  <div class="home">
-    <div>
+  <div class="home p-24">
+    <h2>BIMData SDK</h2>
+    <div class="m-y-6">
       <select v-model="selectedCloud" :disabled="fetchingClouds">
-        <option disabled :value="null">{{fetchingClouds ? 'Fetching clouds' : 'Select a cloud'}}</option>
-        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{cloud.name}}</option>
+        <option disabled :value="null">{{
+          fetchingClouds ? "Fetching clouds" : "Select a cloud"
+        }}</option>
+        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{
+          cloud.name
+        }}</option>
       </select>
     </div>
-    <div>
-      <select v-model="selectedProject" :disabled="!selectedCloud || fetchingProjects">
+    <div class="m-y-6">
+      <select
+        v-model="selectedProject"
+        :disabled="!selectedCloud || fetchingProjects"
+      >
+        <option disabled :value="null">{{
+          fetchingProjects ? "Fetching projects" : "Select a project"
+        }}</option>
         <option
-          disabled
-          :value="null"
-        >{{fetchingProjects ? 'Fetching projects' : 'Select a project'}}</option>
-        <option v-for="project of projects" :key="project.id" :value="project">{{project.name}}</option>
+          v-for="project of projects"
+          :key="project.id"
+          :value="project"
+          >{{ project.name }}</option
+        >
       </select>
     </div>
-    <div>
-      <select v-model="selectedIfc" :disabled="!selectedProject || fetchingIfcs">
-        <option disabled :value="null">{{fetchingIfcs ? "Fetching IFCs" : "Select an IFC"}}</option>
-        <option v-for="ifc of ifcs" :key="ifc.id" :value="ifc">{{ifc.name}}</option>
+    <div class="m-y-6">
+      <select
+        v-model="selectedIfc"
+        :disabled="!selectedProject || fetchingIfcs"
+      >
+        <option disabled :value="null">{{
+          fetchingIfcs ? "Fetching IFCs" : "Select an IFC"
+        }}</option>
+        <option v-for="ifc of ifcs" :key="ifc.id" :value="ifc">{{
+          ifc.name
+        }}</option>
       </select>
     </div>
-    <button :disabled="!selectedCloud || !selectedProject" @click="go">Go</button>
+    <button
+      class="m-t-12"
+      :disabled="!selectedCloud || !selectedProject"
+      @click="go"
+    >
+      Go
+    </button>
   </div>
 </template>
 
@@ -42,7 +67,7 @@ export default {
       fetchingProjects: false,
       ifcs: [],
       selectedIfc: null,
-      fetchingIfcs: false
+      fetchingIfcs: false,
     };
   },
   computed: {
@@ -50,20 +75,17 @@ export default {
     collaborationApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
       return new apiClient.CollaborationApi();
     },
     ifcApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL
+        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
       return new apiClient.IfcApi();
-    }
-  },
-  created() {
-    this.getClouds();
+    },
   },
   watch: {
     selectedCloud() {
@@ -78,7 +100,10 @@ export default {
         this.selectedIfc = null;
         this.getIfcs();
       }
-    }
+    },
+  },
+  created() {
+    this.getClouds();
   },
   methods: {
     go() {
@@ -87,8 +112,8 @@ export default {
         query: {
           cloudId: this.selectedCloud.id,
           projectId: this.selectedProject.id,
-          ifcId: this.selectedIfc.id
-        }
+          ifcId: this.selectedIfc.id,
+        },
       });
     },
     async getClouds() {
@@ -110,13 +135,42 @@ export default {
         this.selectedProject.id
       );
       this.fetchingIfcs = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home {
+  margin: auto;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  select {
+    width: 150px;
+    height: 32px;
+    border: none;
+    background-color: white;
+    border-bottom: 1px solid;
+    outline: none;
+    cursor: pointer;
+  }
+  button {
+    width: 150px;
+    height: 32px;
+    background-color: #2f374a;
+    color: #fff;
+    border-radius: 3px;
+    background-origin: none;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #3b455d;
+    }
+  }
 }
 </style>
-

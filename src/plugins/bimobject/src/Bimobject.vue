@@ -1,18 +1,32 @@
 <template>
   <div class="bim-object">
     <div class="bim-object__search">
-      <BIMDataSearch width="100%" :placeholder="$t('bimObjectPlugin.search')" class="bimdata-search-bar__radius bimdata-search-bar__primary" v-model="searchText" @enter="getProducts" :clear="true" @clear="clear()"></BIMDataSearch>
+      <BIMDataSearch
+        width="100%"
+        :placeholder="$t('bimObjectPlugin.search')"
+        class="bimdata-search-bar__radius bimdata-search-bar__primary"
+        v-model="searchText"
+        @enter="getProducts"
+        :clear="true"
+        @clear="clear()"
+      ></BIMDataSearch>
     </div>
 
     <div v-if="selected === null">
       <ul class="bimdata-list bimdata-cards">
-        <BIMDataCard width="30%" v-for="item in results" :key="item.id" @click.native="getProperties(item)"  class="m-t-12">
+        <BIMDataCard
+          width="30%"
+          v-for="item in results"
+          :key="item.id"
+          @click.native="getProperties(item)"
+          class="m-t-12"
+        >
           <template #content>
             <div class="bimdata-card_logo">
-              <img :src="item.brand.imageUrl">
+              <img :src="item.brand.imageUrl" />
             </div>
             <div class="bimdata-card_img">
-              <img :src="item.imageUrl">
+              <img :src="item.imageUrl" />
             </div>
             <h4>{{ item.name }}</h4>
           </template>
@@ -21,8 +35,12 @@
     </div>
 
     <div v-else class="product">
-      <BIMDataButton width="32px" @click="selected=null" class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square">
-         <BIMDataIcon
+      <BIMDataButton
+        width="32px"
+        @click="selected = null"
+        class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square"
+      >
+        <BIMDataIcon
           class="icon-chevron"
           icon-name="iconName"
           width="12"
@@ -36,14 +54,19 @@
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
         <div class="product-item-logo">
-          <img :src="selected.brand.imageUrl">
+          <img :src="selected.brand.imageUrl" />
         </div>
         <div class="product-item-img">
-          <img :src="selected.imageUrl">
+          <img :src="selected.imageUrl" />
         </div>
 
-        <BIMDataButton width="100%" @click="saveInBimdata" :disabled="$utils.getSelectedObjectIds().length === 0" class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius">
-          {{ $t('bimObjectPlugin.applySelected') }}
+        <BIMDataButton
+          width="100%"
+          @click="saveInBimdata"
+          :disabled="this.$viewer.state.selectedObjects.length === 0"
+          class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+        >
+          {{ $t("bimObjectPlugin.applySelected") }}
         </BIMDataButton>
         <div class="product-item-elem product-item-properties">
           <h3>Properties</h3>
@@ -76,19 +99,19 @@
 </template>
 
 <script>
-import BIMDataLoading from './BIMDataLoading.vue';
-import BIMDataComponents from '@bimdata/design-system';
+import BIMDataLoading from "./BIMDataLoading.vue";
+import BIMDataComponents from "../node_modules/@bimdata/design-system";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
     BIMDataLoading,
-    BIMDataSearch : BIMDataComponents.BIMDataSearch,
-    BIMDataCard : BIMDataComponents.BIMDataCard,
-    BIMDataButton : BIMDataComponents.BIMDataButton,
-    BIMDataIcon : BIMDataComponents.BIMDataIcon,
-    BIMDataArrowIcon : BIMDataComponents.BIMDataArrowIcon,
+    BIMDataSearch: BIMDataComponents.BIMDataSearch,
+    BIMDataCard: BIMDataComponents.BIMDataCard,
+    BIMDataButton: BIMDataComponents.BIMDataButton,
+    BIMDataIcon: BIMDataComponents.BIMDataIcon,
+    BIMDataArrowIcon: BIMDataComponents.BIMDataArrowIcon,
   },
   data: function () {
     return {
@@ -99,31 +122,38 @@ export default {
       propertySets: [],
       classifications: [],
       searchText: "",
-      loading: false
-    }
+      loading: false,
+    };
   },
   computed: {
     headers() {
       return {
-        'Authorization': 'Bearer ' + this.$utils.getAccessToken(),
-        'Content-Type': 'application/json'
-      }
+        Authorization: "Bearer " + this.$viewer.api.accessToken,
+        "Content-Type": "application/json",
+      };
     },
     bimobject_url() {
-      const apiUrl = this.$store.state.viewer.viewerComponent.cfg.apiUrl;
-      if (apiUrl.includes('staging')) {
-        return 'https://bimobject-staging.bimdata.io';
-      } else if (apiUrl.includes('next')) {
-        return 'https://bimobject-next.bimdata.io';
+      const apiUrl = this.$viewer.api.apiUrl;
+      if (apiUrl.includes("staging")) {
+        return "https://bimobject-staging.bimdata.io";
+      } else if (apiUrl.includes("next")) {
+        return "https://bimobject-next.bimdata.io";
       }
-      return 'https://bimobject.bimdata.io';
-    }
+      return "https://bimobject.bimdata.io";
+    },
+  },
+  created() {
+    this.getProducts();
+    this.loading = false;
   },
   methods: {
     async getProducts() {
       this.loading = true;
       this.selected = null;
-      const res = await fetch(`${this.bimobject_url}/search/?searchText=${this.searchText}`, { headers: this.headers });
+      const res = await fetch(
+        `${this.bimobject_url}/search/?searchText=${this.searchText}`,
+        { headers: this.headers }
+      );
       const json = await res.json();
       this.results = json.data;
       this.loading = false;
@@ -134,7 +164,10 @@ export default {
     async getProperties(selected) {
       this.loading = true;
       const productId = selected.id;
-      const res = await fetch(`${this.bimobject_url}/details/?productId=${productId}`, { headers: this.headers });
+      const res = await fetch(
+        `${this.bimobject_url}/details/?productId=${productId}`,
+        { headers: this.headers }
+      );
       const json = await res.json();
       this.selected = selected;
       this.propertySets = this.formatProperties(json.data);
@@ -143,38 +176,43 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$utils.getSelectedObjectIds();
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
-        this.setClassificationsToSelectecObjects(selectedObjectIds)
+        this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$hub.emit('updated-objects-properties', selectedObjectIds);
-      this.$hub.emit('alert', {
-        type: 'success',
-        message: this.$t('bimObjectPlugin.successMessage')
+      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.localContext.hub.emit("alert", {
+        type: "success",
+        message: this.$t("bimObjectPlugin.successMessage"),
       });
     },
     async setPropertiesToSelectecObjects(selectedObjectIds) {
       if (this.propertySets.length === 0) {
         return;
       }
-      const loadedIfc = this.$utils.getSelectedIfcs()[0]
-      const apiClient = new this.$bimdataApiClient.IfcApi();
+      const loadedIfc = this.$viewer.state.ifcs[0];
+      const apiClient = new this.$viewer.api.apiClient.IfcApi();
       const propertySets = await apiClient.createPropertySet(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         this.propertySets
       );
       const psetIds = propertySets.map(pset => pset.id);
-      const elementsPsetsRelations = selectedObjectIds.reduce((acc, elementUuid) => {
-        psetIds.forEach(id => acc.push({ element_uuid: elementUuid, property_set_id: id }));
-        return acc;
-      }, []);
+      const elementsPsetsRelations = selectedObjectIds.reduce(
+        (acc, elementUuid) => {
+          psetIds.forEach(id =>
+            acc.push({ element_uuid: elementUuid, property_set_id: id })
+          );
+          return acc;
+        },
+        []
+      );
       await apiClient.createPropertySetElementRelations(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         elementsPsetsRelations
       );
     },
@@ -182,23 +220,28 @@ export default {
       if (this.classifications.length === 0) {
         return;
       }
-      const loadedIfc = this.$utils.getSelectedIfcs()[0]
-      const collaborationApi = new this.$bimdataApiClient.CollaborationApi();
-      const ifcApi = new this.$bimdataApiClient.IfcApi();
+      const loadedIfc = this.$viewer.state.ifcs[0];
+      const collaborationApi = new this.$viewer.api.apiClient.CollaborationApi();
+      const ifcApi = new this.$viewer.api.apiClient.IfcApi();
       const classifications = await collaborationApi.createClassification(
-        this.$utils.getCloudId(),
-        this.$utils.getProjectId(),
+        this.$viewer.api.cloudId,
+        this.$viewer.api.projectId,
         this.classifications
       );
       const classifIds = classifications.map(classif => classif.id);
-      const elementsClassifRelations = selectedObjectIds.reduce((acc, elementUuid) => {
-        classifIds.forEach(id => acc.push({ element_uuid: elementUuid, classification_id: id }));
-        return acc;
-      }, []);
+      const elementsClassifRelations = selectedObjectIds.reduce(
+        (acc, elementUuid) => {
+          classifIds.forEach(id =>
+            acc.push({ element_uuid: elementUuid, classification_id: id })
+          );
+          return acc;
+        },
+        []
+      );
       await ifcApi.createClassificationElementRelations(
-        this.$utils.getCloudId(),
+        this.$viewer.api.cloudId,
         loadedIfc.id,
-        this.$utils.getProjectId(),
+        this.$viewer.api.projectId,
         elementsClassifRelations
       );
     },
@@ -213,25 +256,25 @@ export default {
             definition: {
               name: "name",
               description: "bimobject name",
-              value_type: "string"
-            }
+              value_type: "string",
+            },
           },
           {
             value: bimObject.brand.name,
             definition: {
               name: "brand",
               description: "bimobject brand",
-              value_type: "string"
-            }
+              value_type: "string",
+            },
           },
-        ]
-      }
+        ],
+      };
     },
     getBimDataPropertyType(bimObjectType) {
       const mapping = {
-        "Text": "string",
-        "Integer": "integer",
-        "Decimal": "float"
+        Text: "IfcText",
+        Integer: "IfcInteger",
+        Decimal: "IfcReal",
       };
       return mapping[bimObjectType] || bimObjectType;
     },
@@ -249,9 +292,12 @@ export default {
                 description: prop.definition.description,
                 value_type: this.getBimDataPropertyType(prop.definition.type),
               },
-              value: typeof (propValue) === "object" ? JSON.stringify(propValue) : propValue
-            }
-          })
+              value:
+                typeof propValue === "object"
+                  ? JSON.stringify(propValue)
+                  : propValue,
+            };
+          }),
         };
       });
     },
@@ -262,19 +308,15 @@ export default {
           return {
             name,
             notation: bimObjectClassifs[name].code,
-            title: bimObjectClassifs[name].name
-          }
+            title: bimObjectClassifs[name].name,
+          };
         });
-    }
+    },
   },
-  created() {
-    this.getProducts();
-    this.loading = false;
-  }
 };
 </script>
 
-<style scoped>
+<style type="scss" scoped>
 @import "~@bimdata/design-system/dist/styles/component.css";
 
 /* custom BIM OBJECT - global */
@@ -347,20 +389,20 @@ export default {
 .bim-object .product .bimdata-btn__ghost {
   justify-content: flex-start;
 }
-.bim-object .product .product-item{
+.bim-object .product .product-item {
   padding: 0 var(--spacing-unit) var(--spacing-unit);
 }
-.bim-object .product .product-item .product-item-name{
+.bim-object .product .product-item .product-item-name {
   margin: var(--spacing-unit) 0 4px;
   font-size: 16px;
   line-height: 19px;
   font-weight: normal;
 }
-.bim-object .product .product-item .product-item-logo img{
+.bim-object .product .product-item .product-item-logo img {
   max-height: 25px;
   max-width: 65px;
 }
-.bim-object .product .product-item .product-item-img{
+.bim-object .product .product-item .product-item-img {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,11 +411,11 @@ export default {
 }
 
 /* custom BIM OBJECT SELECTED - product - list */
-.bim-object .product .product-item .product-item-elem{
+.bim-object .product .product-item .product-item-elem {
   padding: 22px 0;
   border-bottom: 1px solid var(--color-tertiary);
 }
-.bim-object .product .product-item .product-item-elem h3{
+.bim-object .product .product-item .product-item-elem h3 {
   margin: 0;
   font-size: 13px;
   line-height: 15px;
@@ -387,32 +429,60 @@ export default {
   font-size: 13px;
   line-height: 15px;
 }
-.bim-object .product .product-item .product-item-elem .product-item-list{
+.bim-object .product .product-item .product-item-elem .product-item-list {
   color: var(--color-tertiary-dark);
   font-size: 11px;
   line-height: 13px;
 }
 
 /* custom BIM OBJECT SELECTED - product - properties */
-.bim-object .product .product-item .product-item-properties{
+.bim-object .product .product-item .product-item-properties {
   margin-top: 22px;
   border-top: 1px solid var(--color-tertiary);
 }
-.bim-object .product .product-item .product-item-properties .product-item-list ul li{
+.bim-object
+  .product
+  .product-item
+  .product-item-properties
+  .product-item-list
+  ul
+  li {
   padding: 6px;
 }
-.bim-object .product .product-item .product-item-properties .product-item-list ul li:nth-child(even){
+.bim-object
+  .product
+  .product-item
+  .product-item-properties
+  .product-item-list
+  ul
+  li:nth-child(even) {
   background-color: var(--color-tertiary-lightest);
 }
 
 /* custom BIM OBJECT SELECTED - product - classifications */
-.bim-object .product .product-item .product-item-classifications .product-item-list li{
+.bim-object
+  .product
+  .product-item
+  .product-item-classifications
+  .product-item-list
+  li {
   padding: 6px;
 }
-.bim-object .product .product-item .product-item-classifications .product-item-list li span:first-child{
+.bim-object
+  .product
+  .product-item
+  .product-item-classifications
+  .product-item-list
+  li
+  span:first-child {
   font-weight: bold;
 }
-.bim-object .product .product-item .product-item-classifications .product-item-list li:nth-child(even){
+.bim-object
+  .product
+  .product-item
+  .product-item-classifications
+  .product-item-list
+  li:nth-child(even) {
   background-color: var(--color-tertiary-lightest);
 }
 
@@ -431,7 +501,7 @@ export default {
   color: var(--color-white);
   z-index: 2;
 }
-.bimdata-loading--square{
+.bimdata-loading--square {
   width: 20px;
   height: 20px;
   position: relative;
@@ -464,5 +534,4 @@ export default {
     box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
   }
 }
-
 </style>

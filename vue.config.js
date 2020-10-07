@@ -3,8 +3,7 @@ module.exports = {
   chainWebpack: config => {
     config.module.rules.delete('svg');
     config.module.rules.delete('images');
-    config.module
-      .rule('file-loader')
+    config.module.rule('file-loader')
       .test( /\.(png|jpe?g|gif|gltf|svg)$/i)
       .use('file-loader')
       .loader('file-loader')

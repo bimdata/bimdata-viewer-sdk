@@ -11,11 +11,14 @@ export default {
     return {
     }
   },
+  created() {
+
+  },
   methods: {
   }
 };
 </script>
 
-<style type="scss" scoped>
+<style lang="scss" scoped>
 /* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
 </style>

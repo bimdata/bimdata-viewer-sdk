@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/bimobject-viewer-plugin",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "bimobject BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
@@ -17,12 +17,16 @@
     "Plugin",
     "bimobject"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@bimdata/design-system": "0.0.8"
+  },
   "devDependencies": {
-    "@rollup/plugin-url": "^4.0.2",
-    "rollup": "^2.0.3",
-    "rollup-plugin-scss": "^2.1.0",
-    "rollup-plugin-terser": "^5.2.0",
-    "rollup-plugin-vue": "^5.1.6"
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "@rollup/plugin-url": "^5.0.0",
+    "rollup": "^2.10.4",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-scss": "^2.5.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-vue": "^5.1.7"
   }
 }

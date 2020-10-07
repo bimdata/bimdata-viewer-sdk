@@ -1,17 +1,70 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    browser: true,
+    es6: true,
+    jest: true,
   },
-  'extends': [
-    'plugin:vue/essential',
-    'eslint:recommended'
-  ],
+  extends: ["plugin:vue/essential", "eslint:recommended", "prettier"],
+  plugins: ["prettier", "vue"],
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+  },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "prettier/prettier": "off",
+    indent: "off",
+    "linebreak-style": ["off", "unix"],
+    quotes: ["off", "double", "avoid-escape"],
+    semi: ["off", "always"],
+    "vue/order-in-components": [
+      "warn",
+      {
+        order: [
+          "el",
+          "name",
+          "key",
+          "parent",
+          "functional",
+          ["delimiters", "comments"],
+          ["components", "directives", "filters"],
+          "extends",
+          "mixins",
+          ["provide", "inject"],
+          "ROUTER_GUARDS",
+          "layout",
+          "middleware",
+          "validate",
+          "scrollToTop",
+          "transition",
+          "loading",
+          "inheritAttrs",
+          "model",
+          ["props", "propsData"],
+          "emits",
+          "setup",
+          "fetch",
+          "asyncData",
+          "data",
+          "head",
+          "computed",
+          "watch",
+          "watchQuery",
+          "LIFECYCLE_HOOKS",
+          "methods",
+          ["template", "render"],
+          "renderError",
+        ],
+      },
+    ],
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: "babel-eslint",
+    ecmaVersion: 11,
+    sourceType: "module",
   },
-}
+  ignorePatterns: ["/dist"],
+};

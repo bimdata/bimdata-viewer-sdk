@@ -1,4 +1,4 @@
-import * as bimdata from '@bimdata/bimdata-api-client'
+import * as bimdata from "@bimdata/bimdata-api-client";
 
 export default function getClient({ accessToken, apiUrl }) {
   const defaultClient = bimdata.ApiClient.instance;
