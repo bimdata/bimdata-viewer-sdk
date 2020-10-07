@@ -150,12 +150,12 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
     this.viewer3dPlugin = this.$viewer.globalContext.getPlugins("viewer3d")[0];
-    setTimeout(() => {
+    this.$viewer.localContext.hub.once("3d-model-loaded", () => {
       this.$open();
       this.getMonitoredElements();
-    }, 10000)
+    });
     this.$viewer.state.hub.on("objects-selected", ({ objects }) => {
       this.onObjectsSelected(objects.map(obj => obj.uuid))
     });
