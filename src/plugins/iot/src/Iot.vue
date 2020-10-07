@@ -139,34 +139,11 @@ export default {
       viewer3dPlugin: null,
     };
   },
-  computed: {
-    headers() {
-      return {
-        Authorization: "Bearer " + this.$viewer.api.accessToken,
-        "Content-Type": "application/json",
-      };
-    },
-    iotUrl() {
-      const apiUrl = this.$viewer.api.apiUrl;
-      if (process.env.VUE_APP_IOT_API_URL) {
-        return process.env.VUE_APP_IOT_API_URL;
-      } else if (apiUrl.includes('staging')) {
-        return 'https://iot-staging.bimdata.io';
-      } else if (apiUrl.includes('next')) {
-        return 'https://iot-next.bimdata.io';
-      } else if (apiUrl === "https://api.bimdata.io") {
-        return 'https://iot.bimdata.io';
-      }
-      return null;
-    },
-  },
   watch: {
     async selectedElement(newSelectedElement) {
       if (newSelectedElement) {
         this.viewer3dPlugin.fitViewObjects([newSelectedElement.uuid]);
-        this.$viewer.state.deselectObjects(this.$viewer.state.selectedObjects.map(obj=> obj.id));
-        const objects = this.$viewer.state.getObjectsByUUIDs([newSelectedElement.uuid]);
-        this.$viewer.state.selectObjects(objects.map(obj=> obj.id));
+        this.$viewer.state.selectObjects([newSelectedElement.id], { exclusive: true });
         this.loading = true;
         await this.getElementData(newSelectedElement.uuid);
         this.loading = false;
@@ -184,6 +161,25 @@ export default {
     });
   },
   methods: {
+    getHeaders() {
+      return {
+        Authorization: "Bearer " + this.$viewer.api.accessToken,
+        "Content-Type": "application/json",
+      };
+    },
+    getIotUrl() {
+      const apiUrl = this.$viewer.api.apiUrl;
+      if (process.env.VUE_APP_IOT_API_URL) {
+        return process.env.VUE_APP_IOT_API_URL;
+      } else if (apiUrl.includes('staging')) {
+        return 'https://iot-staging.bimdata.io';
+      } else if (apiUrl.includes('next')) {
+        return 'https://iot-next.bimdata.io';
+      } else if (apiUrl === "https://api.bimdata.io") {
+        return 'https://iot.bimdata.io';
+      }
+      return null;
+    },
     onObjectsSelected(uuids) {
       const selectedAndMonitoredElements = uuids.filter(uuid => this.monitoredElements.some(element => element.uuid === uuid));
       if (selectedAndMonitoredElements.length > 0) {
@@ -196,8 +192,8 @@ export default {
     },
     async getMeterData(elementId, meter) {
       const res = await fetch(
-        `${this.iotUrl}/element/${elementId}/meter/${meter.meter_id}/record`,
-        { headers: this.headers }
+        `${this.getIotUrl()}/element/${elementId}/meter/${meter.meter_id}/record`,
+        { headers: this.getHeaders() }
       );
       const json = await res.json();
       if (json && Object.entries(json.data).length > 0) {
@@ -218,7 +214,7 @@ export default {
     },
     async getElementData(elementId) {
       this.series = [];
-      const res = await fetch(`${this.iotUrl}/element/${elementId}/meter`, { headers: this.headers });
+      const res = await fetch(`${this.getIotUrl()}/element/${elementId}/meter`, { headers: this.getHeaders() });
       const meters = await res.json();
       const promises = meters.map(meter => this.getMeterData(elementId, meter));
       const series = await Promise.all(promises);
