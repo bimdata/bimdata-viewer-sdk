@@ -232,7 +232,7 @@ export default {
         );
         if (systems.length) {
           const elementUuids = systems[0].elements;
-          this.monitoredElements = this.$viewer.state.getObjectsByUUIDs(elementUuids);
+          this.monitoredElements = this.$viewer.state.getObjectsByUuids(elementUuids);
           this.selectedElement = this.monitoredElements[0];
           if(this.selectedElement) {
             this.viewer3dPlugin.xeokit.scene.setObjectsColorized([this.selectedElement.uuid], [0, 1, 0]);
