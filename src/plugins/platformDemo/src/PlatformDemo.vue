@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+@import "./node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .platform-demo {
   &__header {
     padding: 40px;

@@ -100,7 +100,7 @@
 
 <script>
 import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataComponents from "../node_modules/@bimdata/design-system";
+import BIMDataComponents from "./node_modules/@bimdata/design-system";
 
 export default {
   // https://vuejs.org/v2/guide/components.html

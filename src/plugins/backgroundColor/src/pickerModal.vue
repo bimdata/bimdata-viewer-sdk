@@ -23,7 +23,7 @@
 </template>
 <script>
 import colorPicker from "@bimdata/color-picker";
-import BIMDataButton from "../node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import BIMDataButton from "./node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 
 export default {
   name: "colorPickerModal",
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+@import "./node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .color-picker-modal {
   width: 500px;

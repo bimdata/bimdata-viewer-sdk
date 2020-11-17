@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import BIMDataComponents from "../node_modules/@bimdata/design-system";
+import BIMDataComponents from "./node_modules/@bimdata/design-system";
 export default {
   name: "split-component",
   components: {
