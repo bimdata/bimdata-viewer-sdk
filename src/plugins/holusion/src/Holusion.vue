@@ -169,7 +169,7 @@ import {
   BIMDataButton,
   BIMDataIcon,
   BIMDataToggle,
-} from "@bimdata/design-system/components.js";
+} from "../node_modules/@bimdata/design-system/components.js";
 
 const PIVOT_SPEED = 30 * 1000; // one rotation in 10 second
 
