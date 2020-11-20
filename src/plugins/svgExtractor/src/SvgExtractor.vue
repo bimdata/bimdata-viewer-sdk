@@ -1,16 +1,14 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
   <div>
-    <BIMDataButton
-      @click="downloadSvg"
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      >{{ $t("SvgExtractorPlugin.action") }}</BIMDataButton
-    >
+    <BIMDataButton @click="downloadSvg" color="primary" fill radius>{{
+      $t("SvgExtractorPlugin.action")
+    }}</BIMDataButton>
   </div>
 </template>
 
 <script>
-import BIMDataButton from "./node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import { BIMDataButton } from "../node_modules/@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -36,8 +34,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "./node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
-/* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
-</style>
