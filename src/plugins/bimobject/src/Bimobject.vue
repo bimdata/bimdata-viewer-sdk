@@ -34,22 +34,13 @@
       </ul>
     </div>
 
-    <div v-else class="product">
+    <div v-else class="product m-t-12">
       <BIMDataButton
         width="32px"
         @click="selected = null"
         class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square"
       >
-        <BIMDataIcon
-          class="icon-chevron"
-          icon-name="iconName"
-          width="12"
-          height="12"
-          x="23"
-          y="23"
-        >
-          <BIMDataArrowIcon />
-        </BIMDataIcon>
+        <BIMDataIcon name="arrow" size="xxs" class="fill-primary" />
       </BIMDataButton>
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
@@ -99,19 +90,23 @@
 </template>
 
 <script>
-import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataComponents from "./node_modules/@bimdata/design-system";
+import {
+  BIMDataLoading,
+  BIMDataSearch,
+  BIMDataCard,
+  BIMDataButton,
+  BIMDataIcon,
+} from "../node_modules/@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
     BIMDataLoading,
-    BIMDataSearch: BIMDataComponents.BIMDataSearch,
-    BIMDataCard: BIMDataComponents.BIMDataCard,
-    BIMDataButton: BIMDataComponents.BIMDataButton,
-    BIMDataIcon: BIMDataComponents.BIMDataIcon,
-    BIMDataArrowIcon: BIMDataComponents.BIMDataArrowIcon,
+    BIMDataSearch,
+    BIMDataCard,
+    BIMDataButton,
+    BIMDataIcon,
   },
   data: function () {
     return {
@@ -176,12 +171,17 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
         this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.globalContext.hub.emit(
+        "updated-objects-properties",
+        selectedObjectIds
+      );
       this.$viewer.localContext.hub.emit("alert", {
         type: "success",
         message: this.$t("bimObjectPlugin.successMessage"),
@@ -316,222 +316,138 @@ export default {
 };
 </script>
 
-<style type="scss" scoped>
-@import "~@bimdata/design-system/dist/styles/component.css";
+<style lang="scss" scoped>
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
-/* custom BIM OBJECT - global */
 .bim-object {
   padding: 12px;
-}
-
-/* custom BIM OBJECT - search */
-.bim-object .bim-object__search {
-  position: relative;
-}
-.bim-object .bim-object__search button {
-  padding: 0;
-  width: 50px;
-  background-color: transparent;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-/* custom BIM OBJECT - list */
-.bim-object .bimdata-cards {
-  margin: 12px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.bim-object .bimdata-cards .bimdata-card {
-  flex-basis: 31%;
-  cursor: pointer;
-}
-.bim-object .bimdata-cards .bimdata-card:nth-child(1n) {
-  margin-right: 12px;
-}
-.bim-object .bimdata-cards .bimdata-card:nth-child(3n) {
-  margin-right: 0;
-}
-.bim-object .bimdata-cards .bimdata-card h4 {
-  margin: 12px 0;
-  text-align: center;
-  font-weight: normal;
-  word-break: break-word;
-  color: var(--color-tertiary-dark);
-  font-size: 14px;
-  line-height: 15px;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo {
-  height: 20px;
-  display: flex;
-  align-items: flex-start;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo img {
-  max-height: 15px;
-  max-width: 80px;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_img img {
-  width: 80%;
-}
-
-/* custom BIM OBJECT SELECTED - product */
-.bim-object .product {
-  margin-top: var(--spacing-unit);
-}
-.bim-object .product .bimdata-btn__ghost {
-  justify-content: flex-start;
-}
-.bim-object .product .product-item {
-  padding: 0 var(--spacing-unit) var(--spacing-unit);
-}
-.bim-object .product .product-item .product-item-name {
-  margin: var(--spacing-unit) 0 4px;
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: normal;
-}
-.bim-object .product .product-item .product-item-logo img {
-  max-height: 25px;
-  max-width: 65px;
-}
-.bim-object .product .product-item .product-item-img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 4px 0 22px;
-}
-
-/* custom BIM OBJECT SELECTED - product - list */
-.bim-object .product .product-item .product-item-elem {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--color-tertiary);
-}
-.bim-object .product .product-item .product-item-elem h3 {
-  margin: 0;
-  font-size: 13px;
-  line-height: 15px;
-  color: var(--color-primary);
-}
-.bim-object .product .product-item .product-item-elem h6 {
-  font-weight: bold;
-  color: var(--color-primary);
-  display: block;
-  margin: 5px 0;
-  font-size: 13px;
-  line-height: 15px;
-}
-.bim-object .product .product-item .product-item-elem .product-item-list {
-  color: var(--color-tertiary-dark);
-  font-size: 11px;
-  line-height: 13px;
-}
-
-/* custom BIM OBJECT SELECTED - product - properties */
-.bim-object .product .product-item .product-item-properties {
-  margin-top: 22px;
-  border-top: 1px solid var(--color-tertiary);
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-properties
-  .product-item-list
-  ul
-  li {
-  padding: 6px;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-properties
-  .product-item-list
-  ul
-  li:nth-child(even) {
-  background-color: var(--color-tertiary-lightest);
-}
-
-/* custom BIM OBJECT SELECTED - product - classifications */
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li {
-  padding: 6px;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li
-  span:first-child {
-  font-weight: bold;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li:nth-child(even) {
-  background-color: var(--color-tertiary-lightest);
-}
-
-/* style BIMDATA LOADING */
-.bimdata-loading {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: rgba(47, 55, 74, 0.9);
-  color: var(--color-white);
-  z-index: 2;
-}
-.bimdata-loading--square {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  border: 2px var(--color-white) solid;
-  animation: bimdataloading 1.4s linear infinite;
-}
-.bimdata-loading--text {
-  margin-top: 12px;
-  display: block;
-}
-@keyframes bimdataloading {
-  0% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
-    transform: rotate(-0deg);
+  /* custom BIM OBJECT - search */
+  .bim-object__search {
+    position: relative;
+    button {
+      padding: 0;
+      width: 50px;
+      background-color: transparent;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
-  20% {
-    transform: rotate(180deg);
+  /* custom BIM OBJECT - list */
+  .bimdata-cards {
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .bimdata-card {
+      flex-basis: 31%;
+      cursor: pointer;
+      h4 {
+        margin: 12px 0;
+        text-align: center;
+        font-weight: normal;
+        word-break: break-word;
+        color: var(--color-tertiary-dark);
+        font-size: 14px;
+        line-height: 15px;
+      }
+      &_logo {
+        height: 20px;
+        display: flex;
+        align-items: flex-start;
+        img {
+          max-height: 15px;
+          max-width: 80px;
+        }
+      }
+      &_img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 80%;
+        }
+      }
+      &:nth-child(1n) {
+        margin-right: 12px;
+      }
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
   }
-  40% {
-    transform: rotate(-0deg);
-  }
-  60% {
-    transform: rotate(-0deg);
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
-  }
-  80% {
-    box-shadow: inset 0px -20px 0px 0px rgba(#fff, 1);
-  }
-  100% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
+  /* custom BIM OBJECT SELECTED - product */
+  .product {
+    .bimdata-btn__ghost {
+      justify-content: flex-start;
+    }
+    .product-item {
+      padding: 0 $spacing-unit $spacing-unit;
+      &-name {
+        margin: $spacing-unit 0 4px;
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: normal;
+      }
+      &-logo {
+        img {
+          max-height: 25px;
+          max-width: 65px;
+        }
+      }
+      &-img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        margin: 4px 0 22px;
+      }
+      &-elem {
+        padding: 22px 0;
+        border-bottom: 1px solid $color-tertiary;
+        h3 {
+          margin: 0;
+          font-size: 13px;
+          line-height: 15px;
+          color: $color-primary;
+        }
+        h6 {
+          font-weight: bold;
+          color: $color-primary;
+          display: block;
+          margin: 5px 0;
+          font-size: 13px;
+          line-height: 15px;
+        }
+        .product-item-list {
+          color: $color-tertiary-dark;
+          font-size: 11px;
+          line-height: 13px;
+        }
+      }
+      &-properties {
+        margin-top: 22px;
+        border-top: 1px solid $color-tertiary;
+        .product-item-list ul li {
+          padding: 6px;
+          &:nth-child(even) {
+            background-color: $color-tertiary-lightest;
+          }
+        }
+      }
+      &-classifications {
+        .product-item-list li {
+          padding: 6px;
+          span:first-child {
+            font-weight: bold;
+          }
+          &:nth-child(even) {
+            background-color: $color-tertiary-lightest;
+          }
+        }
+      }
+    }
   }
 }
 </style>
