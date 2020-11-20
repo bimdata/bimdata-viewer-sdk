@@ -1,5 +1,5 @@
 <template>
-  <div class="color-picker-modal p-12">
+  <div class="color-picker-modal flex flex-col justify-center p-12">
     <colorPicker
       display="widget"
       v-model="choosedColor"
@@ -7,23 +7,19 @@
       :pickerEdge="155"
       :enableAlpha="false"
     />
-    <div class="dflex">
-      <BIMDataButton
-        @click="validateColorPicker"
-        class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-        >{{ $t("BackgroundColorPlugin.apply") }}</BIMDataButton
-      >
-      <BIMDataButton
-        @click="cancelColorPicker"
-        class="bimdata-btn__ghost bimdata-btn__radius"
-        >{{ $t("BackgroundColorPlugin.close") }}</BIMDataButton
-      >
+    <div class="flex justify-center m-t-24">
+      <BIMDataButton color="primary" fill radius @click="validateColorPicker">
+        {{ $t("BackgroundColorPlugin.apply") }}
+      </BIMDataButton>
+      <BIMDataButton color="ghost" fill radius @click="cancelColorPicker">
+        {{ $t("BackgroundColorPlugin.close") }}
+      </BIMDataButton>
     </div>
   </div>
 </template>
 <script>
-import colorPicker from "@bimdata/color-picker";
-import BIMDataButton from "./node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import colorPicker from "../node_modules/@bimdata/color-picker";
+import { BIMDataButton } from "../node_modules/@bimdata/design-system/components.js";
 
 export default {
   name: "colorPickerModal",
@@ -41,7 +37,7 @@ export default {
       this.$emit("close");
     },
     validateColorPicker() {
-      const viewers = this.$viewer.globalContext.getPlugins('viewer3d');
+      const viewers = this.$viewer.globalContext.getPlugins("viewer3d");
       viewers.forEach(viewer => {
         const canvas = document.getElementById(viewer.engine3dCanvasId);
         canvas.style.setProperty("background-color", this.choosedColor);
@@ -52,21 +48,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "./node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+<style lang="scss" scoped>
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .color-picker-modal {
   width: 500px;
   height: 450px;
   padding: 20px;
-  .dflex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   // custom VERTE COLOR PICKER
   .verte {
-    height: 375px;
     &__menu-origin {
       width: 100%;
       .verte__menu {
@@ -86,7 +76,7 @@ export default {
             .verte-picker__cursor {
               width: 17px;
               height: 17px;
-              border: 2px solid #ffffff;
+              border: 2px solid $color-white;
               box-shadow: none;
             }
           }

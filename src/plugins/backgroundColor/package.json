@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "@bimdata/color-picker": "0.0.3",
-    "@bimdata/design-system": "0.0.13"
+    "@bimdata/design-system": "0.0.47"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.3",
