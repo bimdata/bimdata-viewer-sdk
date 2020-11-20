@@ -217,7 +217,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../node_modules/chartist/dist/chartist.min.css";
 @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot {

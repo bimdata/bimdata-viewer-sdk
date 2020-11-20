@@ -1,5 +1,6 @@
 import IotComponent from "./Iot.vue";
 import icon from "../assets/icon.svg";
+require('../node_modules/chartist/dist/chartist.min.css');
 
 export default {
   name: "IotPlugin", // The name of the plugin. this.$plugins.MyPluginName to access it from other plugins
