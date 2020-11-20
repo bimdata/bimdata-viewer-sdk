@@ -14,20 +14,26 @@
     <BIMDataButton
       width="100%"
       @click="exportSplit"
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+      color="primary"
+      fill
+      radius
     >
       Generate new model with selected elements
     </BIMDataButton>
   </div>
 </template>
 <script>
-import BIMDataComponents from "./node_modules/@bimdata/design-system";
+import {
+  BIMDataButton,
+  BIMDataCheckbox,
+  BIMDataInput,
+} from "../node_modules/@bimdata/design-system/components.js";
 export default {
   name: "split-component",
   components: {
-    BIMDataButton: BIMDataComponents.BIMDataButton,
-    BIMDataCheckbox: BIMDataComponents.BIMDataCheckbox,
-    BIMDataInput: BIMDataComponents.BIMDataInput,
+    BIMDataButton,
+    BIMDataCheckbox,
+    BIMDataInput,
   },
   props: {
     active: Boolean, // Listen to activation state
@@ -54,7 +60,11 @@ export default {
       const parts = fileName.split(".");
       parts.pop(); // Remove extension
       const name = parts.join("."); // rebuild name without extension
-      this.fileName = name + "-split-" + new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") + ".ifc";
+      this.fileName =
+        name +
+        "-split-" +
+        new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") +
+        ".ifc";
     } else {
       this.$viewer.localContext.hub.emit("alert", {
         type: "error",
@@ -65,7 +75,9 @@ export default {
   },
   methods: {
     async exportSplit() {
-      const selectObjectsIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectObjectsIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       if (selectObjectsIds.length === 0) {
         this.$viewer.localContext.hub.emit("alert", {
           type: "error",
@@ -92,5 +104,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>
