@@ -38,7 +38,9 @@
       <BIMDataButton
         width="32px"
         @click="selected = null"
-        class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square"
+        color="default"
+        ghost
+        square
       >
         <BIMDataIcon name="arrow" size="xxs" class="fill-primary" />
       </BIMDataButton>
@@ -55,7 +57,9 @@
           width="100%"
           @click="saveInBimdata"
           :disabled="this.$viewer.state.selectedObjects.length === 0"
-          class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+          color="primary"
+          fill
+          radius
         >
           {{ $t("bimObjectPlugin.applySelected") }}
         </BIMDataButton>
@@ -379,9 +383,6 @@ export default {
   }
   /* custom BIM OBJECT SELECTED - product */
   .product {
-    .bimdata-btn__ghost {
-      justify-content: flex-start;
-    }
     .product-item {
       padding: 0 $spacing-unit $spacing-unit;
       &-name {
