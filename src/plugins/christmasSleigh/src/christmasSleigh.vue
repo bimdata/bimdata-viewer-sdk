@@ -86,7 +86,11 @@ export default {
         this.scene.zCenter +
         (this.scene.xHalfWidth * Math.sin(radian) * Math.cos(radian)) /
           (1 + Math.sin(radian) ** 2);
-      return [x, z];
+      const y =
+        this.scene.yCenter +
+        this.scene.yHalfWidth / 2 +
+        (this.scene.yHalfWidth / 6) * (Math.sin(radian) + 1);
+      return [x, y, z];
     },
 
     calculPosition(radian) {
@@ -96,22 +100,31 @@ export default {
 
     calculRotation(prev, position) {
       const vector_to_radian = (x, y) => {
-        if (x < 0 && y == 0) {
+        if (x == 0 || y == 0) {
           return 0;
         }
-        return 2 * Math.atan(y / (x + Math.sqrt(x ** 2 + y ** 2)));
+        const sign = y >= 0 ? 1 : -1;
+        return sign * Math.acos(x / Math.sqrt(x ** 2 + y ** 2));
       };
 
       const x = position[0] - prev[0];
       const y = position[1] - prev[1];
       const z = position[2] - prev[2];
-      const xRadian = vector_to_radian(z, y);
+      const xRadian = vector_to_radian(y, z);
       const yRadian = vector_to_radian(z, x) + Math.PI / 2;
       const zRadian = vector_to_radian(x, y);
-      return [
+      console.log([x, y, z]);
+      console.log([
         this.to_degree(xRadian),
         this.to_degree(yRadian),
         this.to_degree(zRadian),
+      ]);
+      return [
+        0,
+        // this.to_degree(xRadian),
+        this.to_degree(yRadian),
+        0,
+        // this.to_degree(zRadian),
       ];
     },
 
@@ -146,7 +159,12 @@ export default {
             "tick",
             function ({ deltaTime }) {
               const speed = deltaTime / 300;
-              giftObject.translateY(-speed);
+              giftObject.rotateX(30);
+              giftObject.position = [
+                giftObject.position[0],
+                giftObject.position[1] - speed,
+                giftObject.position[2],
+              ];
               if (
                 giftObject.position[1] <
                 scene.yCenter - scene.yHalfWidth / 2
@@ -189,13 +207,9 @@ export default {
               const radian = ((time - startTime) / 2000) % (Math.PI * 2);
               const interval = (Math.PI * 2) / giftDensity;
               const giftindex = Math.trunc(radian / interval);
-              const [x, z] = calculPosition(radian);
+              const [x, y, z] = calculPosition(radian);
               const positionPrev = [...christmasSleightObject.position];
-              christmasSleightObject.position = [
-                x,
-                christmasSleightObject.position[1],
-                z,
-              ];
+              christmasSleightObject.position = [x, y, z];
               if (giftmodels[giftindex].visible === false) {
                 giftmodels[giftindex].visible = true;
                 giftmodels[giftindex].position =
