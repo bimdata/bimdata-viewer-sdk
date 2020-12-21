@@ -16,7 +16,13 @@ export default {
   },
   data() {
     return {
-      giftDensity: 20, // Number of gift in one round (Have I been good this year?)
+      /** Configuration **/
+      giftDensity: 30, // Number of gift in one round (Have I been good this year?)
+      heightGifts: 15, // Which median height gifts are launch ?
+      size: 2, // Base size of sleigh and gifts. Size of gifts is randomize from this base
+      waveFrequency: 3, // Wave frequency of christmasSleigh. Must be an integer
+      /*******************/
+      offsetGift: 1.5, // Offset between sleight and gifts axis
       giftmodels: [], // References to all gifts to unload them
       christmasSleightModel: null,
       events: [], // References to all event to disable them
@@ -55,7 +61,7 @@ export default {
   },
   methods: {
     randomFromInterval(min, max) {
-      return Math.random() * (max - min + 1) + min;
+      return Math.random() * (max - min) + min;
     },
 
     setScene(scene) {
@@ -74,7 +80,10 @@ export default {
       // y = yCenter + yHalfWidth * sin(radian)
       const x = this.scene.xCenter + this.scene.xHalfWidth * Math.cos(radian);
       const z = this.scene.zCenter + this.scene.zHalfWidth * Math.sin(radian);
-      return [x, z];
+      const y =
+        this.scene.yCenter +
+        (this.scene.yHalfWidth / 6) * (Math.sin(radian) + 1);
+      return [x, y, z];
     },
 
     lemniscatePosition(radian) {
@@ -89,7 +98,8 @@ export default {
       const y =
         this.scene.yCenter +
         this.scene.yHalfWidth / 2 +
-        (this.scene.yHalfWidth / 6) * (Math.sin(radian) + 1);
+        (this.scene.yHalfWidth / 6) *
+          (Math.sin(radian * this.waveFrequency) + 1);
       return [x, y, z];
     },
 
@@ -107,18 +117,16 @@ export default {
         return sign * Math.acos(x / Math.sqrt(x ** 2 + y ** 2));
       };
 
+      // prev = [1, 0, 0];
+      // position = [0, 0, 0];
+
       const x = position[0] - prev[0];
-      const y = position[1] - prev[1];
+      // const y = position[1] - prev[1];
       const z = position[2] - prev[2];
-      const xRadian = vector_to_radian(y, z);
+      // const xRadian = vector_to_radian(y, z);
       const yRadian = vector_to_radian(z, x) + Math.PI / 2;
-      const zRadian = vector_to_radian(x, y);
-      console.log([x, y, z]);
-      console.log([
-        this.to_degree(xRadian),
-        this.to_degree(yRadian),
-        this.to_degree(zRadian),
-      ]);
+      // const yRadian = vector_to_radian(z, x);
+      // const zRadian = vector_to_radian(x, y);
       return [
         0,
         // this.to_degree(xRadian),
@@ -138,13 +146,15 @@ export default {
 
     distributeGift() {
       const giftsGltf = [gift1Gltf, gift2Gltf, gift3Gltf];
-      const size = this.randomFromInterval(1, 3);
       const giftModel = this.loader.load({
         id: "gift" + this.maxId++, // Unique ID
         src: giftsGltf[Math.floor(Math.random() * giftsGltf.length)], // Model URI
         position: [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter],
         rotation: [0, this.randomFromInterval(0, 360), 0],
-        scale: [size, size, size],
+        scale: Array.from(
+          { length: 3 },
+          () => this.randomFromInterval(1, 2) * this.size
+        ),
         visible: false,
         performance: false, // Allow geometry position/rotation dynamic updates
       });
@@ -154,25 +164,28 @@ export default {
       return new Promise(res => {
         giftModel.on("loaded", () => {
           const giftObject = giftModel;
-          const scene = this.scene;
-          const eventId = this.xeokit.scene.on(
-            "tick",
-            function ({ deltaTime }) {
-              const speed = deltaTime / 300;
-              giftObject.rotateX(30);
+          const eventId = this.xeokit.scene.on("tick", ({ deltaTime }) => {
+            const speed = deltaTime / 30;
+            if (giftObject.visible) {
+              giftObject.rotateZ(speed);
+              giftObject.rotateX(speed);
+              giftObject.rotateY(speed);
+              giftObject.height -= speed;
+              const isGoesDown = giftObject.height > 0 ? 1 : -1;
               giftObject.position = [
                 giftObject.position[0],
-                giftObject.position[1] - speed,
+                giftObject.position[1] +
+                  giftObject.height ** 2 * isGoesDown * 0.001 * this.size,
                 giftObject.position[2],
               ];
               if (
                 giftObject.position[1] <
-                scene.yCenter - scene.yHalfWidth / 2
+                this.scene.yCenter - this.scene.yHalfWidth / 2 - 50
               ) {
                 giftObject.visible = false;
               }
             }
-          );
+          });
           this.events.push(eventId); // Save the event for further deletion
           res();
         });
@@ -188,7 +201,7 @@ export default {
           this.scene.yCenter + this.scene.yHalfWidth / 2,
           this.scene.zCenter,
         ],
-        // scale: [50, 50, 50],
+        scale: Array(3).fill(this.size),
         performance: false, // Allow geometry position/rotation dynamic updates
       });
 
@@ -197,26 +210,36 @@ export default {
       return new Promise(res => {
         christmasSleightModel.on("loaded", () => {
           const christmasSleightObject = christmasSleightModel;
-          const calculPosition = this.calculPosition;
-          const calculRotation = this.calculRotation;
-          const giftmodels = this.giftmodels;
-          const giftDensity = this.giftDensity;
+          let randomizeTimeInterval = Array.from(
+            { length: this.giftDensity },
+            () => Math.random()
+          ); // Gifts are launched within a define range of 2*PI / giftDensity. In this way, the launch is random within this range
           const eventId = this.xeokit.scene.on(
             "tick",
-            function ({ time, startTime }) {
+            ({ time, startTime }) => {
               const radian = ((time - startTime) / 2000) % (Math.PI * 2);
-              const interval = (Math.PI * 2) / giftDensity;
-              const giftindex = Math.trunc(radian / interval);
-              const [x, y, z] = calculPosition(radian);
+              const interval = (Math.PI * 2) / this.giftDensity;
+              const giftIndex = Math.trunc(radian / interval);
+              const [x, y, z] = this.calculPosition(radian);
               const positionPrev = [...christmasSleightObject.position];
               christmasSleightObject.position = [x, y, z];
-              if (giftmodels[giftindex].visible === false) {
-                giftmodels[giftindex].visible = true;
-                giftmodels[giftindex].position =
-                  christmasSleightObject.position;
+              if (
+                this.giftmodels[giftIndex].visible === false &&
+                radian % interval > interval * randomizeTimeInterval[giftIndex]
+              ) {
+                randomizeTimeInterval[giftIndex] = Math.random(); // reinitialize random interval
+                this.giftmodels[giftIndex].height =
+                  this.heightGifts * this.randomFromInterval(1, 1.6);
+                this.giftmodels[giftIndex].visible = true;
+                this.giftmodels[giftIndex].position = [
+                  christmasSleightObject.position[0],
+                  christmasSleightObject.position[1] +
+                    this.offsetGift * this.size,
+                  christmasSleightObject.position[2],
+                ];
               }
 
-              christmasSleightObject.rotation = calculRotation(
+              christmasSleightObject.rotation = this.calculRotation(
                 positionPrev,
                 christmasSleightObject.position
               );
