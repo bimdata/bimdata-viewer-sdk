@@ -21,6 +21,7 @@ export default {
       heightGifts: 15, // Which median height gifts are launch ?
       size: 2, // Base size of sleigh and gifts. Size of gifts is randomize from this base
       waveFrequency: 3, // Wave frequency of christmasSleigh. Must be an integer
+      move: null, // null for random or choice in ['ellipse', 'lemniscate']
       /*******************/
       offsetGift: 1.5, // Offset between sleight and gifts axis
       giftmodels: [], // References to all gifts to unload them
@@ -36,6 +37,9 @@ export default {
     this.setScene(this.xeokit.scene);
     this.canvas.style.setProperty("background-color", "lightgrey"); // Change background color
 
+    if (this.move === null) {
+      this.move = ["ellipse", "lemniscate"][Math.floor(Math.random() * 2)];
+    }
     return Promise.all(
       [this.flightSleight()].concat(
         Array.from({ length: this.giftDensity }).map(this.distributeGift)
@@ -50,6 +54,7 @@ export default {
     this.giftmodels = [];
     this.christmasSleightModel.destroy();
     this.christmasSleightModel = null;
+    this.move = null;
     this.canvas.style.removeProperty("background-color"); // reset the background
   },
   mounted() {
@@ -75,18 +80,19 @@ export default {
       };
     },
 
-    ellipsePosition(radian) {
+    ellipse(radian) {
       // x = xCenter + xHalfWidth * cos(radian)
       // y = yCenter + yHalfWidth * sin(radian)
       const x = this.scene.xCenter + this.scene.xHalfWidth * Math.cos(radian);
       const z = this.scene.zCenter + this.scene.zHalfWidth * Math.sin(radian);
       const y =
         this.scene.yCenter +
-        (this.scene.yHalfWidth / 6) * (Math.sin(radian) + 1);
+        (this.scene.yHalfWidth / 6) *
+          (Math.sin(radian * this.waveFrequency) + 1);
       return [x, y, z];
     },
 
-    lemniscatePosition(radian) {
+    lemniscate(radian) {
       const x =
         this.scene.xCenter +
         (this.scene.xHalfWidth * Math.cos(radian)) /
@@ -104,8 +110,7 @@ export default {
     },
 
     calculPosition(radian) {
-      // return this.ellipsePosition(radian);
-      return this.lemniscatePosition(radian);
+      return this[this.move](radian);
     },
 
     calculRotation(prev, position) {
@@ -196,11 +201,7 @@ export default {
       const christmasSleightModel = this.loader.load({
         id: "christmasSleight", // Unique ID
         src: christmasSleighGltf, // Model URI
-        position: [
-          this.scene.xCenter,
-          this.scene.yCenter + this.scene.yHalfWidth / 2,
-          this.scene.zCenter,
-        ],
+        position: [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter],
         scale: Array(3).fill(this.size),
         performance: false, // Allow geometry position/rotation dynamic updates
       });
@@ -238,7 +239,6 @@ export default {
                   christmasSleightObject.position[2],
                 ];
               }
-
               christmasSleightObject.rotation = this.calculRotation(
                 positionPrev,
                 christmasSleightObject.position
