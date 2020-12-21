@@ -34,7 +34,7 @@ export default {
     this.canvas.style.removeProperty("background-color"); // reset the background
   },
   mounted() {
-    const viewer3D = this.$viewer.globalContext.getPlugins('viewer3d')[0]; // Get the first Viewer3D plugin
+    const viewer3D = this.$viewer.globalContext.getPlugins("viewer3d")[0]; // Get the first Viewer3D plugin
     this.loader = viewer3D.gltfLoader;
     this.xeokit = viewer3D.xeokit;
     this.canvas = viewer3D.xeokit.scene.canvas.canvas;
