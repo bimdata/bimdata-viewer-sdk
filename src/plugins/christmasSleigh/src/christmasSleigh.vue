@@ -12,8 +12,8 @@ import gift3Gltf from "../assets/gift3.gltf";
 let giftDensity = 30; // Number of gift in one round (Have I been good this year?)
 let heightGifts = 13; // Which median height gifts are launch ?
 let size = 2; // Base size of sleigh and gifts. Size of gifts is randomize from this base
-let waveFrequency = 3; // Wave frequency of christmasSleigh. Must be an integer
-let pathLenght = 0.5; // Path lenght compared to model. 0.5 is tight, 2 is very large
+let waveFrequency = 2; // Wave frequency of christmasSleigh. Must be an integer
+let pathLenght = 0.8; // Path lenght compared to model. 0.5 is tight, 2 is very large
 let offsetGift = 1.5; // Offset between sleight and gifts axis
 
 const moves = {
