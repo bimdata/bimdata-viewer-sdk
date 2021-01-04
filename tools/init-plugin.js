@@ -12,10 +12,12 @@ nunjucks.configure(__dirname + "/templates", { autoescape: true });
 
 const pluginsDir = path.resolve(__dirname, "../src/plugins");
 
-function createPluginStructure(pluginDir) {
+function createPluginStructure(pluginDir, answers) {
   fs.mkdirSync(pluginDir);
   fs.mkdirSync(pluginDir + "/src");
-  copydir.sync(__dirname + "/assets", pluginDir + "/assets");
+  if (answers.type === "button") {
+    copydir.sync(__dirname + "/assets", pluginDir + "/assets");
+  }
 }
 
 function createRollupConfig(pluginDir, answers) {
@@ -43,7 +45,7 @@ function askQuestions() {
       type: "input",
       message:
         "What is the name of the plugin? (must be a valid javascript variable name)",
-      validate: async (input) => {
+      validate: input => {
         if (!isVarName(input)) {
           return "Invalid name. The name must be a valid javascript variable name";
         }
@@ -51,64 +53,104 @@ function askQuestions() {
       },
     },
     {
-      name: "iconPosition",
+      name: "type",
       type: "list",
       choices: [
         {
-          name: "On the left panel",
+          name: "A dedicated window (like 2D viewer)",
+          value: "window",
+        },
+        {
+          name: "A button (Like the BCF plugin or params plugin)",
+          value: "button",
+        },
+        {
+          name: "None of them (My plugin won't have any UI)",
+          value: null,
+        },
+      ],
+      message: "Is your plugin meant to be a dedicated window, be loaded with a button, none of them (no UI) ?",
+    },
+    {
+      name: "buttonPosition",
+      type: "list",
+      choices: [
+        {
+          name: "On the left",
           value: "left",
         },
         {
-          name: "On the right panel",
+          name: "On the right",
           value: "right",
-        },
-        {
-          name: "I don't want an icon",
-          value: null,
         },
       ],
       message: "Where do you want your icon?",
       default: "left",
+      when: (answers) => answers.type === "button"
     },
     {
-      name: "content",
+      name: "menuType",
       type: "list",
       choices: [
         {
-          name: "A resizable and movable window",
-          value: "windowed",
-        },
-        {
-          name: "A simple div that ajusts itself to the content",
+          name: "A simple div, I'll handle the HTML in it",
           value: "simple",
         },
         {
-          name: "No predefined interface. I will handle it myself",
-          value: "free",
+          name: "A resizable and movable panel (Like Structures or BCF)",
+          value: "panel",
         },
       ],
-      message: "What king of interface do you want?",
-      default: "windowed",
+      message: "What panel kind do you want?",
+      default: "simple",
+      when: (answers) => answers.type === "button"
+    },
+    {
+      name: "windowVisibility",
+      type: "checkbox",
+      choices: [
+        {
+          name: "The 3D Viewer",
+          value: "3dviewer",
+        },
+        {
+          name: "The 2D Viewer",
+          value: "2dviewer",
+        },
+      ],
+      message: "On which windows to you want it to be visible?",
+      default: ["3dviewer"],
+      validate: input => {
+        if (input.length === 0) {
+          return "You must select at least 1 window or your button won't be shown."
+        }
+        return true;
+      },
+      when: (answers) => answers.type === "button"
     },
     {
       name: "closeOnUserInteraction",
       type: "confirm",
-      message:
-        "Should your plugin be closed when the user interact with the model?",
-      default: true,
+      message: "Should your plugin be closed when the user interacts with the model?",
+      default: false,
+      when: (answers) => answers.type === "button"
     },
   ];
   return inquirer.prompt(questions);
 }
 
 const run = async () => {
+  console.log(chalk.green("This tool asks you basic questions and setup a plugin boilerplate"));
+  console.log(chalk.green("There are many options not covered by this tools"));
+  console.log(chalk.green("You can will be able to change any value manually later"));
+  console.log(chalk.green("You can find complete examples in the documentation: https://developers.bimdata.io"));
   const answers = await askQuestions();
   answers.UpperCaseName = answers.name.replace(/^\w/, (c) => c.toUpperCase());
-  answers.keepActive = !answers.closeOnUserInteraction;
+  answers.keepOpen = !answers.closeOnUserInteraction;
 
   const pluginDir = pluginsDir + "/" + answers.name;
 
-  createPluginStructure(pluginDir);
+  createPluginStructure(pluginDir, answers);
   createRollupConfig(pluginDir, answers);
   createNpmConfig(pluginDir, answers);
   createPluginFiles(pluginDir, answers);
@@ -117,14 +159,14 @@ const run = async () => {
   console.log();
 
   console.log(chalk.green("You can now load your plugin to the viewer:"));
-  console.log(chalk.green("Add the import line to src/views/viewer.vue"));
-  console.log(
-    `import ${answers.name} from "@/plugins/${answers.name}/src/${answers.name}.plugin.js";`
-  );
-  console.log("And add the plugin to the registerPlugin method: ");
-  console.log(
-    `this.$refs.bimdataViewerInstance.registerPlugins([${answers.name}]);`
-  );
+  console.log("Open " + chalk.red("src/views/viewer.vue") + " and add the import line:");
+  console.log();
+  console.log(chalk.red('    import ') + answers.name + chalk.red(' from ') + chalk.yellowBright(`"@/plugins/${answers.name}/src/${answers.name}.plugin.js"`) + ';');
+  console.log();
+  console.log("And add the plugin with the registerPlugin method: ");
+  console.log();
+  console.log("    bimdataViewer." + chalk.cyan('registerPlugin') + `(${answers.name});`);
+  console.log();
 };
 
 run();
