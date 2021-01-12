@@ -8,47 +8,24 @@
         v-if="selectedElement"
       >
         <div class="system-icon" v-if="selectedElement.name !== errorValue">
-          <BIMDataIcon
-            class="icon-success color-success"
-            icon-name="successIcon"
-            width="14"
-            height="14"
-            x="23"
-            y="23"
-          >
-            <BIMDataSuccessIcon />
-          </BIMDataIcon>
+          <BIMDataIcon name="success" class="fill-success" />
         </div>
         <div class="system-icon" v-if="selectedElement.name === errorValue">
-          <BIMDataIcon
-            class="icon-warning color-high"
-            icon-name="warningIcon"
-            width="14"
-            height="14"
-            x="23"
-            y="23"
-          >
-            <BIMDataWarningIcon />
-          </BIMDataIcon>
+          <BIMDataIcon name="warning" class="fill-high" />
         </div>
         <span :class="{ error: selectedElement.name === errorValue }">
           {{ selectedElement.name }}
         </span>
         <div class="select-icon">
-          <BIMDataIcon
-            class="icon-chevron"
-            icon-name="iconName"
-            width="12"
-            height="10"
-            x="23"
-            y="23"
-          >
-            <BIMDataChevronIcon />
-          </BIMDataIcon>
+          <BIMDataIcon name="chevron" class="fill-primary" size="xs" />
         </div>
       </div>
       <transition name="slide-fade-up">
-        <ul v-show="displayOptions" class="bimdata-list" v-if="monitoredElements">
+        <ul
+          v-show="displayOptions"
+          class="bimdata-list"
+          v-if="monitoredElements"
+        >
           <li
             @click="displayOptions = false"
             v-for="element in monitoredElements"
@@ -56,28 +33,10 @@
             :class="{ error: element.uuid === errorObjectId }"
           >
             <div v-if="element.uuid !== errorObjectId">
-              <BIMDataIcon
-                class="icon-chevron color-success"
-                icon-name="successIcon"
-                width="12"
-                height="11"
-                x="23"
-                y="23"
-              >
-                <BIMDataSuccessIcon />
-              </BIMDataIcon>
+              <BIMDataIcon name="success" class="fill-success" size="xs" />
             </div>
             <div v-if="element.uuid === errorObjectId">
-              <BIMDataIcon
-                class="icon-chevron color-high"
-                icon-name="warningIcon"
-                width="12"
-                height="11"
-                x="23"
-                y="23"
-              >
-                <BIMDataWarningIcon />
-              </BIMDataIcon>
+              <BIMDataIcon name="warning" class="fill-high" size="xs" />
             </div>
 
             <input
@@ -109,23 +68,17 @@
 <script>
 import Graph from "./Graph.vue";
 
-import { BIMDataIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js";
-import { BIMDataChevronIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js";
-import { BIMDataSuccessIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js";
-import { BIMDataWarningIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcons.js";
-
-import BIMDataLoading from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataLoading.js";
-
+import {
+  BIMDataIcon,
+  BIMDataLoading,
+} from "@bimdata/design-system/components.js";
 
 export default {
   name: "iot",
   components: {
     Graph,
     BIMDataIcon,
-    BIMDataChevronIcon,
     BIMDataLoading,
-    BIMDataSuccessIcon,
-    BIMDataWarningIcon,
   },
   data() {
     return {
@@ -143,7 +96,9 @@ export default {
     async selectedElement(newSelectedElement) {
       if (newSelectedElement) {
         this.viewer3dPlugin.fitViewObjects([newSelectedElement.uuid]);
-        this.$viewer.state.selectObjects([newSelectedElement.id], { exclusive: true });
+        this.$viewer.state.selectObjects([newSelectedElement.id], {
+          exclusive: true,
+        });
         this.loading = true;
         await this.getElementData(newSelectedElement.uuid);
         this.loading = false;
@@ -157,7 +112,7 @@ export default {
       this.getMonitoredElements();
     });
     this.$viewer.state.hub.on("objects-selected", ({ objects }) => {
-      this.onObjectsSelected(objects.map(obj => obj.uuid))
+      this.onObjectsSelected(objects.map(obj => obj.uuid));
     });
   },
   methods: {
@@ -171,19 +126,23 @@ export default {
       const apiUrl = this.$viewer.api.apiUrl;
       if (process.env.VUE_APP_IOT_API_URL) {
         return process.env.VUE_APP_IOT_API_URL;
-      } else if (apiUrl.includes('staging')) {
-        return 'https://iot-staging.bimdata.io';
-      } else if (apiUrl.includes('next')) {
-        return 'https://iot-next.bimdata.io';
+      } else if (apiUrl.includes("staging")) {
+        return "https://iot-staging.bimdata.io";
+      } else if (apiUrl.includes("next")) {
+        return "https://iot-next.bimdata.io";
       } else if (apiUrl === "https://api.bimdata.io") {
-        return 'https://iot.bimdata.io';
+        return "https://iot.bimdata.io";
       }
       return null;
     },
     onObjectsSelected(uuids) {
-      const selectedAndMonitoredElements = uuids.filter(uuid => this.monitoredElements.some(element => element.uuid === uuid));
+      const selectedAndMonitoredElements = uuids.filter(uuid =>
+        this.monitoredElements.some(element => element.uuid === uuid)
+      );
       if (selectedAndMonitoredElements.length > 0) {
-        this.selectedElement = this.monitoredElements.find(element => element.uuid === selectedAndMonitoredElements[0]);
+        this.selectedElement = this.monitoredElements.find(
+          element => element.uuid === selectedAndMonitoredElements[0]
+        );
       }
     },
     onResetZoomClick() {
@@ -192,7 +151,9 @@ export default {
     },
     async getMeterData(elementId, meter) {
       const res = await fetch(
-        `${this.getIotUrl()}/element/${elementId}/meter/${meter.meter_id}/record`,
+        `${this.getIotUrl()}/element/${elementId}/meter/${
+          meter.meter_id
+        }/record`,
         { headers: this.getHeaders() }
       );
       const json = await res.json();
@@ -214,7 +175,10 @@ export default {
     },
     async getElementData(elementId) {
       this.series = [];
-      const res = await fetch(`${this.getIotUrl()}/element/${elementId}/meter`, { headers: this.getHeaders() });
+      const res = await fetch(
+        `${this.getIotUrl()}/element/${elementId}/meter`,
+        { headers: this.getHeaders() }
+      );
       const meters = await res.json();
       const promises = meters.map(meter => this.getMeterData(elementId, meter));
       const series = await Promise.all(promises);
@@ -228,15 +192,23 @@ export default {
         const systems = await apiClient.getSystems(
           this.$viewer.api.cloudId,
           ifc.id,
-          this.$viewer.api.projectId,
+          this.$viewer.api.projectId
         );
         if (systems.length) {
           const elementUuids = systems[0].elements;
-          this.monitoredElements = this.$viewer.state.getObjectsByUuids(elementUuids);
+          this.monitoredElements = this.$viewer.state.getObjectsByUuids(
+            elementUuids
+          );
           this.selectedElement = this.monitoredElements[0];
-          if(this.selectedElement) {
-            this.viewer3dPlugin.xeokit.scene.setObjectsColorized([this.selectedElement.uuid], [0, 1, 0]);
-            this.viewer3dPlugin.xeokit.scene.setObjectsColorized(["0vNFceMkb8dezQiQhWAOcS"], [1, 0, 0]);
+          if (this.selectedElement) {
+            this.viewer3dPlugin.xeokit.scene.setObjectsColorized(
+              [this.selectedElement.uuid],
+              [0, 1, 0]
+            );
+            this.viewer3dPlugin.xeokit.scene.setObjectsColorized(
+              ["0vNFceMkb8dezQiQhWAOcS"],
+              [1, 0, 0]
+            );
           }
         }
       }
@@ -246,8 +218,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./node_modules/chartist/dist/chartist.min.css";
-@import "./node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+@import "../node_modules/chartist/dist/chartist.min.css";
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 .bimdata-iot {
   .select {
@@ -309,7 +281,7 @@ export default {
         &.error {
           color: $color-high;
         }
-        input{
+        input {
           position: absolute;
           opacity: 0;
           width: 100%;
@@ -389,9 +361,9 @@ export default {
     }
   }
 }
-.chartist-tooltip{
+.chartist-tooltip {
   display: none;
-  &.tooltip-show{
+  &.tooltip-show {
     position: absolute;
     display: block;
     min-width: 5em;
@@ -403,7 +375,7 @@ export default {
     text-align: center;
     pointer-events: none;
     z-index: 1;
-    &::before{
+    &::before {
       content: "";
       position: absolute;
       top: 100%;
@@ -414,10 +386,9 @@ export default {
       border: 8px solid transparent;
       border-top-color: $color-secondary;
     }
-    .chartist-tooltip-value{
+    .chartist-tooltip-value {
       display: none;
     }
   }
 }
-
 </style>
