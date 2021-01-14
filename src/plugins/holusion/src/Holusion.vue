@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div class="flex m-t-24">
+    <div class="flex m-t-24 holusion-content">
       <div class="flex flex-col justify-around m-r-24">
         <BIMDataButton
           width="192px"
@@ -304,13 +304,17 @@ export default {
 
 <style lang="scss" scoped>
 .holusion {
+  height: 100%;
   .bimdata-btn {
     span {
       font-size: 16px;
     }
   }
-  &-content-center {
-    flex: 1;
+  &-content{
+    height: 80%;
+    &-center {
+      flex: 1;
+    }
   }
 }
 </style>

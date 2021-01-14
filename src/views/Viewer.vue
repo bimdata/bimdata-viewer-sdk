@@ -8,6 +8,7 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
+import ChristmasSleighPlugin from "@/plugins/christmasSleigh/src/christmasSleigh.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
 import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import iotPlugin from "@/plugins/iot/src/iot.plugin.js";
@@ -35,25 +36,30 @@ export default {
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
         accessToken: this.oidcAccessToken,
       },
-      plugins: {
-      },
+      plugins: {},
     });
 
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
     bimdataViewer.registerPlugin(GltfExtractorPlugin);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
+    bimdataViewer.registerPlugin(ChristmasSleighPlugin);
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
     bimdataViewer.registerPlugin(HolusionPlugin);
     bimdataViewer.registerPlugin(iotPlugin);
 
-    bimdataViewer.registerWindow({name: "structure", plugins: ["structure"]});
+    bimdataViewer.registerWindow({ name: "structure", plugins: ["structure"] });
 
     bimdataViewer.mount(`#${this.viewerId}`);
 
-    this.$watch(() => this.oidcAccessToken, token => { bimdataViewer.setAccessToken(token) });
+    this.$watch(
+      () => this.oidcAccessToken,
+      token => {
+        bimdataViewer.setAccessToken(token);
+      }
+    );
   },
 };
 </script>
