@@ -149,40 +149,30 @@ export default {
       this.resetZoom();
       this.resetZoom = null;
     },
-    async getMeterData(elementId, meter) {
-      const res = await fetch(
-        `${this.getIotUrl()}/element/${elementId}/meter/${
-          meter.meter_id
-        }/record`,
-        { headers: this.getHeaders() }
-      );
-      const json = await res.json();
-      if (json && Object.entries(json.data).length > 0) {
-        const data = Object.entries(json.data);
-        const series = data.map(([, records]) =>
+    getSeries(meters) {
+      let series = [];
+      meters.forEach(meter => {
+        const records = meter.measurements.map(({ records }) =>
           records.map(record => ({
             x: Date.parse(record.timestamp),
             y: record.value,
             meta: record.timestamp,
           }))
         );
-        return {
+        series.push({
           meterName: meter.meter_name,
-          series: { series },
+          series: { series: records },
           meterId: meter.meter_id,
-        };
-      }
+        });
+      });
+      return series;
     },
     async getElementData(elementId) {
-      this.series = [];
       const res = await fetch(
-        `${this.getIotUrl()}/element/${elementId}/meter`,
+        `${this.getIotUrl()}/element-records/${elementId}?days=7`,
         { headers: this.getHeaders() }
       );
-      const meters = await res.json();
-      const promises = meters.map(meter => this.getMeterData(elementId, meter));
-      const series = await Promise.all(promises);
-      this.series = series.filter(Boolean);
+      this.series = this.getSeries(await res.json());
     },
     async getMonitoredElements() {
       const ifcs = this.$viewer.state.ifcs;
