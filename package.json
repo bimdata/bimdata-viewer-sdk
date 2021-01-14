@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "init-plugin": "node tools/init-plugin.js",
-    "postinstall": "find src/plugins -mindepth 1 -maxdepth 1 -type d -exec bash -c \"cd {} && [ -f package.json ] && npm install && ln -s node_modules src/node_modules\" \\;"
+    "postinstall": "find src/plugins -mindepth 1 -maxdepth 1 -type d -exec bash -c \"cd '{}' && npm install\" \\;"
   },
   "dependencies": {
     "@bimdata/bimdata-api-client": "^6.7.0",

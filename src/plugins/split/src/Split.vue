@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import BIMDataComponents from "./node_modules/@bimdata/design-system";
+import BIMDataComponents from "../node_modules/@bimdata/design-system";
 export default {
   name: "split-component",
   components: {
@@ -54,7 +54,11 @@ export default {
       const parts = fileName.split(".");
       parts.pop(); // Remove extension
       const name = parts.join("."); // rebuild name without extension
-      this.fileName = name + "-split-" + new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") + ".ifc";
+      this.fileName =
+        name +
+        "-split-" +
+        new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") +
+        ".ifc";
     } else {
       this.$viewer.localContext.hub.emit("alert", {
         type: "error",
@@ -65,7 +69,9 @@ export default {
   },
   methods: {
     async exportSplit() {
-      const selectObjectsIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectObjectsIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       if (selectObjectsIds.length === 0) {
         this.$viewer.localContext.hub.emit("alert", {
           type: "error",

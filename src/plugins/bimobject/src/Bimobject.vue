@@ -100,7 +100,7 @@
 
 <script>
 import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataComponents from "./node_modules/@bimdata/design-system";
+import BIMDataComponents from "../node_modules/@bimdata/design-system";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -176,12 +176,17 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
         this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.globalContext.hub.emit(
+        "updated-objects-properties",
+        selectedObjectIds
+      );
       this.$viewer.localContext.hub.emit("alert", {
         type: "success",
         message: this.$t("bimObjectPlugin.successMessage"),
