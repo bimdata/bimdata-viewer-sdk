@@ -1,14 +1,14 @@
-import SnowflakesComponent from "./Snowflakes.vue";
+import ChristmasSleighComponent from "./christmasSleigh.vue";
 import icon from "../assets/icon.svg";
 
 export default {
-  name: "SnowflakesPlugin",
+  name: "christmasSleighPlugin",
   addToWindows: ["3d"],
-  component: SnowflakesComponent,
+  component: ChristmasSleighComponent,
   button: {
     position: "left",
     content: "free",
-    tooltip: "Let It Snow!",
+    tooltip: "Christmas sleigh",
     keepOpen: true,
     icon: {
       imgUri: icon,

@@ -1,13 +1,13 @@
 {
-  "name": "@bimdata/gltf-extractor-viewer-plugin",
-  "version": "1.0.0",
-  "description": "gltfExtractor BIMData Viewer Plugin",
+  "name": "@bimdata/christmas-sleigh-viewer-plugin",
+  "version": "1.0.1",
+  "description": "christmas sleigh BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "watch": "rollup --watch -c",
     "prepublishOnly": "npm run build"
   },
-  "main": "dist/gltfExtractor.plugin.js",
+  "main": "dist/christmasSleigh.plugin.js",
   "files": [
     "dist"
   ],
@@ -15,11 +15,9 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "gltfExtractor"
+    "christmasSleigh"
   ],
-  "dependencies": {
-    "@bimdata/design-system": "0.0.8"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@rollup/plugin-url": "^5.0.0",

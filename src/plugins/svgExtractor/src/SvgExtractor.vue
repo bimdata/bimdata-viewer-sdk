@@ -4,13 +4,13 @@
     <BIMDataButton
       @click="downloadSvg"
       class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      >{{ $t("action") }}</BIMDataButton
+      >{{ $t("SvgExtractorPlugin.action") }}</BIMDataButton
     >
   </div>
 </template>
 
 <script>
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import BIMDataButton from "../node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -23,13 +23,13 @@ export default {
   },
   methods: {
     downloadSvg() {
-      const ifc = this.$utils.getSelectedIfcs()[0];
+      const ifc = this.$viewer.state.ifcs[0];
       if (ifc.map_file) {
         window.location.href = ifc.map_file;
       } else {
-        this.$hub.emit("alert", {
+        this.$viewer.localContext.hub.emit("alert", {
           type: "error",
-          message: this.$t("no_svg_error"),
+          message: this.$t("SvgExtractorPlugin.no_svg_error"),
         });
       }
     },

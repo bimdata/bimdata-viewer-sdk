@@ -1,9 +1,15 @@
-import BackgroundColorComponent from "./BackgroundColor.vue";
+import pickerModal from "./pickerModal.vue";
 
 export default {
-  name: "BackgroundColorPlugin", // The name of the plugin. this.$plugins.MyPluginName to access it from other plugins
-  component: BackgroundColorComponent,
-  keepActive: false, // If true, the window won't be closed if user click somewhere else.
+  name: "BackgroundColorPlugin",
+  startupScript($viewer) {
+    $viewer.contextMenu.registerCommand({
+        get label() {
+          return $viewer.vm.$t("BackgroundColorPlugin.title");
+        },
+        execute: () => $viewer.globalContext.modals.pushModal(pickerModal),
+      });
+  },
   i18n: {
     en: {
       title: "Change background color",

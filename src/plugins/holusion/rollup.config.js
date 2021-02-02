@@ -13,7 +13,7 @@ const plugins = [
   commonjs(),
   resolve(),
   url({
-    limit: 100 * 1024 * 1024,
+    limit: 100 * 1024 *1024,
     include: ['assets/*']
   }),
 ];
@@ -23,9 +23,9 @@ if (isProduction) {
 }
 
 export default {
-  input: 'src/bimdataDesignSystem.plugin.js',
+  input: 'src/holusion.plugin.js',
   output: {
-    file: 'dist/bimdataDesignSystem.plugin.js',
+    file: 'dist/holusion.plugin.js',
     format: 'esm',
     sourcemap: !isProduction
   },

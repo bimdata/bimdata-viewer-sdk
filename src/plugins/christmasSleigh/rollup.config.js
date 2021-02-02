@@ -3,7 +3,7 @@ import scssPlugin from 'rollup-plugin-scss';
 import url from '@rollup/plugin-url';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 
 const isProduction = (process.env.BUILD === 'production');
 
@@ -11,9 +11,9 @@ const plugins = [
   VuePlugin(),
   scssPlugin(),
   commonjs(),
-  nodeResolve(),
+  resolve(),
   url({
-    limit: 100 * 1024 *1024,
+    limit: 100 * 1024 * 1024,
     include: ['assets/*']
   }),
 ];
@@ -23,9 +23,9 @@ if (isProduction) {
 }
 
 export default {
-  input: 'src/{{ name }}.plugin.js',
+  input: 'src/christmasSleigh.plugin.js',
   output: {
-    file: 'dist/{{ name }}.plugin.js',
+    file: 'dist/christmasSleigh.plugin.js',
     format: 'esm',
     sourcemap: !isProduction
   },

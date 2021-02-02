@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/background-color-viewer-plugin",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "backgroundColor BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
