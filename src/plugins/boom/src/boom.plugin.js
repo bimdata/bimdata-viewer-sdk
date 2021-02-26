@@ -1,5 +1,5 @@
 import BoomComponent from "./Boom.vue";
-import icon from "../assets/explosion.svg";
+import icon from "../assets/icon.svg";
 
 export default {
   name: "BoomPlugin", // The name of the plugin. this.$plugins.MyPluginName to access it from other plugins

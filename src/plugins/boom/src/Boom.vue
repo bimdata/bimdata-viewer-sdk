@@ -1,5 +1,4 @@
 <template>
-  <!-- https://vuejs.org/v2/guide/syntax.html -->
   <div class="viewer-plugin-boom">
     <div class="viewer-plugin-boom__control">
       <label for="vertical-explode" class="viewer-plugin-boom__label">
@@ -38,7 +37,6 @@
 
 <script>
 export default {
-  // https://vuejs.org/v2/guide/components.html
   name: "boom",
   data() {
     return {
@@ -49,44 +47,46 @@ export default {
   created() {
     this.$viewer.localContext.hub.on("3d-model-loaded", () => {
       this.xeokit = this.$viewer.localContext.getPlugin("viewer3d").xeokit;
-      this.storeys = this.$viewer.state.getObjectsOfType("storey").map(s => {
-        const children = s.children.map(c => {
-          const aabb = this.xeokit.scene.getAABB([c.uuid]);
+      this.storeys = this.$viewer.state
+        .getObjectsOfType("storey")
+        .map(storey => {
+          const children = storey.children.map(object => {
+            const aabb = this.xeokit.scene.getAABB([object.uuid]);
+            return {
+              id: object.uuid,
+              center: [
+                (aabb[0] + aabb[3]) / 2,
+                (aabb[1] + aabb[4]) / 2,
+                (aabb[2] + aabb[5]) / 2,
+              ],
+            };
+          });
+          const aabb = this.xeokit.scene.getAABB();
+          const center = [
+            (aabb[0] + aabb[3]) / 2,
+            (aabb[1] + aabb[4]) / 2,
+            (aabb[2] + aabb[5]) / 2,
+          ];
           return {
-            id: c.uuid,
-            center: [
-              (aabb[0] + aabb[3]) / 2,
-              (aabb[1] + aabb[4]) / 2,
-              (aabb[2] + aabb[5]) / 2,
-            ],
+            storey,
+            children,
+            center,
           };
         });
-        const aabb = this.xeokit.scene.getAABB(children);
-        const center = [
-          (aabb[0] + aabb[3]) / 2,
-          (aabb[1] + aabb[4]) / 2,
-          (aabb[2] + aabb[5]) / 2,
-        ];
-        return {
-          storey: s,
-          children,
-          center,
-        };
-      });
     });
   },
   methods: {
     explode() {
       const vCoef = 5 * this.verticalExplode;
       const hCoef = 4 * this.horizontalExplode;
-      this.storeys.forEach(s => {
-        s.children.forEach(c => {
+      this.storeys.forEach(storey => {
+        storey.children.forEach(object => {
           const translation = [
-            (c.center[0] - s.center[0]) * hCoef,
-            (c.center[1] - s.center[1]) * vCoef,
-            (c.center[2] - s.center[2]) * hCoef,
+            (object.center[0] - storey.center[0]) * hCoef,
+            (object.center[1] - storey.center[1]) * vCoef,
+            (object.center[2] - storey.center[2]) * hCoef,
           ];
-          this.xeokit.scene.setObjectsOffset([c.id], translation);
+          this.xeokit.scene.setObjectsOffset([object.id], translation);
         });
       });
     },
@@ -95,14 +95,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
 .viewer-plugin-boom {
   &__control {
     margin: 24px 0;
-  }
-
-  &__label {
-    // ?
   }
 
   &__slider {
