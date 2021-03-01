@@ -46,10 +46,6 @@ export default {
   },
   create() {},
   async onOpen() {
-    this.$viewer.state.colorizeObjects(
-      this.$viewer.state.selectedObjectsIds,
-      "#FFFFFF"
-    );
     let elements = {};
     if (this.classifications.length === 0) {
       for (const ifc of this.$viewer.state.ifcs) {
