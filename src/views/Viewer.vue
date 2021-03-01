@@ -16,6 +16,7 @@ import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.j
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
+import colorizer from "@/plugins/colorizer/src/colorizer.plugin.js";
 
 export default {
   data() {
@@ -47,6 +48,7 @@ export default {
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
     bimdataViewer.registerPlugin(HolusionPlugin);
+    bimdataViewer.registerPlugin(colorizer);
 
     bimdataViewer.registerWindow({ name: "structure", plugins: ["structure"] });
 

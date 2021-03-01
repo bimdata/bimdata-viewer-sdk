@@ -1,0 +1,32 @@
+{
+  "name": "colorizer",
+  "version": "0.0.1",
+  "description": "colorizer BIMData Viewer Plugin",
+  "scripts": {
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup --watch -c",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "dist/colorizer.plugin.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "BIMData",
+    "Viewer",
+    "Plugin",
+    "colorizer"
+  ],
+  "dependencies": {
+    "@bimdata/design-system": "^0.2.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-url": "^6.0.0",
+    "rollup": "^2.35.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-scss": "^2.6.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-vue": "^5.1.7"
+  }
+}

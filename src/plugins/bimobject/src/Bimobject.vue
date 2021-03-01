@@ -6,7 +6,6 @@
         :placeholder="$t('bimObjectPlugin.search')"
         class="bimdata-search-bar__radius bimdata-search-bar__primary"
         v-model="searchText"
-        @enter="getProducts"
         :clear="true"
         @clear="clear()"
       ></BIMDataSearch>
@@ -176,12 +175,17 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
         this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.globalContext.hub.emit(
+        "updated-objects-properties",
+        selectedObjectIds
+      );
       this.$viewer.localContext.hub.emit("alert", {
         type: "success",
         message: this.$t("bimObjectPlugin.successMessage"),
