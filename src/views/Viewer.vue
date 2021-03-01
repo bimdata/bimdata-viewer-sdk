@@ -18,6 +18,7 @@ import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugi
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
+import iframeShare from "@/plugins/iframeShare/src/iframeShare.plugin.js";
 
 export default {
   data() {
@@ -30,6 +31,7 @@ export default {
   },
   mounted() {
     const bimdataViewer = makeBIMDataViewer({
+      locale: "fr",
       api: {
         cloudId: this.$route.query.cloudId,
         projectId: this.$route.query.projectId,
@@ -58,6 +60,7 @@ export default {
     bimdataViewer.registerPlugin(backgroundColor);
     bimdataViewer.registerPlugin(HolusionPlugin);
     bimdataViewer.registerPlugin(kroqiBcfService);
+    bimdataViewer.registerPlugin(iframeShare);
 
     bimdataViewer.registerWindow({ name: "structure", plugins: ["structure"] });
 
