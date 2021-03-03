@@ -25,7 +25,7 @@
       </template>
     </BIMDataDropdownList>
     <div class="bsdd__content p-x-24 flex">
-      <div class="bimdata-table">
+      <div class="bimdata-table" v-if="rows.length > 0">
         <table>
           <thead>
             <tr>
@@ -53,6 +53,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>There is no property for this Class</div>
     </div>
     <div class="bsdd__footer p-24 flex justify-center">
       <BIMDataButton
@@ -123,6 +124,9 @@ export default {
       },
       immediate: true,
     },
+    domain() {
+      this.selectedClass = null;
+    },
   },
   created() {},
   methods: {
@@ -136,12 +140,13 @@ export default {
         options.params.LanguageCode = this.language.code;
       }
       let response = await requestApi("/Classification/v2", "GET", options);
-      this.rows = (response.classificationProperties || [])
-        .filter(prop => !!prop.propertySet)
-        .map(prop => {
-          prop.value = "";
-          return prop;
-        });
+      this.rows = (response.classificationProperties || []).map(prop => {
+        prop.value = "";
+        if (!prop.propertySet) {
+          prop.propertySet = this.domain.name + " Properties";
+        }
+        return prop;
+      });
     },
     onClassClick(klass) {
       this.selectedClass = klass;

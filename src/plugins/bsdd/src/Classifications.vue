@@ -24,7 +24,13 @@
         </BIMDataTooltip>
       </template>
     </BIMDataDropdownList>
-    <div v-if="classDetails">{{ classText }}</div>
+    <div v-if="classDetails">
+      <ul>
+        <li v-for="item of classDetails.classText" :key="item">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
     <BIMDataButton
       color="primary"
       fill
@@ -69,7 +75,6 @@ export default {
     return {
       selectedClass: null,
       classDetails: null,
-      classText: "",
     };
   },
   watch: {
@@ -82,6 +87,9 @@ export default {
         this.fetchClass(newClass);
       },
       immediate: true,
+    },
+    domain() {
+      this.selectedClass = null;
     },
   },
   created() {},
@@ -98,24 +106,27 @@ export default {
       if (this.language) {
         options.params.LanguageCode = this.language.code;
       }
-      this.classText = "";
       const discarded = [
         "namespaceUri",
         "parentClassificationReference",
         "status",
         "activationDateUtc",
         "versionDateUtc",
+        "classificationProperties",
       ];
       this.classDetails = await requestApi(
         "/Classification/v2",
         "GET",
         options
       );
+      const classText = [];
+      // rajouter des champs
       Object.keys(this.classDetails).forEach(k => {
         if (!discarded.includes(k)) {
-          this.classText += this.classDetails[k];
+          classText.push(k + ": " + this.classDetails[k]);
         }
       });
+      this.classDetails.classText = classText;
     },
     async applyToSelection() {
       const ifcApi = new this.$viewer.api.apiClient.IfcApi();
