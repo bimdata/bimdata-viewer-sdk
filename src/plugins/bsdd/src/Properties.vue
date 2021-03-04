@@ -1,6 +1,6 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="bsdd">
+  <div class="bsdd-properties">
     <BIMDataDropdownList
       :list="availableClasses"
       :perPage="20"
@@ -8,6 +8,7 @@
       width="100%"
       :disabled="availableClasses.length === 0"
       @element-click="onClassClick"
+      class="m-t-12"
     >
       <template #header>
         <span v-if="selectedClass">{{ selectedClass.name }}</span>
@@ -24,7 +25,7 @@
         </BIMDataTooltip>
       </template>
     </BIMDataDropdownList>
-    <div class="bsdd__content p-x-24 flex">
+    <div class="bsdd-properties__content flex">
       <div class="bimdata-table" v-if="rows.length > 0">
         <table>
           <thead>
@@ -55,7 +56,7 @@
       </div>
       <div v-else>There is no property for this Class</div>
     </div>
-    <div class="bsdd__footer p-24 flex justify-center">
+    <div class="bsdd-properties__footer p-24 flex justify-center">
       <BIMDataButton
         color="primary"
         fill
@@ -77,14 +78,6 @@ import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMD
 import BIMDataTooltip from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTooltip.js";
 import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
 import { requestApi } from "./utils.js";
-
-// function sortAlpha(prop) {
-//   return (a, b) => {
-//     if(a[prop] < b[prop]) { return -1; }
-//     if(a[prop] > b[prop]) { return 1; }
-//     return 0;
-//   }
-// }
 
 export default {
   name: "bsdd",
@@ -222,9 +215,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
-.bsdd {
+.bsdd-properties {
   height: 100%;
-  background-color: $color-white;
+  padding: $spacing-unit;
+
   &__content {
     &__left,
     &__right {

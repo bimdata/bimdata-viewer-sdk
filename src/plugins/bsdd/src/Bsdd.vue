@@ -1,11 +1,11 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="bsdd">
-    <div class="bsdd__header flex items-center">
+  <div class="bsdd-plugin">
+    <div class="bsdd-plugin__header flex items-center">
       <span class="p-12">bSDD connector</span>
     </div>
-    <div class="bsdd__filters flex p-24">
-      <div class="bsdd__filters__left p-r-12">
+    <div class="bsdd-plugin__filters flex p-24">
+      <div class="bsdd-plugin__filters__left p-r-12">
         <BIMDataDropdownList
           :list="availableLanguages"
           :perPage="20"
@@ -26,7 +26,7 @@
           </template>
         </BIMDataDropdownList>
       </div>
-      <div class="bsdd__filters__right p-l-12">
+      <div class="bsdd-plugin__filters__right p-l-12">
         <BIMDataDropdownList
           :list="availableDomains"
           :perPage="20"
@@ -53,10 +53,11 @@
       height="40px"
       tabSize="50%"
       @tab-selected="activeTab = $event"
-      selected="share"
+      selected="properties"
+      class="p-x-24"
     />
     <div
-      class="bsdd__content p-x-24 flex"
+      class="bsdd-plugin__content p-x-24 flex"
       v-show="activeTab.id === 'properties'"
     >
       <Properties
@@ -66,7 +67,7 @@
       />
     </div>
     <div
-      class="bsdd__content p-x-24 flex"
+      class="bsdd-plugin__content p-x-24 flex"
       v-show="activeTab.id === 'classifications'"
     >
       <Classifications
@@ -79,7 +80,6 @@
 </template>
 <script>
 import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-// import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 import BIMDataTabs from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTabs.js";
 
 import Classifications from "./Classifications.vue";
@@ -103,7 +103,6 @@ export default {
   name: "bsdd",
   components: {
     BIMDataDropdownList,
-    // BIMDataButton,
     BIMDataTabs,
     Classifications,
     Properties,
@@ -119,7 +118,7 @@ export default {
         { id: "properties", label: "Properties" },
         { id: "classifications", label: "Classifications" },
       ],
-      activeTab: { id: "properties" },
+      activeTab: "",
     };
   },
   watch: {},
@@ -163,13 +162,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
-.bsdd {
+.bsdd-plugin {
   height: 100%;
   background-color: $color-white;
+
   &__header {
     min-height: 44px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   }
+
   &__filters {
     &__left,
     &__right {
@@ -180,6 +181,7 @@ export default {
         }
       }
     }
+
     &__right {
       .bimdata-search-bar {
         margin: 12px auto;
@@ -195,13 +197,12 @@ export default {
       }
     }
   }
+
   &__content {
-    &__left,
-    &__right {
-      flex: 1;
-    }
-  }
-  &__footer {
+    display: flex;
+    flex-direction: column;
+    margin-top: $spacing-unit;
+    background-color: $color-white;
   }
 }
 </style>

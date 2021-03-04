@@ -1,6 +1,6 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="classifications">
+  <div class="bsdd">
     <BIMDataDropdownList
       :list="availableClasses"
       :perPage="20"
@@ -8,6 +8,7 @@
       width="100%"
       :disabled="availableClasses.length === 0"
       @element-click="onClassClick"
+      class="m-t-12"
     >
       <template #header>
         <span v-if="selectedClass">{{ selectedClass.name }}</span>
@@ -24,22 +25,35 @@
         </BIMDataTooltip>
       </template>
     </BIMDataDropdownList>
-    <div v-if="classDetails">
-      <ul>
-        <li v-for="item of classDetails.classText" :key="item">
-          {{ item }}
-        </li>
-      </ul>
+    <div class="bsdd__content flex">
+      <div
+        class="bimdata-table m-t-12"
+        v-if="classDetails && classDetails.classText.length > 0"
+      >
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr v-for="item of classDetails.classText" :key="item">
+              <td>
+                {{ item }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>There is no property for this Class</div>
     </div>
-    <BIMDataButton
-      color="primary"
-      fill
-      radius
-      :disabled="$viewer.state.selectedObjects.length === 0"
-      @click="applyToSelection"
-    >
-      Apply to selection
-    </BIMDataButton>
+    <div class="bsdd__footer p-24 flex justify-center">
+      <BIMDataButton
+        color="primary"
+        fill
+        radius
+        :disabled="$viewer.state.selectedObjects.length === 0"
+        @click="applyToSelection"
+      >
+        Apply to selection
+      </BIMDataButton>
+    </div>
   </div>
 </template>
 
@@ -75,6 +89,8 @@ export default {
     return {
       selectedClass: null,
       classDetails: null,
+      header: [],
+      rows: [],
     };
   },
   watch: {
@@ -120,7 +136,6 @@ export default {
         options
       );
       const classText = [];
-      // rajouter des champs
       Object.keys(this.classDetails).forEach(k => {
         if (!discarded.includes(k)) {
           classText.push(k + ": " + this.classDetails[k]);
@@ -130,9 +145,7 @@ export default {
     },
     async applyToSelection() {
       const ifcApi = new this.$viewer.api.apiClient.IfcApi();
-      const collaborationApi = new this.$viewer.api.apiClient.CollaborationApi();
       const loadedIfc = this.$viewer.state.ifcs[0];
-      console.log(ifcApi, collaborationApi, loadedIfc);
       const data = {
         name: this.domain.name,
         notation: this.classDetails.code,
@@ -176,45 +189,59 @@ export default {
 
 <style lang="scss" scoped>
 @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
-.classifications {
+.bsdd {
   height: 100%;
-  background-color: $color-white;
-  &__header {
-    min-height: 44px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  &__filters {
-    &__left,
-    &__right {
-      flex: 1;
-      .bimdata-dropdown-list {
-        &:last-child {
-          margin-top: 12px;
-        }
-      }
-    }
-    &__right {
-      .bimdata-search-bar {
-        margin: 12px auto;
-      }
-      ::v-deep.bimdata-tooltip {
-        width: 100%;
-        &__text {
-          padding: 6px;
-          width: 92%;
-          height: fit-content;
-          height: -moz-fit-content;
-        }
-      }
-    }
-  }
+  padding: $spacing-unit;
+
   &__content {
     &__left,
     &__right {
       flex: 1;
     }
   }
+
   &__footer {
+  }
+
+  .bimdata-table {
+    width: 100%;
+    font-size: calculateEm(14px);
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: $primary-font;
+      border-spacing: 0;
+      tr {
+        th,
+        td {
+          height: 50px;
+          padding: 0 $spacing-unit;
+          min-height: calc(#{$spacing-unit} * 2);
+          font-size: calculateEm(11px);
+          text-align: left;
+        }
+      }
+      tbody {
+        tr {
+          td {
+            color: $color-tertiary-darkest;
+          }
+          &:nth-child(odd) {
+            background-color: $color-tertiary-lightest;
+          }
+        }
+      }
+    }
+    &__compensated {
+      table {
+        tr {
+          th,
+          td {
+            height: 35px;
+          }
+        }
+      }
+    }
   }
 }
 </style>
