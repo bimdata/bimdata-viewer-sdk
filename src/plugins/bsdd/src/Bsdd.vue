@@ -55,14 +55,20 @@
       @tab-selected="activeTab = $event"
       selected="share"
     />
-    <div class="bsdd__content p-x-24 flex" v-if="activeTab.id === 'properties'">
+    <div
+      class="bsdd__content p-x-24 flex"
+      v-show="activeTab.id === 'properties'"
+    >
       <Properties
         :domain="selectedDomain"
         :language="selectedLanguage"
         :availableClasses="availableClasses"
       />
     </div>
-    <div v-else>
+    <div
+      class="bsdd__content p-x-24 flex"
+      v-show="activeTab.id === 'classifications'"
+    >
       <Classifications
         :domain="selectedDomain"
         :language="selectedLanguage"

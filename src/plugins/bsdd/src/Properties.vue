@@ -140,7 +140,7 @@ export default {
         },
       };
       if (this.language) {
-        options.params.LanguageCode = this.language.code;
+        options.params.languageCode = this.language.code;
       }
       let response = await requestApi("/Classification/v2", "GET", options);
       this.rows = (response.classificationProperties || []).map(prop => {
