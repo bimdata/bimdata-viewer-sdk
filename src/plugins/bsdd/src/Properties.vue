@@ -60,7 +60,10 @@
         color="primary"
         fill
         radius
-        :disabled="$viewer.state.selectedObjects.length === 0"
+        :disabled="
+          $viewer.state.selectedObjects.length === 0 ||
+          rows.filter(r => !!r.value).length === 0
+        "
         @click="applyToSelection"
       >
         Apply to selection
