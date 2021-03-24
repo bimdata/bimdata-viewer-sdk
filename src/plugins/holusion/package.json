@@ -17,7 +17,6 @@
     "Plugin",
     "holusion"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@bimdata/design-system": "0.0.38",
     "@rollup/plugin-node-resolve": "^7.1.3",
