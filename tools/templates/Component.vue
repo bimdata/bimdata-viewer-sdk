@@ -8,14 +8,10 @@ export default {
   // https://vuejs.org/v2/guide/components.html
   name: "{{ name }}",
   data() {
-    return {
-    }
+    return {};
   },
-  created() {
-
-  },
-  methods: {
-  }
+  created() {},
+  methods: {},
 };
 </script>
 

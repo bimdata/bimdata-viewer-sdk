@@ -27,7 +27,7 @@ export default {
   output: {
     file: 'dist/{{ name }}.plugin.js',
     format: 'esm',
-    sourcemap: !isProduction
+    sourcemap: !isProduction,
   },
   plugins
 };
