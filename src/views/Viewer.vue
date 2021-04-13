@@ -17,7 +17,7 @@ import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.j
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
-import kroqiBcfService from "@/plugins/kroqiBcfService/dist/kroqiBcfService.plugin.js";
+import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
 
 export default {
   data() {
@@ -37,7 +37,15 @@ export default {
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
         accessToken: this.oidcAccessToken,
       },
-      plugins: {},
+      plugins: {
+        bcfKroqiPremiumService: {
+          kroqiDomain: "pfptnbdev.io",
+          organization: "cstb",
+          userIsAdmin: true,
+          kroqiProjectId: "123456789",
+          service: "BIMDATA",
+        },
+      },
     });
 
     bimdataViewer.registerPlugin(platformDemo);

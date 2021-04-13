@@ -8,6 +8,7 @@
       suivants.
     </p>
     <BIMDataButton
+      v-if="userIsAdmin"
       class="large-btn m-t-24"
       color="secondary"
       fill
@@ -17,6 +18,14 @@
       <BIMDataIcon name="chevron" size="xxxs" />
       <span>{{ $t("bcfKroqiPremiumService.activate") }}</span>
     </BIMDataButton>
+    <p class="bimdata-text color-tertiary-darkest primary-font m-t-12" v-else>
+      Veuillez contacter la personne qui administre votre organisation Kroqi
+      pour activer cette fonctionnalité.
+    </p>
+    <p class="bimdata-text color-tertiary-dark primary-font m-t-12">
+      Vous devrez recharger cette page après activation pour accéder au service
+      BCF.
+    </p>
   </div>
 </template>
 
@@ -29,18 +38,19 @@ export default {
   components: {
     BIMDataButton,
   },
+  computed: {
+    userIsAdmin() {
+      return this.$viewer.pluginManager.cfg.bcfKroqiPremiumService.userIsAdmin;
+    },
+  },
   methods: {
     open() {
-      const apiUrl = this.$viewer.api.apiUrl;
       const options = this.$viewer.pluginManager.cfg.bcfKroqiPremiumService;
       const org = options.organization;
       const kroqiDomain = options.kroqiDomain;
-      let kroqiUrl;
-      if (apiUrl.includes("staging")) {
-        kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription`;
-      } else {
-        kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription`;
-      }
+      const service = options.service;
+      const kroqiProjectId = options.kroqiProjectId;
+      const kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription?service=${service}&project_id=${kroqiProjectId}`;
       window.open(kroqiUrl, "_blank").focus();
     },
   },
