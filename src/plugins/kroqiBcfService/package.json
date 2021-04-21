@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/bcf-kroqi-premium-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "kroqiBcfService BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
