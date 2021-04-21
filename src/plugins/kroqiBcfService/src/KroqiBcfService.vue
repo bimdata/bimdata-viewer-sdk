@@ -54,7 +54,7 @@ export default {
       const kroqiDomain = options.kroqiDomain;
       const service = options.service;
       const kroqiProjectId = options.kroqiProjectId;
-      const kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription?service=${service}&project_id=${kroqiProjectId}`;
+      const kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription/?service=${service}&project=${kroqiProjectId}`;
       window.open(kroqiUrl, "_blank").focus();
     },
   },
