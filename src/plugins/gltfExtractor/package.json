@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/gltf-extractor-viewer-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "gltfExtractor BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
