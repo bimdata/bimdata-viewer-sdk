@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/svg-extractor-viewer-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "svgExtractor BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
