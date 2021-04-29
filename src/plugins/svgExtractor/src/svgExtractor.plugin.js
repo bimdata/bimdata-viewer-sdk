@@ -6,10 +6,10 @@ export default {
   component: SvgExtractorComponent,
   addToWindows: ["2d"],
   button: {
-    position: 'right',
-    content: 'simple', // How the viewer show the plugin content. Value can be "windowed", "simple" of "free"
+    position: "right",
+    content: "simple", // How the viewer show the plugin content. Value can be "windowed", "simple" of "free"
     keepOpen: true,
-    tooltip: 'tooltip', // Can be an i18n path or a string shown in all languages
+    tooltip: "SvgExtractorPlugin.tooltip", // Can be an i18n path or a string shown in all languages
     icon: {
       imgUri: icon,
     },

@@ -1,11 +1,9 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
   <div>
-    <BIMDataButton
-      @click="downloadSvg"
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
-      >{{ $t("SvgExtractorPlugin.action") }}</BIMDataButton
-    >
+    <BIMDataButton @click="downloadSvg" color="primary" fill radius>{{
+      $t("SvgExtractorPlugin.action")
+    }}</BIMDataButton>
   </div>
 </template>
 
