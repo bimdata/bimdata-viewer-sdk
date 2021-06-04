@@ -1,5 +1,5 @@
 {
-  "name": "bsdd",
+  "name": "@bimdata/bsdd-viewer-plugin",
   "version": "0.0.1",
   "description": "bsdd BIMData Viewer Plugin",
   "scripts": {
