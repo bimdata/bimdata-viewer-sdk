@@ -21,6 +21,7 @@
     "@bimdata/design-system": "^0.2.3"
   },
   "devDependencies": {
+    "@rollup/plugin-image": "^2.0.5",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@rollup/plugin-url": "^6.0.0",
     "rollup": "^2.35.1",
