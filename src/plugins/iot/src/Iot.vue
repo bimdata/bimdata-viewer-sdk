@@ -124,9 +124,7 @@ export default {
     },
     getIotUrl() {
       const apiUrl = this.$viewer.api.apiUrl;
-      if (process.env.VUE_APP_IOT_API_URL) {
-        return process.env.VUE_APP_IOT_API_URL;
-      } else if (apiUrl.includes("staging")) {
+      if (apiUrl.includes("staging")) {
         return "https://iot-staging.bimdata.io";
       } else if (apiUrl.includes("next")) {
         return "https://iot-next.bimdata.io";
@@ -186,9 +184,8 @@ export default {
         );
         if (systems.length) {
           const elementUuids = systems[0].elements;
-          this.monitoredElements = this.$viewer.state.getObjectsByUuids(
-            elementUuids
-          );
+          this.monitoredElements =
+            this.$viewer.state.getObjectsByUuids(elementUuids);
           this.selectedElement = this.monitoredElements[0];
           if (this.selectedElement) {
             this.viewer3dPlugin.xeokit.scene.setObjectsColorized(
