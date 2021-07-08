@@ -126,14 +126,13 @@ export default {
   },
   computed: {
     shareBackendUrl() {
-      return "http://localhost:8000";
-      // const apiUrl = this.$viewer.api.apiUrl;
-      // if (apiUrl.includes("staging")) {
-      //   return "https://share-staging.bimdata.io";
-      // } else if (apiUrl.includes("next")) {
-      //   return "https://share-next.bimdata.io";
-      // }
-      // return "https://share.bimdata.io";
+      const apiUrl = this.$viewer.api.apiUrl;
+      if (apiUrl.includes("staging")) {
+        return "https://share-staging.bimdata.io";
+      } else if (apiUrl.includes("next")) {
+        return "https://share-next.bimdata.io";
+      }
+      return "https://share.bimdata.io";
     },
     iframeString() {
       return `<iframe width="560" height="315" src="${this.currentShare}" frameborder="0" allowfullscreen></iframe>`;
