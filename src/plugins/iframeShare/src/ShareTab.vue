@@ -197,6 +197,7 @@ export default {
     pre {
       margin: 0;
       padding: $spacing-unit/2 $spacing-unit;
+      overflow: auto;
       background-color: $color-tertiary-lightest;
     }
   }
