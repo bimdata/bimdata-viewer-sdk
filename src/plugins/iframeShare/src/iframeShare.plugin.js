@@ -7,7 +7,7 @@ export default {
   addToWindows: ["3d", "2d"],
   button: {
     position: "right", // Add an icon in the left or right panel. Value can be "left" or "right"
-    content: "simple", // How the viewer show the plugin content. Value can be "windowed", "simple" of "free"
+    content: "simple", // How the viewer show the plugin content. Value can be "panel", "simple" of "free"
     keepOpen: true, // If true, the window won't be closed if user click somewhere else.
     tooltip: "IframeSharePlugin.tooltip", // Can be an i18n path or a string shown in all languages
     icon: {

@@ -66,12 +66,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "~@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 @import "~@bimdata/design-system/dist/scss/_BIMDataTransitions.scss";
 
 .iframe-share {
   display: block;
   width: 800px;
   height: 400px;
+  padding: $spacing-unit;
 
   .share-tab,
   .manage-tab {
