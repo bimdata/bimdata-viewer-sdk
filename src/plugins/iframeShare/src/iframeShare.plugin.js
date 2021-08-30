@@ -25,6 +25,8 @@ export default {
       manage_shares: "Manage shares",
       expiration_date: "Expiration date",
       share: "Share",
+      share_url: "Share link",
+      last_use_date: "Last use date",
     },
     fr: {
       tooltip: "Partager le viewer",
@@ -36,6 +38,8 @@ export default {
       manage_shares: "Gestion des partages",
       expiration_date: "Date d'expiration",
       share: "Partager",
+      share_link: "Lien de partage",
+      last_use_date: "Dernière utilisation",
     },
   },
 };
