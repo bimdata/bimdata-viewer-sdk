@@ -112,16 +112,12 @@ export default {
     async share() {
       const body = {
         ifc_ids: this.$viewer.state.ifcs.map(ifc => ifc.id),
-        name: this.shareName,
         locale: this.$i18n.locale,
-        expires_at: "2021-04-22T06:00:00Z",
       };
+      // Note: if no expiration date is given, a default expiration date
+      // equilvalent to the current date with year 2099 will be set in the backend.
       if (this.expirationDate) {
         body.expires_at = this.expirationDate.toISOString();
-      } else {
-        let date = new Date();
-        date.setFullYear(2099);
-        body.expires_at = date.toISOString();
       }
 
       if (this.keepCameraSetup) {
