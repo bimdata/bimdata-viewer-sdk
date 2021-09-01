@@ -18,7 +18,7 @@ import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugi
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
-import iframeShare from "@/plugins/iframeShare/src/iframeShare.plugin.js";
+import iframeShare from "@/plugins/iframeShare/dist/iframeShare.plugin.js";
 
 export default {
   data() {
