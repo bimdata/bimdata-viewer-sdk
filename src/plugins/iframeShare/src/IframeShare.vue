@@ -53,7 +53,8 @@ export default {
     shareBackendUrl() {
       const apiUrl = this.$viewer.api.apiUrl;
       if (apiUrl.includes("staging")) {
-        return SHARE_BACKEND_URL_STAGING;
+        // return SHARE_BACKEND_URL_STAGING;
+        return SHARE_BACKEND_URL_DEV;
       } else if (apiUrl.includes("next")) {
         return SHARE_BACKEND_URL_NEXT;
       }

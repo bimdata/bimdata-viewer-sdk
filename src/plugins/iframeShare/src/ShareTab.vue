@@ -1,7 +1,11 @@
 <template>
   <div class="share-tab">
-    <template v-if="currentShare === null">
+    <template v-if="shareUrl === null">
       <div class="share-tab__body">
+        <BIMDataInput
+          :placeholder="$t('IframeSharePlugin.share_name')"
+          v-model="shareName"
+        />
         <Datepicker
           v-model="expirationDate"
           :clear-button="true"
@@ -36,7 +40,7 @@
         </h2>
         <div class="share-tab__link">
           <span class="share-tab__link__url">
-            {{ currentShare }}
+            {{ shareUrl }}
           </span>
           <BIMDataButton
             class="share-tab__link__btn"
@@ -71,6 +75,7 @@ import {
   BIMDataButton,
   BIMDataCheckbox,
   BIMDataIcon,
+  BIMDataInput,
 } from "@bimdata/design-system/components.js";
 import shareIcon from "../assets/share.svg";
 
@@ -79,6 +84,7 @@ export default {
     BIMDataButton,
     BIMDataCheckbox,
     BIMDataIcon,
+    BIMDataInput,
     Datepicker,
   },
   props: {
@@ -91,9 +97,10 @@ export default {
       fr,
       en,
       shareIcon,
+      shareName: "",
+      shareUrl: null,
       keepCameraSetup: false,
       expirationDate: null,
-      currentShare: null,
     };
   },
   computed: {
@@ -101,7 +108,7 @@ export default {
       return (
         `<iframe\n` +
         `  width="560" height="315"\n` +
-        `  src="${this.currentShare}"\n` +
+        `  src="${this.shareUrl}"\n` +
         `  frameborder="0"\n` +
         `  allowfullscreen>\n` +
         `</iframe>`
@@ -111,6 +118,7 @@ export default {
   methods: {
     async share() {
       const body = {
+        name: this.shareName,
         ifc_ids: this.$viewer.state.ifcs.map(ifc => ifc.id),
         locale: this.$i18n.locale,
       };
@@ -141,7 +149,7 @@ export default {
       const jsonResponse = await response.json();
       const id = jsonResponse.id;
 
-      this.currentShare = `${this.shareBackendUrl}/${id}`;
+      this.shareUrl = `${this.shareBackendUrl}/${id}`;
     },
     async copy(text) {
       await navigator.clipboard.writeText(text);
@@ -151,10 +159,10 @@ export default {
       });
     },
     copyUrl() {
-      this.copy(this.currentShare);
+      this.copy(this.shareUrl);
     },
     copyIframe() {
-      this.copy(this.iframeString);
+      this.copy(this.shareUrl);
     },
   },
 };
