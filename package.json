@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "init-plugin": "node tools/init-plugin.js",
-    "postinstall": "node build/install-plugins.js"
+    "install-plugins": "node build/install-plugins.js"
   },
   "husky": {
     "hooks": {

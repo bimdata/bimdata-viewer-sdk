@@ -9,16 +9,28 @@ First, you must create a BIMData Application (see https://developers.bimdata.io/
 The SDK needs at least `cloud:read` and `ifc:read` scopes.
 The default BCF Plugin needs `bcf:read` and `bcf:write` scopes, plus you can add any scope you need for your plugin.
 
-The redirect URI is by default http://localhost:8080/oidc-callback
+The default redirect URI is http://localhost:8080/oidc-callback
 
-Then you can copy the `.env.example` file and add your `client_id`:
+Then you can copy the `.env.example` file and add your `client_id` in it:
 
 ```
-npm install
 cp .env.example .env
 ```
 
-Edit `.env` file with your data (your `client_id`)
+Install SDK dependecies:
+
+```
+npm install
+```
+
+To have everything working you also need to install all plugins on the first setup.
+
+**Note :** Usualy you only need to do this once, you can then start working on your plugins and install/build them
+individually as needed.
+
+```
+npm run install-plugins
+```
 
 ### Compiles and hot-reloads for development
 
