@@ -161,7 +161,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 
 .share-tab {
   display: flex;

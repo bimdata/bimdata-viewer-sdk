@@ -77,7 +77,9 @@ export default {
         if (share.last_use) {
           share.last_use = this.$d(Date.parse(share.last_use));
         }
-        share.expires_at = this.$d(Date.parse(share.expires_at));
+        if (share.expires_at) {
+          share.expires_at = this.$d(Date.parse(share.expires_at));
+        }
         return share;
       });
       this.loading = false;
@@ -87,7 +89,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 
 .manage-tab {
   padding-top: $spacing-unit;

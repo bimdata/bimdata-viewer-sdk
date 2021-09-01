@@ -22,11 +22,12 @@
 </template>
 
 <script>
-import BIMDataTabs from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTabs.js";
+import BIMDataTabs from "../node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTabs.js";
 
 import ManageTab from "./ManageTab.vue";
 import ShareTab from "./ShareTab.vue";
 
+const SHARE_BACKEND_URL_DEV = "http://localhost:8000";
 const SHARE_BACKEND_URL_STAGING = "https://share-staging.bimdata.io";
 const SHARE_BACKEND_URL_NEXT = "https://share-next.bimdata.io";
 const SHARE_BACKEND_URL = "https://share.bimdata.io";
@@ -66,8 +67,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
-@import "~@bimdata/design-system/dist/scss/_BIMDataTransitions.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataTransitions.scss";
 
 .iframe-share {
   display: block;
