@@ -16,18 +16,6 @@ export default {
   },
   i18n: {
     en: {
-      tooltip: "Share the viewer",
-      link_creation: "Generate a link",
-      keep_camera_setup: "Keep camera position",
-      copy: "Copy",
-      copy_success: "Copied!",
-      params: "Share params",
-      manage_shares: "Manage shares",
-      expiration_date: "Expiration date",
-      share: "Share",
-      share_name: "Share name",
-      share_url: "Share link",
-      last_use_date: "Last use date",
       footerLinkApi: "API Reference",
       footerLinkExample: "Code examples",
       footerText:
@@ -45,20 +33,15 @@ export default {
           copySuccessMessage: "Copied !",
         },
       },
+      ManageTab: {
+        columns: {
+          link: "Share link",
+          last_use: "Last use date",
+          expires_at: "Expiration date",
+        },
+      },
     },
     fr: {
-      tooltip: "Partager le viewer",
-      link_creation: "Générer un lien",
-      keep_camera_setup: "Conserver la position de la caméra",
-      copy: "Copier",
-      copy_success: "Copié !",
-      params: "Paramètres de partage",
-      manage_shares: "Gestion des partages",
-      expiration_date: "Date d'expiration",
-      share: "Partager",
-      share_name: "Nom du lien",
-      share_link: "Lien de partage",
-      last_use_date: "Dernière utilisation",
       footerLinkApi: "Référence de l'API",
       footerLinkExample: "Exemples de code de développeur",
       footerText:
@@ -74,6 +57,13 @@ export default {
           shareButtonText: "Partager",
           copyButtonText: "Copier",
           copySuccessMessage: "Copié !",
+        },
+      },
+      ManageTab: {
+        columns: {
+          link: "Lien de partage",
+          last_use: "Dernière utilisation",
+          expires_at: "Date d'expiration",
         },
       },
     },

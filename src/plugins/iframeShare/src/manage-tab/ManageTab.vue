@@ -1,17 +1,19 @@
 <template>
   <div class="manage-tab">
-    <template v-if="loading">
-      <div class="manage-tab__loader">
-        <BIMDataSpinner />
-      </div>
-    </template>
-    <template v-else>
-      <BIMDataTable :columns="shareColumns" :rows="shareRows" :rowHeight="40">
-        <template #cell-link="{ row: share }">
-          <ShareLinkCell :shareBackendUrl="shareBackendUrl" :share="share" />
-        </template>
-      </BIMDataTable>
-    </template>
+    <transition name="fade" mode="out-in">
+      <template v-if="loading">
+        <div class="manage-tab__loader">
+          <BIMDataSpinner />
+        </div>
+      </template>
+      <template v-else>
+        <BIMDataTable :columns="shareColumns" :rows="shareRows" :rowHeight="40">
+          <template #cell-link="{ row: share }">
+            <ShareLinkCell :shareBackendUrl="shareBackendUrl" :share="share" />
+          </template>
+        </BIMDataTable>
+      </template>
+    </transition>
   </div>
 </template>
 
@@ -40,18 +42,18 @@ export default {
       shareColumns: [
         {
           id: "link",
-          label: this.$t("IframeSharePlugin.share_link"),
+          label: this.$t("IframeSharePlugin.ManageTab.columns.link"),
         },
         {
           id: "last_use",
-          label: this.$t("IframeSharePlugin.last_use_date"),
-          width: "120px",
+          label: this.$t("IframeSharePlugin.ManageTab.columns.last_use"),
+          width: "110px",
           align: "center",
         },
         {
           id: "expires_at",
-          label: this.$t("IframeSharePlugin.expiration_date"),
-          width: "120px",
+          label: this.$t("IframeSharePlugin.ManageTab.columns.expires_at"),
+          width: "110px",
           align: "center",
         },
       ],
@@ -77,6 +79,7 @@ export default {
       this.shareRows = jsonResponse.map(share => {
         return {
           id: share.id,
+          name: share.name,
           open_count: share.open_count,
           last_use: share.last_use ? this.$d(Date.parse(share.last_use)) : "",
           expires_at: share.expires_at
