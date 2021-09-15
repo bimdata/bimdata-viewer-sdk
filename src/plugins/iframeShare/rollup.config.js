@@ -8,7 +8,11 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 const isProduction = process.env.BUILD === "production";
 
 const plugins = [
-  VuePlugin(),
+  VuePlugin({
+    // This to workaround this issue:
+    // https://github.com/vuejs/rollup-plugin-vue/issues/238
+    needMap: false,
+  }),
   scssPlugin(),
   commonjs(),
   nodeResolve(),

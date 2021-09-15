@@ -6,7 +6,11 @@
       </div>
     </template>
     <template v-else>
-      <BIMDataTable :columns="shareColumns" :rows="shareRows" :rowHeight="40" />
+      <BIMDataTable :columns="shareColumns" :rows="shareRows" :rowHeight="40">
+        <template #cell-link="{ row: share }">
+          <ShareLinkCell :shareBackendUrl="shareBackendUrl" :share="share" />
+        </template>
+      </BIMDataTable>
     </template>
   </div>
 </template>
@@ -16,15 +20,18 @@ import {
   BIMDataSpinner,
   BIMDataTable,
 } from "@bimdata/design-system/components.js";
+import ShareLinkCell from "./ShareLinkCell.vue";
 
 export default {
   components: {
     BIMDataSpinner,
     BIMDataTable,
+    ShareLinkCell,
   },
   props: {
     shareBackendUrl: {
       type: String,
+      required: true,
     },
   },
   data() {
@@ -32,7 +39,7 @@ export default {
       loading: false,
       shareColumns: [
         {
-          id: "id",
+          id: "link",
           label: this.$t("IframeSharePlugin.share_link"),
         },
         {
@@ -68,19 +75,15 @@ export default {
       );
       const jsonResponse = await response.json();
       this.shareRows = jsonResponse.map(share => {
-        delete share.camera_settings;
-        delete share.cloud_id;
-        delete share.project_id;
-        delete share.ifc_ids;
-        delete share.locale;
-        share.id = this.shareBackendUrl + "/" + share.id;
-        if (share.last_use) {
-          share.last_use = this.$d(Date.parse(share.last_use));
-        }
-        if (share.expires_at) {
-          share.expires_at = this.$d(Date.parse(share.expires_at));
-        }
-        return share;
+        return {
+          id: share.id,
+          open_count: share.open_count,
+          last_use: share.last_use ? this.$d(Date.parse(share.last_use)) : "",
+          expires_at: share.expires_at
+            ? this.$d(Date.parse(share.expires_at))
+            : "",
+          camera_settings: share.camera_settings,
+        };
       });
       this.loading = false;
     },
@@ -89,10 +92,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
-
 .manage-tab {
-  padding-top: $spacing-unit;
+  padding-top: var(--spacing-unit);
   overflow: auto;
 
   &__loader {

@@ -28,6 +28,23 @@ export default {
       share_name: "Share name",
       share_url: "Share link",
       last_use_date: "Last use date",
+      footerLinkApi: "API Reference",
+      footerLinkExample: "Code examples",
+      footerText:
+        "By using BIMData viewer on your website, you agree to BIMData API terms of service.",
+      ShareTab: {
+        ShareCreationForm: {
+          nameInputLabel: "Share name",
+          keepCameraSetup: "Keep camera position",
+          createLinkButtonText: "Generate a link",
+        },
+        ShareInfo: {
+          shareIframeTitle: "Embed viewer",
+          shareButtonText: "Share",
+          copyButtonText: "Copy",
+          copySuccessMessage: "Copied !",
+        },
+      },
     },
     fr: {
       tooltip: "Partager le viewer",
@@ -42,6 +59,23 @@ export default {
       share_name: "Nom du lien",
       share_link: "Lien de partage",
       last_use_date: "Dernière utilisation",
+      footerLinkApi: "Référence de l'API",
+      footerLinkExample: "Exemples de code de développeur",
+      footerText:
+        "En intégrant la visionneuse BIMData sur votre site, vous acceptez les conditions d'utilisation de l'API BIMData.",
+      ShareTab: {
+        ShareCreationForm: {
+          nameInputLabel: "Nom du lien",
+          keepCameraSetup: "Conserver la position de la caméra",
+          createLinkButtonText: "Générer un lien",
+        },
+        ShareInfo: {
+          shareIframeTitle: "Intégrer la visionneuse",
+          shareButtonText: "Partager",
+          copyButtonText: "Copier",
+          copySuccessMessage: "Copié !",
+        },
+      },
     },
   },
 };
