@@ -10,16 +10,14 @@
     />
     <div class="iframe-share__body">
       <transition name="fade" mode="out-in">
-        <keep-alive>
-          <ShareTab
-            v-if="activeTab.id === 'share'"
-            :shareBackendUrl="shareBackendUrl"
-          />
-          <ManageTab
-            v-else-if="activeTab.id === 'manage'"
-            :shareBackendUrl="shareBackendUrl"
-          />
-        </keep-alive>
+        <ShareTab
+          v-if="activeTab.id === 'share'"
+          :shareBackendUrl="shareBackendUrl"
+        />
+        <ManageTab
+          v-else-if="activeTab.id === 'manage'"
+          :shareBackendUrl="shareBackendUrl"
+        />
       </transition>
     </div>
     <div class="iframe-share__footer">
@@ -56,10 +54,9 @@ export default {
   },
   data() {
     return {
-      currentShare: null,
       tabs: [
-        { id: "share", label: this.$t("IframeSharePlugin.params") },
-        { id: "manage", label: this.$t("IframeSharePlugin.manage_shares") },
+        { id: "share", label: this.$t("IframeSharePlugin.ShareTab.title") },
+        { id: "manage", label: this.$t("IframeSharePlugin.ManageTab.title") },
       ],
       activeTab: "",
     };
@@ -68,16 +65,13 @@ export default {
     shareBackendUrl() {
       const apiUrl = this.$viewer.api.apiUrl;
       if (apiUrl.includes("staging")) {
-        // return SHARE_BACKEND_URL_STAGING;
-        return SHARE_BACKEND_URL_DEV;
+        return SHARE_BACKEND_URL_STAGING;
+        // return SHARE_BACKEND_URL_DEV;
       } else if (apiUrl.includes("next")) {
         return SHARE_BACKEND_URL_NEXT;
       }
       return SHARE_BACKEND_URL;
     },
-  },
-  onClose() {
-    this.currentShare = null;
   },
 };
 </script>

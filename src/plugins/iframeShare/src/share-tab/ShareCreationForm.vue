@@ -1,43 +1,30 @@
 <template>
   <div class="share-creation-form">
     <BIMDataInput
-      :placeholder="
-        $t('IframeSharePlugin.ShareTab.ShareCreationForm.nameInputLabel')
-      "
+      :placeholder="$t('IframeSharePlugin.ShareCreationForm.nameInputLabel')"
+      :error="hasError"
+      :errorMessage="$t('IframeSharePlugin.ShareCreationForm.nameInputError')"
+      @update:modelValue="hasError = false"
       v-model="shareName"
     />
 
-    <!-- <Datepicker
-      v-model="expirationDate"
-      :clear-button="true"
-      :language="fr"
-      :monday-first="true"
-    >
-      <template #afterDateInput>
-        <label style="pointer-events: none">
-          {{ $t("IframeSharePlugin.expiration_date") }}
-        </label>
-      </template>
-    </Datepicker> -->
+    <TokenDurationInput v-model="tokenDuration" />
 
     <BIMDataCheckbox
-      :text="$t('IframeSharePlugin.ShareTab.ShareCreationForm.keepCameraSetup')"
+      :text="$t('IframeSharePlugin.ShareCreationForm.keepCameraSetup')"
       v-model="keepCameraSetup"
     />
 
     <BIMDataButton color="primary" fill radius @click="createShareLink">
       <BIMDataIcon name="chevron" size="xxxs" margin="0 6px 0 0" />
-      <span>{{
-        $t("IframeSharePlugin.ShareTab.ShareCreationForm.createLinkButtonText")
-      }}</span>
+      <span>
+        {{ $t("IframeSharePlugin.ShareCreationForm.createLinkButtonText") }}
+      </span>
     </BIMDataButton>
   </div>
 </template>
 
 <script>
-// import Datepicker from "vuejs-datepicker";
-// import fr from "vuejs-datepicker/dist/locale/translations/fr";
-// import en from "vuejs-datepicker/dist/locale/translations/en";
 import {
   BIMDataButton,
   BIMDataCheckbox,
@@ -45,13 +32,15 @@ import {
   BIMDataInput,
 } from "@bimdata/design-system/components.js";
 
+import TokenDurationInput from "./TokenDurationInput.vue";
+
 export default {
   components: {
     BIMDataButton,
     BIMDataCheckbox,
     BIMDataIcon,
     BIMDataInput,
-    // DatePicker,
+    TokenDurationInput,
   },
   props: {
     shareBackendUrl: {
@@ -61,26 +50,30 @@ export default {
   emits: ["share-created"],
   data() {
     return {
-      // en,
-      // fr,
-      expirationDate: null,
+      hasError: false,
       keepCameraSetup: false,
       shareName: "",
-      shareUrl: null,
+      tokenDuration: 0,
     };
   },
   methods: {
     async createShareLink() {
+      if (!this.shareName) {
+        this.hasError = true;
+        return;
+      }
+
       const body = {
         name: this.shareName,
         ifc_ids: this.$viewer.state.ifcs.map(ifc => ifc.id),
         locale: this.$i18n.locale,
       };
 
-      // Note: if no expiration date is given, a default expiration date
-      // equilvalent to the current date with year 2099 will be set in the backend.
-      if (this.expirationDate) {
-        body.expires_at = this.expirationDate.toISOString();
+      if (this.tokenDuration) {
+        const date = new Date();
+        const today = date.getDate();
+        date.setDate(today + this.tokenDuration);
+        body.expires_at = date.toISOString();
       }
       if (this.keepCameraSetup) {
         const viewer3d = this.$viewer.localContext.getPlugin("viewer3d");
@@ -102,10 +95,15 @@ export default {
         }
       );
 
-      const shareId = (await response.json()).id;
-      this.shareUrl = `${this.shareBackendUrl}/${shareId}`;
+      const share = await response.json();
 
-      this.$emit("share-created", this.shareUrl);
+      this.$emit("share-created", share);
+      this.$viewer.localContext.hub.emit("alert", {
+        type: "success",
+        message: this.$t(
+          "IframeSharePlugin.ShareCreationForm.createSuccessMessage"
+        ),
+      });
     },
   },
 };
@@ -117,6 +115,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: calc(var(--spacing-unit) * 2);
+  gap: calc(var(--spacing-unit) * 3);
 }
 </style>

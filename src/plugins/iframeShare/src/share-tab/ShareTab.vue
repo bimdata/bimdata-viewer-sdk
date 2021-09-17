@@ -1,26 +1,15 @@
 <template>
   <div class="share-tab">
-    <ShareInfo
-      v-if="shareUrl"
-      :shareBackendUrl="shareBackendUrl"
-      :shareUrl="shareUrl"
-    />
-    <ShareCreationForm
-      v-else
-      :shareBackendUrl="shareBackendUrl"
-      @share-created="shareUrl = $event"
-    />
+    <ShareCreationForm :shareBackendUrl="shareBackendUrl" />
   </div>
 </template>
 
 <script>
 import ShareCreationForm from "./ShareCreationForm.vue";
-import ShareInfo from "./ShareInfo.vue";
 
 export default {
   components: {
     ShareCreationForm,
-    ShareInfo,
   },
   props: {
     shareBackendUrl: {

@@ -20,25 +20,34 @@ export default {
       footerLinkExample: "Code examples",
       footerText:
         "By using BIMData viewer on your website, you agree to BIMData API terms of service.",
-      ShareTab: {
-        ShareCreationForm: {
-          nameInputLabel: "Share name",
-          keepCameraSetup: "Keep camera position",
-          createLinkButtonText: "Generate a link",
-        },
-        ShareInfo: {
-          shareIframeTitle: "Embed viewer",
-          shareButtonText: "Share",
-          copyButtonText: "Copy",
-          copySuccessMessage: "Copied !",
-        },
-      },
       ManageTab: {
+        title: "Manage Shares",
         columns: {
           link: "Share link",
           last_use: "Last use date",
           expires_at: "Expiration date",
         },
+      },
+      ShareTab: {
+        title: "Share params",
+      },
+      ShareCreationForm: {
+        nameInputLabel: "Share name",
+        nameInputError: "Please, enter a valid share name !",
+        keepCameraSetup: "Keep camera position",
+        createLinkButtonText: "Generate a link",
+        createSuccessMessage: "Link successfully created.",
+      },
+      ShareInfo: {
+        backButtonText: "Back",
+        shareIframeTitle: "Embed viewer",
+        shareButtonText: "Share",
+        copyButtonText: "Copy",
+        copySuccessMessage: "Copied !",
+      },
+      TokenDurationInput: {
+        label: "Token duration (in days)",
+        info: "(unlimited)",
       },
     },
     fr: {
@@ -46,25 +55,34 @@ export default {
       footerLinkExample: "Exemples de code de développeur",
       footerText:
         "En intégrant la visionneuse BIMData sur votre site, vous acceptez les conditions d'utilisation de l'API BIMData.",
-      ShareTab: {
-        ShareCreationForm: {
-          nameInputLabel: "Nom du lien",
-          keepCameraSetup: "Conserver la position de la caméra",
-          createLinkButtonText: "Générer un lien",
-        },
-        ShareInfo: {
-          shareIframeTitle: "Intégrer la visionneuse",
-          shareButtonText: "Partager",
-          copyButtonText: "Copier",
-          copySuccessMessage: "Copié !",
-        },
-      },
       ManageTab: {
+        title: "Gérer",
         columns: {
           link: "Lien de partage",
           last_use: "Dernière utilisation",
           expires_at: "Date d'expiration",
         },
+      },
+      ShareTab: {
+        title: "Paramètres de partage",
+      },
+      ShareCreationForm: {
+        nameInputLabel: "Nom du lien",
+        nameInputError: "Nom de lien invalide !",
+        keepCameraSetup: "Conserver la position de la caméra",
+        createLinkButtonText: "Générer un lien",
+        createSuccessMessage: "Lien créé avec succès.",
+      },
+      ShareInfo: {
+        backButtonText: "Retour",
+        shareIframeTitle: "Intégrer la visionneuse",
+        shareButtonText: "Partager",
+        copyButtonText: "Copier",
+        copySuccessMessage: "Copié !",
+      },
+      TokenDurationInput: {
+        label: "Durée de validité du token (en jours)",
+        info: "(illimitée)",
       },
     },
   },

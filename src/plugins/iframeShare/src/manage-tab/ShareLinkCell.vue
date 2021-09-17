@@ -3,10 +3,16 @@
     <span class="share-link-cell__name">
       {{ share.name || "(None)" }}
     </span>
-    <BIMDataButton ghost rounded icon @click="openShareLink">
-      <span style="font-size: 18px">&nearr;</span>
+    <BIMDataButton ghost rounded icon @click="$emit('open', share)">
+      <BIMDataIcon name="share" size="xs" />
     </BIMDataButton>
-    <BIMDataButton ghost rounded icon @click="showViewpoint">
+    <BIMDataButton
+      :disabled="!share.camera_settings"
+      ghost
+      rounded
+      icon
+      @click="showViewpoint"
+    >
       <BIMDataIcon name="show" size="xs" />
     </BIMDataButton>
   </div>
@@ -33,10 +39,8 @@ export default {
       required: true,
     },
   },
+  emits: ["open"],
   methods: {
-    openShareLink() {
-      window.open(`${this.shareBackendUrl}/${this.share.id}`);
-    },
     showViewpoint() {
       const viewer3d = this.$viewer.localContext.getPlugin("viewer3d");
       viewer3d.setViewpoint(this.share.camera_settings);

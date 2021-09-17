@@ -6,10 +6,21 @@
           <BIMDataSpinner />
         </div>
       </template>
+      <template v-else-if="showShareInfo">
+        <ShareInfo
+          :shareBackendUrl="shareBackendUrl"
+          :share="selectedShare"
+          @close="closeShareInfo"
+        />
+      </template>
       <template v-else>
         <BIMDataTable :columns="shareColumns" :rows="shareRows" :rowHeight="40">
           <template #cell-link="{ row: share }">
-            <ShareLinkCell :shareBackendUrl="shareBackendUrl" :share="share" />
+            <ShareLinkCell
+              :shareBackendUrl="shareBackendUrl"
+              :share="share"
+              @open="openShareInfo"
+            />
           </template>
         </BIMDataTable>
       </template>
@@ -22,12 +33,15 @@ import {
   BIMDataSpinner,
   BIMDataTable,
 } from "@bimdata/design-system/components.js";
+
+import ShareInfo from "./ShareInfo.vue";
 import ShareLinkCell from "./ShareLinkCell.vue";
 
 export default {
   components: {
     BIMDataSpinner,
     BIMDataTable,
+    ShareInfo,
     ShareLinkCell,
   },
   props: {
@@ -39,6 +53,7 @@ export default {
   data() {
     return {
       loading: false,
+      selectedShare: null,
       shareColumns: [
         {
           id: "link",
@@ -58,9 +73,13 @@ export default {
         },
       ],
       shareRows: [],
+      showShareInfo: false,
     };
   },
   mounted() {
+    this.loadShares();
+  },
+  activated() {
     this.loadShares();
   },
   methods: {
@@ -89,6 +108,14 @@ export default {
         };
       });
       this.loading = false;
+    },
+    openShareInfo(share) {
+      this.selectedShare = share;
+      this.showShareInfo = true;
+    },
+    closeShareInfo() {
+      this.selectedShare = null;
+      this.showShareInfo = false;
     },
   },
 };
