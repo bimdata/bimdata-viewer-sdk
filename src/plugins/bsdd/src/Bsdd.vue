@@ -48,7 +48,7 @@
     </div>
     <p class="p-y-6 p-x-24">
       <strong>Current type:</strong>
-      {{ currentIfcType ? currentIfcType : `aucun élément sélectionné` }}
+      {{ currentIfcType ? currentIfcType : `no selected element` }}
     </p>
     <Properties
       :domain="selectedDomain"
