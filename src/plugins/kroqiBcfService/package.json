@@ -1,13 +1,13 @@
 {
-  "name": "@bimdata/bsdd-viewer-plugin",
-  "version": "0.0.2",
-  "description": "bsdd BIMData Viewer Plugin",
+  "name": "@bimdata/bcf-kroqi-premium-service",
+  "version": "0.0.3",
+  "description": "kroqiBcfService BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "watch": "rollup --watch -c",
     "prepublishOnly": "npm run build"
   },
-  "main": "dist/bsdd.plugin.js",
+  "main": "dist/kroqiBcfService.plugin.js",
   "files": [
     "dist"
   ],
@@ -15,14 +15,12 @@
     "BIMData",
     "Viewer",
     "Plugin",
-    "bsdd"
+    "kroqiBcfService"
   ],
   "dependencies": {
-    "@bimdata/design-system": "^0.3.18",
-    "lodash": "^4.17.21"
+    "@bimdata/design-system": "^0.2.3"
   },
   "devDependencies": {
-    "@rollup/plugin-image": "^2.0.5",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@rollup/plugin-url": "^6.0.0",
     "rollup": "^2.35.1",

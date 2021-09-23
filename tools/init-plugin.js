@@ -69,7 +69,8 @@ function askQuestions() {
           value: null,
         },
       ],
-      message: "Is your plugin meant to be a dedicated window, be loaded with a button, none of them (no UI) ?",
+      message:
+        "Is your plugin meant to be a dedicated window, be loaded with a button, none of them (no UI) ?",
     },
     {
       name: "buttonPosition",
@@ -86,7 +87,7 @@ function askQuestions() {
       ],
       message: "Where do you want your icon?",
       default: "left",
-      when: (answers) => answers.type === "button"
+      when: answers => answers.type === "button",
     },
     {
       name: "menuType",
@@ -103,7 +104,7 @@ function askQuestions() {
       ],
       message: "What panel kind do you want?",
       default: "simple",
-      when: (answers) => answers.type === "button"
+      when: answers => answers.type === "button",
     },
     {
       name: "windowVisibility",
@@ -122,30 +123,46 @@ function askQuestions() {
       default: ["3dviewer"],
       validate: input => {
         if (input.length === 0) {
-          return "You must select at least 1 window or your button won't be shown."
+          return "You must select at least 1 window or your button won't be shown.";
         }
         return true;
       },
-      when: (answers) => answers.type === "button"
+      when: answers => answers.type === "button",
     },
     {
       name: "closeOnUserInteraction",
       type: "confirm",
-      message: "Should your plugin be closed when the user interacts with the model?",
+      message:
+        "Should your plugin be closed when the user interacts with the model?",
       default: false,
-      when: (answers) => answers.type === "button"
+      when: answers => answers.type === "button",
     },
   ];
   return inquirer.prompt(questions);
 }
 
 const run = async () => {
-  console.log(chalk.green("This tool asks you basic questions and setup a plugin boilerplate"));
+  console.log(
+    chalk.green(
+      "This tool asks you basic questions and setup a plugin boilerplate"
+    )
+  );
   console.log(chalk.green("There are many options not covered by this tools"));
-  console.log(chalk.green("You can will be able to change any value manually later"));
-  console.log(chalk.green("You can find complete examples in the documentation: https://developers.bimdata.io"));
+  console.log(
+    chalk.green("You can will be able to change any value manually later")
+  );
+  console.log(
+    chalk.green(
+      "You can find complete examples in the documentation: https://developers.bimdata.io"
+    )
+  );
   const answers = await askQuestions();
-  answers.UpperCaseName = answers.name.replace(/^\w/, (c) => c.toUpperCase());
+
+  // Format some data for the template
+  answers.windowVisibility = answers.windowVisibility.map(window =>
+    window.substring(0, window.indexOf("viewer"))
+  );
+  answers.UpperCaseName = answers.name.replace(/^\w/, c => c.toUpperCase());
   answers.keepOpen = !answers.closeOnUserInteraction;
 
   const pluginDir = pluginsDir + "/" + answers.name;
@@ -159,13 +176,25 @@ const run = async () => {
   console.log();
 
   console.log(chalk.green("You can now load your plugin to the viewer:"));
-  console.log("Open " + chalk.red("src/views/viewer.vue") + " and add the import line:");
+  console.log(
+    "Open " + chalk.red("src/views/viewer.vue") + " and add the import line:"
+  );
   console.log();
-  console.log(chalk.red('    import ') + answers.name + chalk.red(' from ') + chalk.yellowBright(`"@/plugins/${answers.name}/src/${answers.name}.plugin.js"`) + ';');
+  console.log(
+    chalk.red("    import ") +
+      answers.name +
+      chalk.red(" from ") +
+      chalk.yellowBright(
+        `"@/plugins/${answers.name}/src/${answers.name}.plugin.js"`
+      ) +
+      ";"
+  );
   console.log();
   console.log("And add the plugin with the registerPlugin method: ");
   console.log();
-  console.log("    bimdataViewer." + chalk.cyan('registerPlugin') + `(${answers.name});`);
+  console.log(
+    "    bimdataViewer." + chalk.cyan("registerPlugin") + `(${answers.name});`
+  );
   console.log();
 };
 

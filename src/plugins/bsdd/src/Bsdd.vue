@@ -15,10 +15,9 @@
           width="100%"
         >
           <template #header>
-            <span v-if="selectedLanguage"
-              >({{ selectedLanguage.isoCode }})
-              {{ selectedLanguage.name }}</span
-            >
+            <span v-if="selectedLanguage">
+              ({{ selectedLanguage.isoCode }}) {{ selectedLanguage.name }}
+            </span>
             <span v-else>Language</span>
           </template>
           <template #element="{ element }">
@@ -47,64 +46,25 @@
         </BIMDataDropdownList>
       </div>
     </div>
-    <BIMDataTabs
-      :tabs="tabs"
-      width="100%"
-      height="40px"
-      tabSize="50%"
-      @tab-selected="activeTab = $event"
-      selected="properties"
-      class="p-x-24"
+    Current type: {{ currentIfcType }}
+    <Properties
+      :domain="selectedDomain"
+      :language="selectedLanguage"
+      :availableClasses="availableClasses"
     />
-    <div
-      class="bsdd-plugin__content p-x-24 flex"
-      v-show="activeTab.id === 'properties'"
-    >
-      <Properties
-        :domain="selectedDomain"
-        :language="selectedLanguage"
-        :availableClasses="availableClasses"
-      />
-    </div>
-    <div
-      class="bsdd-plugin__content p-x-24 flex"
-      v-show="activeTab.id === 'classifications'"
-    >
-      <Classifications
-        :domain="selectedDomain"
-        :language="selectedLanguage"
-        :availableClasses="availableClasses"
-      />
-    </div>
   </div>
 </template>
 <script>
 import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-import BIMDataTabs from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTabs.js";
 
-import Classifications from "./Classifications.vue";
 import Properties from "./Properties.vue";
-import { requestApi } from "./utils.js";
-
-function sortAlpha(prop) {
-  return (a, b) => {
-    if (a[prop] < b[prop]) {
-      return -1;
-    }
-    if (a[prop] > b[prop]) {
-      return 1;
-    }
-    return 0;
-  };
-}
+import { requestApi, toIfcType } from "./utils.js";
+import { sortBy } from "lodash";
 
 export default {
-  // https://vuejs.org/v2/guide/components.html
   name: "bsdd",
   components: {
     BIMDataDropdownList,
-    BIMDataTabs,
-    Classifications,
     Properties,
   },
   data() {
@@ -114,47 +74,87 @@ export default {
       availableClasses: [],
       availableLanguages: [],
       selectedLanguage: null,
-      tabs: [
-        { id: "properties", label: "Properties" },
-        { id: "classifications", label: "Classifications" },
-      ],
-      activeTab: "",
+      currentIfcType: null,
+      loading: false,
     };
   },
-  watch: {},
+  watch: {
+    currentIfcType() {
+      this.fetchClasses();
+    },
+    selectedDomain() {
+      this.fetchClasses();
+    },
+    selectedLanguage() {
+      this.fetchClasses();
+    },
+  },
   async created() {
+    this.loading = true;
     const [availableDomains, availableLanguages] = await Promise.all([
       requestApi("/Domain/v2", "GET"),
       requestApi("/Language/v1", "GET"),
     ]);
-    this.availableDomains = availableDomains.sort(sortAlpha("name"));
-    this.availableLanguages = availableLanguages.sort(sortAlpha("name"));
+    this.availableDomains = sortBy(availableDomains, "name");
+    this.availableLanguages = sortBy(availableLanguages, "name");
+    this.loading = false;
+
+    this.$viewer.state.hub.on("objects-selected", this.updateCurrentIfcType);
+    this.$viewer.state.hub.on("objects-deselected", this.updateCurrentIfcType);
   },
   methods: {
+    updateCurrentIfcType() {
+      if (this.$viewer.state.selectedObjects.length === 0) {
+        this.currentIfcType = null;
+        return;
+      }
+      const bimdataType =
+        this.$viewer.state.selectedObjects[0] &&
+        this.$viewer.state.selectedObjects[0].type;
+      this.currentIfcType = toIfcType(bimdataType);
+    },
     onDomainClick(domain) {
       this.selectedDomain = domain;
-      this.fetchClasses();
     },
     onLanguageClick(language) {
       this.selectedLanguage = language;
-      this.fetchClasses();
     },
     async fetchClasses() {
-      if (!this.selectedDomain) {
+      if (!this.selectedDomain || !this.currentIfcType) {
         return;
       }
+      this.loading = true;
       const options = {
         params: {
           DomainNamespaceUri: this.selectedDomain.namespaceUri,
+          RelatedIfcEntity: this.currentIfcType,
         },
       };
       if (this.selectedLanguage) {
         options.params.LanguageCode = this.selectedLanguage.isoCode;
       }
       let response = await requestApi("/SearchListOpen/v2", "GET", options);
-      this.availableClasses = response.domains[0].classifications.sort(
-        sortAlpha("name")
+      let availableClasses = sortBy(
+        response.domains[0].classifications,
+        "name"
       );
+      if (availableClasses.length === 0) {
+        const textSearchOptions = {
+          params: {
+            DomainNamespaceUris: [this.selectedDomain.namespaceUri],
+            SearchText: this.currentIfcType,
+            TypeFilter: "Classifications",
+          },
+        };
+        response = await requestApi(
+          "/TextSearchListOpen/v5",
+          "GET",
+          textSearchOptions
+        );
+        availableClasses = sortBy(response.classifications, "name");
+      }
+      this.availableClasses = availableClasses;
+      this.loading = false;
     },
   },
 };

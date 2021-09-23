@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "init-plugin": "node tools/init-plugin.js",
-    "postinstall": "node build/install-plugins.js"
+    "install-plugins": "node build/install-plugins.js"
   },
   "husky": {
     "hooks": {
@@ -16,7 +17,7 @@
   },
   "dependencies": {
     "@bimdata/bimdata-api-client": "^6.8.0",
-    "@bimdata/viewer": "^1.5.0",
+    "@bimdata/viewer": "^1.7.0-rc.34",
     "oidc-client": "^1.10.1",
     "vue": "^2.6.12",
     "vue-i18n": "^8.22.2",
