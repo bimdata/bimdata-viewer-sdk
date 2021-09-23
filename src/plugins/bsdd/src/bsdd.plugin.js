@@ -7,6 +7,7 @@ export default {
   window: {
     name: "bSDD",
     label: "BsddPlugin.window_label",
+    plugins: ["alerts"],
     icon: {
       imgUri,
     },

@@ -162,7 +162,7 @@ import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponent
 import BIMDataSelect from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSelect.js";
 import BIMDataCheckbox from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCheckbox.js";
 import { requestApi } from "./utils.js";
-import { sortBy } from "lodash";
+import _ from "lodash";
 
 export default {
   name: "bsdd",
@@ -251,13 +251,13 @@ export default {
       row.toUpdate = true;
     },
     async showCurrentObjectProperties(element) {
+      this.displayedElement = element;
       const elementDetails = await new this.$viewer.api.apiClient.IfcApi().getElement(
         this.$viewer.api.cloudId,
         element.ifc.id,
         this.$viewer.api.projectId,
         element.uuid
       );
-      this.displayedElement = element;
       this.displayedElementDetails = elementDetails;
       this.updateRowsWithCurrentProperties();
     },
@@ -292,7 +292,7 @@ export default {
         }
         return prop;
       });
-      this.rows = sortBy(rows, ["propertySet", "name"]);
+      this.rows = _.sortBy(rows, ["propertySet", "name"]);
       this.updateRowsWithCurrentProperties();
     },
     updateRowsWithCurrentProperties() {

@@ -59,7 +59,7 @@ import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponent
 
 import Properties from "./Properties.vue";
 import { requestApi, toIfcType } from "./utils.js";
-import { sortBy } from "lodash";
+import _ from "lodash";
 
 export default {
   name: "bsdd",
@@ -95,8 +95,8 @@ export default {
       requestApi("/Domain/v2", "GET"),
       requestApi("/Language/v1", "GET"),
     ]);
-    this.availableDomains = sortBy(availableDomains, "name");
-    this.availableLanguages = sortBy(availableLanguages, "name");
+    this.availableDomains = _.sortBy(availableDomains, "name");
+    this.availableLanguages = _.sortBy(availableLanguages, "name");
     this.loading = false;
 
     this.$viewer.state.hub.on("objects-selected", this.updateCurrentIfcType);
@@ -134,7 +134,7 @@ export default {
         options.params.LanguageCode = this.selectedLanguage.isoCode;
       }
       let response = await requestApi("/SearchListOpen/v2", "GET", options);
-      let availableClasses = sortBy(
+      let availableClasses = _.sortBy(
         response.domains[0].classifications,
         "name"
       );
@@ -151,7 +151,7 @@ export default {
           "GET",
           textSearchOptions
         );
-        availableClasses = sortBy(response.classifications, "name");
+        availableClasses = _.sortBy(response.classifications, "name");
       }
       this.availableClasses = availableClasses;
       this.loading = false;
