@@ -46,7 +46,10 @@
         </BIMDataDropdownList>
       </div>
     </div>
-    Current type: {{ currentIfcType }}
+    <p class="p-y-6 p-x-24">
+      <strong>Current type:</strong>
+      {{ currentIfcType ? currentIfcType : `aucun élément sélectionné` }}
+    </p>
     <Properties
       :domain="selectedDomain"
       :language="selectedLanguage"
@@ -196,6 +199,10 @@ export default {
         }
       }
     }
+  }
+
+  p {
+    margin: 0;
   }
 
   &__content {

@@ -1,6 +1,6 @@
 <template>
   <!-- https://vuejs.org/v2/guide/syntax.html -->
-  <div class="bsdd-properties">
+  <div class="bsdd-properties p-x-24">
     <BIMDataDropdownList
       :list="availableClasses"
       :perPage="20"
@@ -8,7 +8,7 @@
       width="100%"
       :disabled="availableClasses.length === 0"
       @element-click="onClassClick"
-      class="m-t-12"
+      class="m-t-18"
     >
       <template #header>
         <span v-if="selectedClass">{{ selectedClass.name }}</span>
@@ -17,7 +17,7 @@
       <template #element="{ element }">
         <BIMDataTooltip
           :message="element.definition"
-          className="bimdata-tooltip--bottom bimdata-tooltip--primary bimdata-tooltip--arrow"
+          :className="tooltipClasses(availableClasses, element)"
         >
           <template #content>
             <span>{{ element.name }}</span></template
@@ -31,6 +31,7 @@
       :disabled="!selectedObjects.length"
       :perPage="30"
       elementKey="id"
+      class="m-t-18"
     >
       <template #header>
         <div class="bimdata-properties__body">
@@ -73,7 +74,7 @@
               <td>
                 {{ row.propertySet }}
               </td>
-              <td>
+              <td class="property-name">
                 <BIMDataTooltip
                   :message="row.description"
                   className="bimdata-tooltip--up bimdata-tooltip--primary"
@@ -123,11 +124,11 @@
           </tbody>
         </table>
       </div>
-      <div v-else>
+      <div class="bsdd-properties__content__empty p-y-30 text-center" v-else>
         There is no classification with properties in this dictionnary
       </div>
     </div>
-    <div class="bsdd-properties__footer p-24 flex justify-center">
+    <div class="bsdd-properties__footer flex justify-center m-18">
       <BIMDataButton
         color="primary"
         fill
@@ -136,6 +137,7 @@
           !displayedElement.id || rows.filter(r => r.toUpdate).length === 0
         "
         @click="applyToObject"
+        class="m-r-12"
       >
         Apply to object
       </BIMDataButton>
@@ -147,6 +149,7 @@
           !displayedElement.id || rows.filter(r => r.toUpdate).length === 0
         "
         @click="applyToSelection"
+        class="m-r-12"
       >
         Apply to selection
       </BIMDataButton>
@@ -437,6 +440,15 @@ export default {
         message: "All selected objects updated",
       });
     },
+    tooltipClasses(availableClasses, element) {
+      const lastElementIndex = availableClasses.indexOf(element);
+      const isLastElement = lastElementIndex === availableClasses.length - 1;
+      if (isLastElement) {
+        return `bimdata-tooltip--up bimdata-tooltip--primary bimdata-tooltip--arrow`;
+      } else {
+        return `bimdata-tooltip--bottom bimdata-tooltip--primary bimdata-tooltip--arrow`;
+      }
+    },
   },
 };
 </script>
@@ -444,13 +456,15 @@ export default {
 <style lang="scss" scoped>
 @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd-properties {
-  height: 100%;
-  padding: $spacing-unit;
-
+  height: auto;
+  background-color: $color-white;
   &__content {
     &__left,
     &__right {
       flex: 1;
+    }
+    &__empty {
+      width: 100%;
     }
   }
   &__footer {
@@ -471,12 +485,19 @@ export default {
           min-height: calc(#{$spacing-unit} * 2);
           font-size: calculateEm(11px);
           text-align: left;
+          min-width: 150px;
+          &:first-child {
+            min-width: 50px;
+          }
         }
       }
       tbody {
         tr {
           td {
             color: $color-tertiary-darkest;
+            &.property-name {
+              font-weight: bold;
+            }
           }
           &:nth-child(odd) {
             background-color: $color-tertiary-lightest;
@@ -494,6 +515,35 @@ export default {
         }
       }
     }
+    ::v-deep.toggle__button .toggle__switch {
+      margin: 0 0px;
+    }
+  }
+  .bimdata-dropdown-list {
+    ::v-deep.bimdata-tooltip {
+      width: 100%;
+    }
+    ::v-deep.bimdata-tooltip__text {
+      text-align: left;
+      left: 0;
+      transform: none;
+      &::before {
+        left: 5%;
+      }
+    }
+  }
+  ::v-deep.bimdata-dropdown-list__content {
+    width: 100%;
+  }
+  ::v-deep.bimdata-list {
+    li {
+      padding: 6px 12px;
+    }
+  }
+  ::v-deep.bimdata-tooltip__text {
+    padding: 10px;
+    font-size: 11px;
+    font-weight: normal;
   }
 }
 </style>
