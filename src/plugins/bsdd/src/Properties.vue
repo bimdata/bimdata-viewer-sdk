@@ -120,6 +120,18 @@
               <td>
                 {{ row.currentValue }}
               </td>
+              <td>
+                <BIMDataButton
+                  color="primary"
+                  fill
+                  radius
+                  :disabled="!row.toUpdate"
+                  @click="createBCF(row)"
+                  class="m-r-12"
+                >
+                  Generate
+                </BIMDataButton>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -195,7 +207,7 @@ export default {
   data() {
     return {
       selectedClass: null,
-      header: ["Update", "PSet", "Name", "Value", "Current Value"],
+      header: ["Update", "PSet", "Name", "Value", "Current Value", "BCF"],
       rows: [],
       displayedElement: {},
       displayedElementDetails: {},
@@ -339,6 +351,9 @@ export default {
     },
     async updateObject(element, elementDetails = null) {
       const apiClient = new this.$viewer.api.apiClient.IfcApi();
+      const conflictingProperties = [];
+      const createdProperties = [];
+
       if (!elementDetails) {
         elementDetails = await apiClient.getElement(
           this.$viewer.api.cloudId,
@@ -387,6 +402,7 @@ export default {
               this.$viewer.api.projectId,
               data
             );
+            createdProperties.push(...properties);
           } else {
             for (let prop of properties) {
               const existingProp = existingPSet.properties.find(
@@ -402,15 +418,18 @@ export default {
                   prop
                 );
               } else {
-                await apiClient.updateElementPropertySetProperty(
-                  this.$viewer.api.cloudId,
-                  element.uuid,
-                  existingProp.id,
-                  element.ifc.id,
-                  this.$viewer.api.projectId,
-                  existingPSet.id,
-                  { value: prop.value }
-                );
+                if (existingProp.value !== prop.value) {
+                  await apiClient.updateElementPropertySetProperty(
+                    this.$viewer.api.cloudId,
+                    element.uuid,
+                    existingProp.id,
+                    element.ifc.id,
+                    this.$viewer.api.projectId,
+                    existingPSet.id,
+                    { value: prop.value }
+                  );
+                  conflictingProperties.push(prop);
+                }
               }
             }
           }
@@ -448,6 +467,42 @@ export default {
       } else {
         return `bimdata-tooltip--bottom bimdata-tooltip--primary bimdata-tooltip--arrow`;
       }
+    },
+    async createBCF(row) {
+      this.sanitizeEmptyValue(row);
+      const apiClient = new this.$viewer.api.apiClient.BcfApi();
+      const title = `Confirm value for ${this.displayedElement.name} ${row.name}`;
+      let description = `Please validate value ${row.value} for property ${row.name} in PSet ${row.propertySet}`;
+      const type = `Clash`;
+      const data = {
+        title,
+        description,
+        topic_type: type,
+        topic_status: "Opened",
+        labels: ["Properties"],
+        viewpoints: [
+          {
+            components: {
+              selection: [
+                {
+                  ifc_guid: this.displayedElement.uuid,
+                  originating_system: "BIMData.io bSDD plugin",
+                },
+              ],
+            },
+          },
+        ],
+      };
+      await apiClient.createFullTopic(this.$viewer.api.projectId, data);
+      try {
+        await this.$viewer.globalContext.getPlugins("bcf")[0].fetchTopics();
+      } catch (e) {
+        console.log("BCF not initialized");
+      }
+      this.$viewer.localContext.hub.emit("alert", {
+        type: "success",
+        message: "BCF created",
+      });
     },
   },
 };

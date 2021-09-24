@@ -2,7 +2,7 @@
   <!-- https://vuejs.org/v2/guide/syntax.html -->
   <div class="bsdd-plugin">
     <div class="bsdd-plugin__header flex items-center">
-      <span class="p-12">bSDD connector</span>
+      <span class="p-12">bSDD Connector</span>
     </div>
     <div class="bsdd-plugin__filters flex p-24">
       <div class="bsdd-plugin__filters__left p-r-12">
