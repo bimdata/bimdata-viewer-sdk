@@ -22,6 +22,9 @@
               @open="openShareInfo"
             />
           </template>
+          <template #cell-actions="{ row: share }">
+            <ShareActionMenu @rename="() => {}" @delete="() => {}" />
+          </template>
         </BIMDataTable>
       </template>
     </transition>
@@ -34,13 +37,15 @@ import {
   BIMDataTable,
 } from "@bimdata/design-system/components.js";
 
-import ShareInfo from "./ShareInfo.vue";
-import ShareLinkCell from "./ShareLinkCell.vue";
+import ShareActionMenu from "../components/ShareActionMenu.vue";
+import ShareInfo from "../components/ShareInfo.vue";
+import ShareLinkCell from "../components/ShareLinkCell.vue";
 
 export default {
   components: {
     BIMDataSpinner,
     BIMDataTable,
+    ShareActionMenu,
     ShareInfo,
     ShareLinkCell,
   },
@@ -69,6 +74,12 @@ export default {
           id: "expires_at",
           label: this.$t("IframeSharePlugin.ManageTab.columns.expires_at"),
           width: "110px",
+          align: "center",
+        },
+        {
+          id: "actions",
+          label: " ",
+          width: "36px",
           align: "center",
         },
       ],

@@ -31,6 +31,10 @@ export default {
       ShareTab: {
         title: "Share params",
       },
+      ShareActionMenu: {
+        renameButtonText: "Rename",
+        deleteButtonText: "Delete",
+      },
       ShareCreationForm: {
         nameInputLabel: "Share name",
         nameInputError: "Please, enter a valid share name !",
@@ -65,6 +69,10 @@ export default {
       },
       ShareTab: {
         title: "Paramètres de partage",
+      },
+      ShareActionMenu: {
+        renameButtonText: "Renommer",
+        deleteButtonText: "Supprimer",
       },
       ShareCreationForm: {
         nameInputLabel: "Nom du lien",

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ShareCreationForm from "./ShareCreationForm.vue";
+import ShareCreationForm from "../components/ShareCreationForm.vue";
 
 export default {
   components: {
