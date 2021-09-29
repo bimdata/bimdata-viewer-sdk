@@ -48,7 +48,7 @@
           x="23"
           y="23"
         >
-          <BIMDataArrowIcon />
+          <BIMDataIcon name="arrow"  fill color="default" />
         </BIMDataIcon>
       </BIMDataButton>
       <div class="product-item">
@@ -63,7 +63,7 @@
         <BIMDataButton
           width="100%"
           @click="saveInBimdata"
-          :disabled="this.$viewer.state.selectedObjects.length === 0"
+          :disabled="buttonDisabled"
           class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
         >
           {{ $t("bimObjectPlugin.applySelected") }}
@@ -100,18 +100,19 @@
 
 <script>
 import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataComponents from "../node_modules/@bimdata/design-system";
-
+import BIMDataSearch from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSearch.js";
+import BIMDataCard from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCard.js";
+import BIMDataIcon from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcon.js";
+import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
     BIMDataLoading,
-    BIMDataSearch: BIMDataComponents.BIMDataSearch,
-    BIMDataCard: BIMDataComponents.BIMDataCard,
-    BIMDataButton: BIMDataComponents.BIMDataButton,
-    BIMDataIcon: BIMDataComponents.BIMDataIcon,
-    BIMDataArrowIcon: BIMDataComponents.BIMDataArrowIcon,
+    BIMDataSearch,
+    BIMDataCard,
+    BIMDataButton,
+    BIMDataIcon,
   },
   data: function () {
     return {
@@ -123,6 +124,7 @@ export default {
       classifications: [],
       searchText: "",
       loading: false,
+      buttonDisabled: true,
     };
   },
   computed: {
@@ -145,6 +147,18 @@ export default {
   created() {
     this.getProducts();
     this.loading = false;
+
+    const reactOnSelectionChange = () => {
+      this.buttonDisabled = this.$viewer.state.selectedObjects.length === 0;
+    };
+
+    this.stateSubscriptions = [
+      this.$viewer.state.hub.on("objects-deselected", reactOnSelectionChange),
+      this.$viewer.state.hub.on("objects-selected", reactOnSelectionChange),
+    ];
+  },
+  destroyed() {
+    this.stateSubscriptions.forEach(sub => this.$viewer.state.hub.off(sub));
   },
   methods: {
     async getProducts() {
@@ -316,8 +330,8 @@ export default {
 };
 </script>
 
-<style type="scss" scoped>
-@import "~@bimdata/design-system/dist/styles/component.css";
+<style lang="scss" scoped>
+@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 
 /* custom BIM OBJECT - global */
 .bim-object {

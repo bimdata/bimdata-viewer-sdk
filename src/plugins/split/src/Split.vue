@@ -21,13 +21,15 @@
   </div>
 </template>
 <script>
-import BIMDataComponents from "../node_modules/@bimdata/design-system";
+import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import BIMDataCheckbox from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCheckbox.js";
+import BIMDataInput from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataInput.js";
 export default {
   name: "split-component",
   components: {
-    BIMDataButton: BIMDataComponents.BIMDataButton,
-    BIMDataCheckbox: BIMDataComponents.BIMDataCheckbox,
-    BIMDataInput: BIMDataComponents.BIMDataInput,
+    BIMDataButton,
+    BIMDataCheckbox,
+    BIMDataInput,
   },
   props: {
     active: Boolean, // Listen to activation state

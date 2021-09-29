@@ -62,13 +62,7 @@ export default {
     bimdataViewer.registerPlugin(kroqiBcfService);
     bimdataViewer.registerPlugin(bsdd);
 
-    bimdataViewer.registerWindow({ name: "structure", plugins: ["structure"] });
-
-    bimdataViewer.mount(`#${this.viewerId}`, {
-      ratios: [60, 40],
-      direction: "row",
-      children: ["3d", "bSDD"],
-    });
+    bimdataViewer.mount(`#${this.viewerId}`);
 
     this.$watch(
       () => this.oidcAccessToken,

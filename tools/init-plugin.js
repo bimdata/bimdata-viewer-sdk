@@ -65,7 +65,7 @@ function askQuestions() {
           value: "button",
         },
         {
-          name: "None of them (My plugin won't have any UI)",
+          name: "None of them (My plugin won't have any UI or I'll handle it myself)",
           value: null,
         },
       ],
@@ -159,9 +159,11 @@ const run = async () => {
   const answers = await askQuestions();
 
   // Format some data for the template
-  answers.windowVisibility = answers.windowVisibility.map(window =>
-    window.substring(0, window.indexOf("viewer"))
-  );
+  if (answers.windowVisibility) {
+    answers.windowVisibility = answers.windowVisibility.map(window =>
+      window.substring(0, window.indexOf("viewer"))
+    );
+  }
   answers.UpperCaseName = answers.name.replace(/^\w/, c => c.toUpperCase());
   answers.keepOpen = !answers.closeOnUserInteraction;
 

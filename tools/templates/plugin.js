@@ -38,7 +38,7 @@ export default {
     },
     fr: {
       window_label: '{{UpperCaseName}}'
-    }
+    },
   },
   {%- endif %}
 };

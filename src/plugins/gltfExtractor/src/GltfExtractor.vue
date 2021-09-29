@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BIMDataButton from "../node_modules/@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
