@@ -1,30 +1,45 @@
-BIMData viewer SDK
-==================
+# BIMData viewer SDK
 
 This repo is a pre-configured environment to develop BIMData Viewer plugins.
 You can develop, test, build, package and share your plugin easily.
 
 ## Setup
+
 First, you must create a BIMData Application (see https://developers.bimdata.io/tutorials/dev_create_an_application.html)
 The SDK needs at least `cloud:read` and `ifc:read` scopes.
 The default BCF Plugin needs `bcf:read` and `bcf:write` scopes, plus you can add any scope you need for your plugin.
 
-The redirect URI is by default http://localhost:8080/oidc-callback
+The default redirect URI is http://localhost:8080/oidc-callback
 
-Then you can copy the `.env.example` file and add your `client_id`:
+Then you can copy the `.env.example` file and add your `client_id` in it:
+
 ```
-npm install
 cp .env.example .env
 ```
 
-Edit `.env` file with your data (your `client_id`)
+Install SDK dependecies:
+
+```
+npm install
+```
+
+To have everything working you also need to install all plugins on the first setup.
+
+**Note :** Usualy you only need to do this once, you can then start working on your plugins and install/build them
+individually as needed.
+
+```
+npm run install-plugins
+```
 
 ### Compiles and hot-reloads for development
+
 ```
-npm run serve
+npm run dev
 ```
 
 ### Usage
+
 When going on http://localhost:8080, a simple interface will parse your projects and models and let you open the one you want.
 You can directly open one by opening an URL using specific Ids: http://localhost:8080/viewer?cloudId=391&projectId=634&ifcId=1491
 
@@ -72,15 +87,18 @@ To publish it, update the `package.json` file with the proper information and ju
 
 The code is minified to protect your code as much as possible.
 
-
 ### More info about how it works
-The SDK itself uses *Webpack* to build. The packaging uses *Rollup*. If you need a complex JS flow, it may lead to some issues.
+
+The SDK itself uses _Webpack_ to build. The packaging uses _Rollup_. If you need a complex JS flow, it may lead to some issues.
 To see these issues before deploying, load the packaged version in the SDK:
+
 ```bash
 cd src/plugins/{your_plugin}
 npm run watch
 ```
+
 And load the dist version of the plugin:
+
 ```js
 import SplitPlugin from "@/plugins/split/dist/split.plugin.js";
 
