@@ -19,6 +19,7 @@ import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
 import bsdd from "@/plugins/bsdd/src/bsdd.plugin.js";
+import pcNum from "@/plugins/pc-num/src/pc-num.plugin.js";
 
 export default {
   data() {
@@ -61,6 +62,7 @@ export default {
     bimdataViewer.registerPlugin(HolusionPlugin);
     bimdataViewer.registerPlugin(kroqiBcfService);
     bimdataViewer.registerPlugin(bsdd);
+    bimdataViewer.registerPlugin(pcNum);
 
     bimdataViewer.mount(`#${this.viewerId}`);
 
