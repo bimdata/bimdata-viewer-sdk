@@ -262,6 +262,7 @@ export default {
   },
   methods: {
     updateValue(row, value) {
+      debugger;
       row.value = value;
       row.toUpdate = true;
     },
@@ -549,13 +550,13 @@ export default {
       tbody {
         tr {
           td {
-            color: $color-tertiary-darkest;
+            color: var(--color-granite);
             &.property-name {
               font-weight: bold;
             }
           }
           &:nth-child(odd) {
-            background-color: $color-tertiary-lightest;
+            background-color: var(--color-silver-light);
           }
         }
       }

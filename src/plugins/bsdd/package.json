@@ -20,7 +20,7 @@
     "bsdd"
   ],
   "devDependencies": {
-    "@bimdata/design-system": "^0.3.18",
+    "@bimdata/design-system": "^1.1.0-rc.5",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-url": "^6.0.0",
