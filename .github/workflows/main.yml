@@ -10,7 +10,7 @@ jobs:
     if: contains('
       refs/heads/master
       refs/heads/main'
-      , github.ref)
+      , github.event.client_payload.ref)
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
