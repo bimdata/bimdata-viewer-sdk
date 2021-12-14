@@ -20,11 +20,7 @@ module.exports = {
     "linebreak-style": ["off", "unix"],
     quotes: ["off", "double", "avoid-escape"],
     semi: ["off", "always"],
-  },
-  parserOptions: {
-    parser: "babel-eslint",
-    ecmaVersion: 11,
-    sourceType: "module",
+    'vue/multi-word-component-names': 'off',
   },
   ignorePatterns: ["/dist"],
 };
