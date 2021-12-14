@@ -510,10 +510,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
+// @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd-properties {
   height: auto;
-  background-color: $color-white;
+  background-color: var(--color-white);
   &__content {
     &__left,
     &__right {
@@ -523,23 +523,21 @@ export default {
       width: 100%;
     }
   }
-  &__footer {
-  }
   .bimdata-table {
     width: 100%;
-    font-size: calculateEm(14px);
+    font-size: 14px;
     table {
       width: 100%;
       border-collapse: collapse;
-      font-family: $primary-font;
+      font-family: var(--primary-font);
       border-spacing: 0;
       tr {
         th,
         td {
           height: 50px;
-          padding: 0 $spacing-unit;
-          min-height: calc(#{$spacing-unit} * 2);
-          font-size: calculateEm(11px);
+          padding: 0 var(--spacing-unit);
+          min-height: calc(var(--spacing-unit) * 2);
+          font-size: 11px;
           text-align: left;
           min-width: 150px;
           &:first-child {
