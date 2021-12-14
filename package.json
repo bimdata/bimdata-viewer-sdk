@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@bimdata/bimdata-api-client": "^6.21.1",
-    "@bimdata/viewer": "1.9.0-rc.17",
+    "@bimdata/viewer": "^1.9.0-rc.18",
     "oidc-client": "^1.11.5",
     "vue": "^2.6.14",
     "vue-i18n": "^8.26.7",
