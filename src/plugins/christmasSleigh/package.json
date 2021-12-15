@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/christmas-sleigh-viewer-plugin",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "christmas sleigh BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
