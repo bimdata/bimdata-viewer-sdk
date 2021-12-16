@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { BIMDataButton } from "@bimdata/design-system";
+import { BIMDataButton } from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html

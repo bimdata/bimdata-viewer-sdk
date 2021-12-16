@@ -59,9 +59,11 @@
 
 <script>
 import { requestApi } from "./utils.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
-import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-import BIMDataTooltip from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTooltip.js";
+import {
+  BIMDataButton,
+  BIMDataDropdownList,
+  BIMDataTooltip,
+} from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -188,7 +190,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd {
   height: 100%;
   padding: var(--spacing-unit);

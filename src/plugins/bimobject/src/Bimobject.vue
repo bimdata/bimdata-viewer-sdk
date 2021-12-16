@@ -42,7 +42,7 @@
           bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square
         "
       >
-        <BIMDataIcon name="arrow" fill color="default" size="xxs"/>
+        <BIMDataIcon name="arrow" fill color="default" size="xxs" />
       </BIMDataButton>
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
@@ -94,11 +94,14 @@
 </template>
 
 <script>
-import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataSearch from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSearch.js";
-import BIMDataCard from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCard.js";
-import BIMDataIcon from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcon.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import {
+  BIMDataButton,
+  BIMDataCard,
+  BIMDataIcon,
+  BIMDataLoading,
+  BIMDataSearch
+} from "@bimdata/design-system/components.js";
+
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
@@ -498,5 +501,4 @@ export default {
   li:nth-child(even) {
   background-color: var(--color-silver-light);
 }
-
 </style>

@@ -169,13 +169,15 @@
   </div>
 </template>
 <script>
-import BIMDataInput from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataInput.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
-import BIMDataTooltip from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTooltip.js";
-import BIMDataToggle from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataToggle.js";
-import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-import BIMDataSelect from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSelect.js";
-import BIMDataCheckbox from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCheckbox.js";
+import {
+  BIMDataButton,
+  BIMDataCheckbox,
+  BIMDataDropdownList,
+  BIMDataInput,
+  BIMDataSelect,
+  BIMDataToggle,
+  BIMDataTooltip,
+} from "@bimdata/design-system/components.js";
 import { requestApi } from "./utils.js";
 import _ from "lodash";
 
@@ -268,12 +270,13 @@ export default {
     },
     async showCurrentObjectProperties(element) {
       this.displayedElement = element;
-      const elementDetails = await new this.$viewer.api.apiClient.IfcApi().getElement(
-        this.$viewer.api.cloudId,
-        element.ifc.id,
-        this.$viewer.api.projectId,
-        element.uuid
-      );
+      const elementDetails =
+        await new this.$viewer.api.apiClient.IfcApi().getElement(
+          this.$viewer.api.cloudId,
+          element.ifc.id,
+          this.$viewer.api.projectId,
+          element.uuid
+        );
       this.displayedElementDetails = elementDetails;
       this.updateRowsWithCurrentProperties();
     },
@@ -510,7 +513,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// @import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd-properties {
   height: auto;
   background-color: var(--color-white);

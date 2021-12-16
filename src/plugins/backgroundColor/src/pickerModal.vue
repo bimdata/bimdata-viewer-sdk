@@ -23,7 +23,7 @@
 </template>
 <script>
 import colorPicker from "@bimdata/color-picker";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import { BIMDataButton } from "@bimdata/design-system/components.js";
 
 export default {
   name: "colorPickerModal",
@@ -41,7 +41,7 @@ export default {
       this.$emit("close");
     },
     validateColorPicker() {
-      const viewers = this.$viewer.globalContext.getPlugins('viewer3d');
+      const viewers = this.$viewer.globalContext.getPlugins("viewer3d");
       viewers.forEach(viewer => {
         const canvas = document.getElementById(viewer.engine3dCanvasId);
         canvas.style.setProperty("background-color", this.choosedColor);
