@@ -6,7 +6,6 @@
       :loading="false"
     />
     <BIMDataCheckbox
-      class="m-b-12"
       text="Include structure hierarchy"
       v-model="exportStructure"
     >
@@ -14,7 +13,7 @@
     <BIMDataButton
       width="100%"
       @click="exportSplit"
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius m-t-12"
     >
       Generate new model with selected elements
     </BIMDataButton>
