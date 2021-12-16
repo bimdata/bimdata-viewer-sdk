@@ -57,7 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .platform-demo {
   &__header {
     padding: 40px;
@@ -69,7 +68,7 @@ export default {
       bottom: 0;
       right: 0;
       left: 0;
-      background-color: $color-primary;
+      background-color: var(--color-primary);
       clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
     }
     img {
@@ -101,7 +100,7 @@ export default {
           height: 3px;
           content: "";
           position: absolute;
-          background-color: $color-secondary;
+          background-color: var(--color-secondary);
           top: -20px;
           left: calc(50% - 10px);
         }

@@ -18,7 +18,7 @@
     "platformDemo"
   ],
   "devDependencies": {
-    "@bimdata/design-system": "^0.3.18",
+    "@bimdata/design-system": "^1.1.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-url": "^6.0.0",
     "rollup": "^2.35.1",
