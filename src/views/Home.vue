@@ -151,7 +151,7 @@ export default {
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   select {
-    width: 150px;
+    width: 250px;
     height: 32px;
     border: none;
     background-color: white;
@@ -160,7 +160,7 @@ export default {
     cursor: pointer;
   }
   button {
-    width: 150px;
+    width: 250px;
     height: 32px;
     background-color: #2f374a;
     color: #fff;
@@ -171,6 +171,15 @@ export default {
     &:hover {
       background-color: #3b455d;
     }
+  }
+  &.p-24 {
+    padding: 24px;
+  }
+  .m-y-6 {
+    margin: 6px 0;
+  }
+  .m-t-12 {
+    margin-top: 12px;
   }
 }
 </style>
