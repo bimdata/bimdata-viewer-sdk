@@ -34,8 +34,8 @@
       class="m-t-18"
     >
       <template #header>
-        <div class="bimdata-properties__body">
-          <div class="bimdata-info-length">
+        <div class="bimdata-properties__body flex items-center">
+          <div class="bimdata-info-length m-r-6">
             {{ selectedObjects.length }}
           </div>
           <span>{{ getDisplayElementHeader() }}</span>
