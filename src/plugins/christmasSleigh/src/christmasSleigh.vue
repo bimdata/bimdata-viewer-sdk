@@ -135,7 +135,6 @@ export default {
       const giftModel = this.loader.load({
         id: "gift" + this.maxId++, // Unique ID
         src: giftsGltf[Math.floor(Math.random() * giftsGltf.length)], // Model URI
-        position: [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter],
         rotation: [0, randomFromInterval(0, 360), 0],
         scale: Array.from({ length: 3 }, () => randomFromInterval(1, 2) * size),
         visible: false,
@@ -148,27 +147,27 @@ export default {
         giftModel.on("loaded", () => {
           const giftObject = giftModel;
           const scene = this.scene;
+          giftModel.rtcCenter = [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter]; // Initial init
           const eventId = this.xeokit.scene.on("tick", ({ deltaTime }) => {
             if (!giftObject.visible) {
               return;
             }
             const speed = deltaTime / 30;
-            giftObject.rotateZ(speed * 2);
-            giftObject.rotateX(speed * 2);
-            giftObject.rotateY(speed * 2);
             giftObject.height -= speed;
             const isGoesDown = giftObject.height > 0 ? 1 : -1;
-            giftObject.position = [
-              giftObject.position[0],
-              giftObject.position[1] +
-                giftObject.height ** 2 * isGoesDown * 0.001 * size,
-              giftObject.position[2],
+            giftObject.rtcCenter = [
+              giftObject.rtcCenter[0]-0,
+              giftObject.rtcCenter[1] + giftObject.height ** 2 * isGoesDown * 0.001 * size,
+              giftObject.rtcCenter[2]-0,
             ];
 
             giftObject.visible = !(
-              giftObject.position[1] <
+              giftObject.rtcCenter[1] <
               scene.yCenter - scene.yHalfWidth / 2 - 50
             );
+            giftObject.rotateZ(speed * 2);
+            giftObject.rotateX(speed * 2);
+            giftObject.rotateY(speed * 2);
           });
           this.events.push(eventId); // Save the event for further deletion
           res();
@@ -180,7 +179,7 @@ export default {
       const christmasSleightModel = this.loader.load({
         id: "christmasSleight", // Unique ID
         src: christmasSleighGltf, // Model URI
-        position: [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter],
+        //position: [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter],
         scale: Array(3).fill(size),
         performance: false, // Allow geometry position/rotation dynamic updates
       });
@@ -190,6 +189,7 @@ export default {
       return new Promise(res => {
         christmasSleightModel.on("loaded", () => {
           const christmasSleightObject = christmasSleightModel;
+          christmasSleightObject.rtcCenter = [this.scene.xCenter, this.scene.yCenter, this.scene.zCenter];
           const scene = this.scene;
           const globalSpeed = this.speed;
 
@@ -207,8 +207,8 @@ export default {
               const interval = (Math.PI * 2) / giftDensity;
               const giftIndex = Math.trunc(radian / interval);
               const [x, y, z] = calculPosition(radian, this.move, scene);
-              const positionPrev = [...christmasSleightObject.position];
-              christmasSleightObject.position = [x, y, z];
+              const positionPrev = [...christmasSleightObject.rtcCenter];
+              christmasSleightObject.rtcCenter = [x, y, z];
               if (
                 this.giftmodels[giftIndex].visible === false &&
                 radian % interval > interval * randomizeTimeInterval[giftIndex]
@@ -217,15 +217,15 @@ export default {
                 this.giftmodels[giftIndex].height =
                   heightGifts * randomFromInterval(1, 1.6);
                 this.giftmodels[giftIndex].visible = true;
-                this.giftmodels[giftIndex].position = [
-                  christmasSleightObject.position[0],
-                  christmasSleightObject.position[1] + offsetGift * size,
-                  christmasSleightObject.position[2],
+                this.giftmodels[giftIndex].rtcCenter = [
+                  christmasSleightObject.rtcCenter[0],
+                  christmasSleightObject.rtcCenter[1] + offsetGift * size,
+                  christmasSleightObject.rtcCenter[2],
                 ];
               }
               christmasSleightObject.rotation = calculRotation(
                 positionPrev,
-                christmasSleightObject.position
+                christmasSleightObject.rtcCenter
               );
             }
           );

@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
+import { BIMDataDropdownList } from "@bimdata/design-system/components.js";
 
 import Properties from "./Properties.vue";
 import { requestApi, toIfcType } from "./utils.js";
@@ -164,10 +164,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd-plugin {
   height: 100%;
-  background-color: $color-white;
+  background-color: var(--color-white);
 
   &__header {
     min-height: 44px;
@@ -208,8 +207,8 @@ export default {
   &__content {
     display: flex;
     flex-direction: column;
-    margin-top: $spacing-unit;
-    background-color: $color-white;
+    margin-top: var(--spacing-unit);
+    background-color: var(--color-white);
   }
 }
 </style>

@@ -6,7 +6,6 @@
       :loading="false"
     />
     <BIMDataCheckbox
-      class="m-b-12"
       text="Include structure hierarchy"
       v-model="exportStructure"
     >
@@ -14,16 +13,18 @@
     <BIMDataButton
       width="100%"
       @click="exportSplit"
-      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+      class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius m-t-12"
     >
       Generate new model with selected elements
     </BIMDataButton>
   </div>
 </template>
 <script>
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
-import BIMDataCheckbox from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCheckbox.js";
-import BIMDataInput from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataInput.js";
+import {
+  BIMDataButton,
+  BIMDataCheckbox,
+  BIMDataInput,
+} from "@bimdata/design-system/components.js";
 export default {
   name: "split-component",
   components: {
@@ -56,7 +57,11 @@ export default {
       const parts = fileName.split(".");
       parts.pop(); // Remove extension
       const name = parts.join("."); // rebuild name without extension
-      this.fileName = name + "-split-" + new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") + ".ifc";
+      this.fileName =
+        name +
+        "-split-" +
+        new Date().toLocaleDateString(this.$i18n.locale).replace(/\//g, "-") +
+        ".ifc";
     } else {
       this.$viewer.localContext.hub.emit("alert", {
         type: "error",
@@ -67,7 +72,9 @@ export default {
   },
   methods: {
     async exportSplit() {
-      const selectObjectsIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectObjectsIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       if (selectObjectsIds.length === 0) {
         this.$viewer.localContext.hub.emit("alert", {
           type: "error",

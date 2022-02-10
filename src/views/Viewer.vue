@@ -8,18 +8,18 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
-import ChristmasSleighPlugin from "@/plugins/christmasSleigh/src/christmasSleigh.plugin.js";
-import SplitPlugin from "@/plugins/split/src/split.plugin.js";
-import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
-import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
+import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
+import ChristmasSleighPlugin from "@/plugins/christmasSleigh/src/christmasSleigh.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
-import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
 import bsdd from "@/plugins/bsdd/src/bsdd.plugin.js";
 import pcNum from "@/plugins/pc-num/src/pc-num.plugin.js";
+import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
+import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
+import SplitPlugin from "@/plugins/split/src/split.plugin.js";
+import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 
 export default {
   data() {
@@ -51,18 +51,18 @@ export default {
       },
     });
 
-    bimdataViewer.registerPlugin(platformDemo);
-    bimdataViewer.registerPlugin(SvgExtractorPlugin);
-    bimdataViewer.registerPlugin(GltfExtractorPlugin);
-    bimdataViewer.registerPlugin(SnowflakesPlugin);
-    bimdataViewer.registerPlugin(ChristmasSleighPlugin);
-    bimdataViewer.registerPlugin(SplitPlugin);
-    bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(backgroundColor);
+    bimdataViewer.registerPlugin(BimObjectPlugin);
+    bimdataViewer.registerPlugin(ChristmasSleighPlugin);
+    bimdataViewer.registerPlugin(GltfExtractorPlugin);
     bimdataViewer.registerPlugin(HolusionPlugin);
     bimdataViewer.registerPlugin(kroqiBcfService);
     bimdataViewer.registerPlugin(bsdd);
     bimdataViewer.registerPlugin(pcNum);
+    bimdataViewer.registerPlugin(platformDemo);
+    bimdataViewer.registerPlugin(SnowflakesPlugin);
+    bimdataViewer.registerPlugin(SplitPlugin);
+    bimdataViewer.registerPlugin(SvgExtractorPlugin);
 
     bimdataViewer.mount(`#${this.viewerId}`);
 

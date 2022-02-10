@@ -59,9 +59,11 @@
 
 <script>
 import { requestApi } from "./utils.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
-import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-import BIMDataTooltip from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTooltip.js";
+import {
+  BIMDataButton,
+  BIMDataDropdownList,
+  BIMDataTooltip,
+} from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -188,10 +190,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd {
   height: 100%;
-  padding: $spacing-unit;
+  padding: var(--spacing-unit);
 
   &__content {
     &__left,
@@ -200,34 +201,31 @@ export default {
     }
   }
 
-  &__footer {
-  }
-
   .bimdata-table {
     width: 100%;
-    font-size: calculateEm(14px);
+    font-size: 14px;
     table {
       width: 100%;
       border-collapse: collapse;
-      font-family: $primary-font;
+      font-family: var(--primary-font);
       border-spacing: 0;
       tr {
         th,
         td {
           height: 50px;
-          padding: 0 $spacing-unit;
-          min-height: calc(#{$spacing-unit} * 2);
-          font-size: calculateEm(11px);
+          padding: 0 var(--spacing-unit);
+          min-height: calc(var(--spacing-unit) * 2);
+          font-size: 11px;
           text-align: left;
         }
       }
       tbody {
         tr {
           td {
-            color: $color-tertiary-darkest;
+            color: var(--color-granite);
           }
           &:nth-child(odd) {
-            background-color: $color-tertiary-lightest;
+            background-color: var(--color-silver-light);
           }
         }
       }

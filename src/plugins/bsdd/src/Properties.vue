@@ -34,8 +34,8 @@
       class="m-t-18"
     >
       <template #header>
-        <div class="bimdata-properties__body">
-          <div class="bimdata-info-length">
+        <div class="bimdata-properties__body flex items-center">
+          <div class="bimdata-info-length m-r-6">
             {{ selectedObjects.length }}
           </div>
           <span>{{ getDisplayElementHeader() }}</span>
@@ -169,13 +169,15 @@
   </div>
 </template>
 <script>
-import BIMDataInput from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataInput.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
-import BIMDataTooltip from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataTooltip.js";
-import BIMDataToggle from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataToggle.js";
-import BIMDataDropdownList from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataDropdownList.js";
-import BIMDataSelect from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSelect.js";
-import BIMDataCheckbox from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCheckbox.js";
+import {
+  BIMDataButton,
+  BIMDataCheckbox,
+  BIMDataDropdownList,
+  BIMDataInput,
+  BIMDataSelect,
+  BIMDataToggle,
+  BIMDataTooltip,
+} from "@bimdata/design-system/components.js";
 import { requestApi } from "./utils.js";
 import _ from "lodash";
 
@@ -262,17 +264,19 @@ export default {
   },
   methods: {
     updateValue(row, value) {
+      debugger;
       row.value = value;
       row.toUpdate = true;
     },
     async showCurrentObjectProperties(element) {
       this.displayedElement = element;
-      const elementDetails = await new this.$viewer.api.apiClient.IfcApi().getElement(
-        this.$viewer.api.cloudId,
-        element.ifc.id,
-        this.$viewer.api.projectId,
-        element.uuid
-      );
+      const elementDetails =
+        await new this.$viewer.api.apiClient.IfcApi().getElement(
+          this.$viewer.api.cloudId,
+          element.ifc.id,
+          this.$viewer.api.projectId,
+          element.uuid
+        );
       this.displayedElementDetails = elementDetails;
       this.updateRowsWithCurrentProperties();
     },
@@ -509,10 +513,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
 .bsdd-properties {
   height: auto;
-  background-color: $color-white;
+  background-color: var(--color-white);
   &__content {
     &__left,
     &__right {
@@ -522,23 +525,21 @@ export default {
       width: 100%;
     }
   }
-  &__footer {
-  }
   .bimdata-table {
     width: 100%;
-    font-size: calculateEm(14px);
+    font-size: 14px;
     table {
       width: 100%;
       border-collapse: collapse;
-      font-family: $primary-font;
+      font-family: var(--primary-font);
       border-spacing: 0;
       tr {
         th,
         td {
           height: 50px;
-          padding: 0 $spacing-unit;
-          min-height: calc(#{$spacing-unit} * 2);
-          font-size: calculateEm(11px);
+          padding: 0 var(--spacing-unit);
+          min-height: calc(var(--spacing-unit) * 2);
+          font-size: 11px;
           text-align: left;
           min-width: 150px;
           &:first-child {
@@ -549,13 +550,13 @@ export default {
       tbody {
         tr {
           td {
-            color: $color-tertiary-darkest;
+            color: var(--color-granite);
             &.property-name {
               font-weight: bold;
             }
           }
           &:nth-child(odd) {
-            background-color: $color-tertiary-lightest;
+            background-color: var(--color-silver-light);
           }
         }
       }

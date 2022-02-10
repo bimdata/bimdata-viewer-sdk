@@ -38,18 +38,11 @@
       <BIMDataButton
         width="32px"
         @click="selected = null"
-        class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square"
+        class="
+          bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square
+        "
       >
-        <BIMDataIcon
-          class="icon-chevron"
-          icon-name="iconName"
-          width="12"
-          height="12"
-          x="23"
-          y="23"
-        >
-          <BIMDataIcon name="arrow"  fill color="default" />
-        </BIMDataIcon>
+        <BIMDataIcon name="arrow" fill color="default" size="xxs" />
       </BIMDataButton>
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
@@ -64,7 +57,9 @@
           width="100%"
           @click="saveInBimdata"
           :disabled="buttonDisabled"
-          class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
+          class="
+            bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius
+          "
         >
           {{ $t("bimObjectPlugin.applySelected") }}
         </BIMDataButton>
@@ -99,11 +94,14 @@
 </template>
 
 <script>
-import BIMDataLoading from "./BIMDataLoading.vue";
-import BIMDataSearch from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataSearch.js";
-import BIMDataCard from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataCard.js";
-import BIMDataIcon from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataIcon.js";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import {
+  BIMDataButton,
+  BIMDataCard,
+  BIMDataIcon,
+  BIMDataLoading,
+  BIMDataSearch
+} from "@bimdata/design-system/components.js";
+
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
@@ -190,12 +188,17 @@ export default {
       this.loading = false;
     },
     async saveInBimdata() {
-      const selectedObjectIds = this.$viewer.state.selectedObjects.map(obj=> obj.uuid);
+      const selectedObjectIds = this.$viewer.state.selectedObjects.map(
+        obj => obj.uuid
+      );
       await Promise.all([
         this.setPropertiesToSelectecObjects(selectedObjectIds),
         this.setClassificationsToSelectecObjects(selectedObjectIds),
       ]);
-      this.$viewer.globalContext.hub.emit("updated-objects-properties", selectedObjectIds);
+      this.$viewer.globalContext.hub.emit(
+        "updated-objects-properties",
+        selectedObjectIds
+      );
       this.$viewer.localContext.hub.emit("alert", {
         type: "success",
         message: this.$t("bimObjectPlugin.successMessage"),
@@ -235,7 +238,8 @@ export default {
         return;
       }
       const loadedIfc = this.$viewer.state.ifcs[0];
-      const collaborationApi = new this.$viewer.api.apiClient.CollaborationApi();
+      const collaborationApi =
+        new this.$viewer.api.apiClient.CollaborationApi();
       const ifcApi = new this.$viewer.api.apiClient.IfcApi();
       const classifications = await collaborationApi.createClassification(
         this.$viewer.api.cloudId,
@@ -331,8 +335,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/BIMData.scss";
-
 /* custom BIM OBJECT - global */
 .bim-object {
   padding: 12px;
@@ -374,7 +376,7 @@ export default {
   text-align: center;
   font-weight: normal;
   word-break: break-word;
-  color: var(--color-tertiary-dark);
+  color: var(--color-granite-light);
   font-size: 14px;
   line-height: 15px;
 }
@@ -427,7 +429,7 @@ export default {
 /* custom BIM OBJECT SELECTED - product - list */
 .bim-object .product .product-item .product-item-elem {
   padding: 22px 0;
-  border-bottom: 1px solid var(--color-tertiary);
+  border-bottom: 1px solid var(--color-silver);
 }
 .bim-object .product .product-item .product-item-elem h3 {
   margin: 0;
@@ -444,7 +446,7 @@ export default {
   line-height: 15px;
 }
 .bim-object .product .product-item .product-item-elem .product-item-list {
-  color: var(--color-tertiary-dark);
+  color: var(--color-granite-light);
   font-size: 11px;
   line-height: 13px;
 }
@@ -452,7 +454,7 @@ export default {
 /* custom BIM OBJECT SELECTED - product - properties */
 .bim-object .product .product-item .product-item-properties {
   margin-top: 22px;
-  border-top: 1px solid var(--color-tertiary);
+  border-top: 1px solid var(--color-silver);
 }
 .bim-object
   .product
@@ -470,7 +472,7 @@ export default {
   .product-item-list
   ul
   li:nth-child(even) {
-  background-color: var(--color-tertiary-lightest);
+  background-color: var(--color-silver-light);
 }
 
 /* custom BIM OBJECT SELECTED - product - classifications */
@@ -497,55 +499,6 @@ export default {
   .product-item-classifications
   .product-item-list
   li:nth-child(even) {
-  background-color: var(--color-tertiary-lightest);
-}
-
-/* style BIMDATA LOADING */
-.bimdata-loading {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: rgba(47, 55, 74, 0.9);
-  color: var(--color-white);
-  z-index: 2;
-}
-.bimdata-loading--square {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  border: 2px var(--color-white) solid;
-  animation: bimdataloading 1.4s linear infinite;
-}
-.bimdata-loading--text {
-  margin-top: 12px;
-  display: block;
-}
-@keyframes bimdataloading {
-  0% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
-    transform: rotate(-0deg);
-  }
-  20% {
-    transform: rotate(180deg);
-  }
-  40% {
-    transform: rotate(-0deg);
-  }
-  60% {
-    transform: rotate(-0deg);
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
-  }
-  80% {
-    box-shadow: inset 0px -20px 0px 0px rgba(#fff, 1);
-  }
-  100% {
-    box-shadow: inset 0px 0px 0px 0px rgba(#fff, 0.1);
-  }
+  background-color: var(--color-silver-light);
 }
 </style>

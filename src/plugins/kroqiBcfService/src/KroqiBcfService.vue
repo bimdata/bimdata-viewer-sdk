@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import { BIMDataButton } from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -62,7 +62,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../node_modules/@bimdata/design-system/dist/scss/utilities/text.scss";
 .bcf-premium {
   height: 100%;
   padding: 0 80px;

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+import { BIMDataButton } from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -27,7 +27,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-/* https://vue-loader.vuejs.org/guide/scoped-css.html#mixing-local-and-global-styles */
-</style>
