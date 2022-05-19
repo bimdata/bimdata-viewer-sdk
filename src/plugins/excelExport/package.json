@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/excel-export-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "excel export BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",

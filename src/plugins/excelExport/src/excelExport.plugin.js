@@ -16,7 +16,7 @@ export default {
   i18n: {
     en: {
       tooltip: "Excel Export",
-      command: "Export quantities as Excel",
+      command: "Export selection",
       title: "Quantities export",
       label: "File name",
       button: "Export",
@@ -24,7 +24,7 @@ export default {
     },
     fr: {
       tooltip: "Export Excel",
-      command: "Exporter le quantitatif en Excel",
+      command: "Exporter la sélection",
       title: "Export du quantitatif",
       label: "Nom du fichier",
       button: "Exporter au format Excel",
