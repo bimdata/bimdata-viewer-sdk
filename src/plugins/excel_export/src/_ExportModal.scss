@@ -1,5 +1,5 @@
 .export-modal {
-  margin: $spacing-unit;
+  margin: var(--spacing-unit);
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
   min-width: 500px;
   position: relative;
   &__error {
-    color: $color-high;
+    color: var(--color-high);
   }
   &__close {
     width: 100%;
@@ -37,17 +37,17 @@
     }
     &__input {
       input {
-        color: $color-primary;
+        color: var(--color-primary);
       }
     }
     &__warning {
       margin-top: 9px;
-      color: $color-warning;
+      color: var(--color-warning);
       font-size: calculateEm(12px);
     }
   }
   &__export {
-    margin-top: calc(#{$spacing-unit} * 3);
+    margin-top: calc(var(--spacing-unit) * 3);
   }
 }
 
@@ -63,7 +63,7 @@
     }
   }
   &__title {
-    margin: calc(#{$spacing-unit} * 3) 0 calc(#{$spacing-unit} * 2);
+    margin: calc(var(--spacing-unit) * 3) 0 calc(var(--spacing-unit) * 2);
     display: inline-flex;
     align-items: center;
     h2 {
@@ -71,7 +71,7 @@
       font-size: calculateEm(20px);
     }
     &--icon {
-      margin-left: calc(#{$spacing-unit} / 2);
+      margin-left: calc(var(--spacing-unit) / 2);
     }
   }
   &__text {
@@ -79,10 +79,10 @@
     width: 300px;
     text-align: center;
     line-height: 1.5;
-    color: $color-tertiary-dark;
+    color: var(--color-tertiary-dark);
     font-size: calculateEm(12px);
   }
   &__button {
-    margin: calc(#{$spacing-unit} * 2) 0;
+    margin: calc(var(--spacing-unit) * 2) 0;
   }
 }
