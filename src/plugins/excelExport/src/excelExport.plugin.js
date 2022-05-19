@@ -17,7 +17,7 @@ export default {
     en: {
       tooltip: "Excel Export",
       command: "Export selection",
-      title: "Quantities export",
+      title: "Export selection",
       label: "File name",
       button: "Export",
       error: "A file name is mandatory",
@@ -25,7 +25,7 @@ export default {
     fr: {
       tooltip: "Export Excel",
       command: "Exporter la sélection",
-      title: "Export du quantitatif",
+      title: "Exporter la sélection",
       label: "Nom du fichier",
       button: "Exporter au format Excel",
       error: "Un nom de fichier est obligatoire",
