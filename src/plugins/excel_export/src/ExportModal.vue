@@ -210,7 +210,7 @@ export default {
 </script>
 
 <style lang="scss">
-//@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
-//@import "../node_modules/@bimdata/design-system/dist/scss/mixins/_font-size.scss";
-//@import "./_ExportModal.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "../node_modules/@bimdata/design-system/dist/scss/mixins/_font-size.scss";
+@import "./_ExportModal.scss";
 </style>

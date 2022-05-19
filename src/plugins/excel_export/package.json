@@ -18,7 +18,7 @@
     "excel"
   ],
   "devDependencies": {
-    "@bimdata/design-system": "^1.1.0",
+    "@bimdata/design-system": "^1.4.0-rc.10",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-url": "^6.0.0",
     "rollup": "^2.35.1",
