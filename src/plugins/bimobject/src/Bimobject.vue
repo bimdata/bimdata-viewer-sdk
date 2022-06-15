@@ -1,6 +1,14 @@
 <template>
   <div class="bim-object">
-    <div class="bim-object__search">
+    <div class="bim-object__search p-12">
+      <BIMDataButton
+        v-if="selected !== null"
+        width="32px"
+        @click="selected = null"
+        class="bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square m-r-12"
+      >
+        <BIMDataIcon name="arrow" fill color="default" size="xxs" />
+      </BIMDataButton>
       <BIMDataSearch
         width="100%"
         :placeholder="$t('bimObjectPlugin.search')"
@@ -12,14 +20,13 @@
       ></BIMDataSearch>
     </div>
 
-    <div v-if="selected === null">
+    <div class="bim-object__content p-x-12 p-b-12" v-if="selected === null">
       <ul class="bimdata-list bimdata-cards">
         <BIMDataCard
           width="30%"
           v-for="item in results"
           :key="item.id"
           @click.native="getProperties(item)"
-          class="m-t-12"
         >
           <template #content>
             <div class="bimdata-card_logo">
@@ -35,31 +42,22 @@
     </div>
 
     <div v-else class="product">
-      <BIMDataButton
-        width="32px"
-        @click="selected = null"
-        class="
-          bimdata-btn__ghost bimdata-btn__ghost--default bimdata-btn__square
-        "
-      >
-        <BIMDataIcon name="arrow" fill color="default" size="xxs" />
-      </BIMDataButton>
       <div class="product-item">
         <h4 class="product-item-name">{{ selected.name }}</h4>
-        <div class="product-item-logo">
-          <img :src="selected.brand.imageUrl" />
-        </div>
-        <div class="product-item-img">
-          <img :src="selected.imageUrl" />
+        <div class="product-item__images">
+          <div class="product-item-logo">
+            <img :src="selected.brand.imageUrl" />
+          </div>
+          <div class="product-item-img m-y-12">
+            <img :src="selected.imageUrl" />
+          </div>
         </div>
 
         <BIMDataButton
           width="100%"
           @click="saveInBimdata"
           :disabled="buttonDisabled"
-          class="
-            bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius
-          "
+          class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
         >
           {{ $t("bimObjectPlugin.applySelected") }}
         </BIMDataButton>
@@ -76,7 +74,10 @@
             </li>
           </ul>
         </div>
-        <div class="product-item-elem product-item-classifications">
+        <div
+          class="product-item-elem product-item-classifications"
+          v-if="classifications && classifications.length"
+        >
           <h3>Classifications</h3>
           <ul class="bimdata-list product-item-list">
             <li v-for="classif in classifications" :key="classif.name">
@@ -99,7 +100,7 @@ import {
   BIMDataCard,
   BIMDataIcon,
   BIMDataLoading,
-  BIMDataSearch
+  BIMDataSearch,
 } from "@bimdata/design-system/components.js";
 
 export default {
@@ -337,168 +338,145 @@ export default {
 <style lang="scss" scoped>
 /* custom BIM OBJECT - global */
 .bim-object {
-  padding: 12px;
-}
+  height: 100%;
 
-/* custom BIM OBJECT - search */
-.bim-object .bim-object__search {
-  position: relative;
-}
-.bim-object .bim-object__search button {
-  padding: 0;
-  width: 50px;
-  background-color: transparent;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+  /* custom BIM OBJECT - search */
+  &__search {
+    display: flex;
+  }
 
-/* custom BIM OBJECT - list */
-.bim-object .bimdata-cards {
-  margin: 12px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.bim-object .bimdata-cards .bimdata-card {
-  flex-basis: 31%;
-  cursor: pointer;
-}
-.bim-object .bimdata-cards .bimdata-card:nth-child(1n) {
-  margin-right: 12px;
-}
-.bim-object .bimdata-cards .bimdata-card:nth-child(3n) {
-  margin-right: 0;
-}
-.bim-object .bimdata-cards .bimdata-card h4 {
-  margin: 12px 0;
-  text-align: center;
-  font-weight: normal;
-  word-break: break-word;
-  color: var(--color-granite-light);
-  font-size: 14px;
-  line-height: 15px;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo {
-  height: 20px;
-  display: flex;
-  align-items: flex-start;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_logo img {
-  max-height: 15px;
-  max-width: 80px;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bim-object .bimdata-cards .bimdata-card .bimdata-card_img img {
-  width: 80%;
-}
+  &__content {
+    height: calc(100% - 56px);
+    overflow: auto;
+  }
 
-/* custom BIM OBJECT SELECTED - product */
-.bim-object .product {
-  margin-top: var(--spacing-unit);
-}
-.bim-object .product .bimdata-btn__ghost {
-  justify-content: flex-start;
-}
-.bim-object .product .product-item {
-  padding: 0 var(--spacing-unit) var(--spacing-unit);
-}
-.bim-object .product .product-item .product-item-name {
-  margin: var(--spacing-unit) 0 4px;
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: normal;
-}
-.bim-object .product .product-item .product-item-logo img {
-  max-height: 25px;
-  max-width: 65px;
-}
-.bim-object .product .product-item .product-item-img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 4px 0 22px;
-}
+  /* custom BIM OBJECT - list */
+  .bimdata-cards {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .bimdata-card {
+      flex-basis: 48%;
+      &:not(:first-child, :nth-child(2)) {
+        margin-top: 12px;
+      }
+      cursor: pointer;
+      h4 {
+        margin: 12px 0;
+        text-align: center;
+        font-weight: normal;
+        word-break: break-word;
+        color: var(--color-granite-light);
+        font-size: 14px;
+        line-height: 15px;
+      }
+      .bimdata-card_logo {
+        height: 20px;
+        display: flex;
+        align-items: flex-start;
+        img {
+          max-height: 15px;
+          max-width: 80px;
+        }
+      }
+      .bimdata-card_img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 80%;
+        }
+      }
+    }
+  }
 
-/* custom BIM OBJECT SELECTED - product - list */
-.bim-object .product .product-item .product-item-elem {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--color-silver);
-}
-.bim-object .product .product-item .product-item-elem h3 {
-  margin: 0;
-  font-size: 13px;
-  line-height: 15px;
-  color: var(--color-primary);
-}
-.bim-object .product .product-item .product-item-elem h6 {
-  font-weight: bold;
-  color: var(--color-primary);
-  display: block;
-  margin: 5px 0;
-  font-size: 13px;
-  line-height: 15px;
-}
-.bim-object .product .product-item .product-item-elem .product-item-list {
-  color: var(--color-granite-light);
-  font-size: 11px;
-  line-height: 13px;
-}
+  /* custom BIM OBJECT SELECTED - product */
+  .product {
+    height: calc(100% - 56px);
+    overflow: auto;
+    .bimdata-btn__ghost {
+      justify-content: flex-start;
+    }
+    .product-item {
+      padding: 0 var(--spacing-unit) var(--spacing-unit);
+      .product-item-name {
+        margin: var(--spacing-unit) 0;
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: normal;
+      }
+      &__images {
+        position: relative;
+        .product-item-logo {
+          position: absolute;
+          top: 6px;
+          left: 0px;
+          background-color: white;
+          img {
+            max-height: 25px;
+            max-width: 65px;
+          }
+        }
 
-/* custom BIM OBJECT SELECTED - product - properties */
-.bim-object .product .product-item .product-item-properties {
-  margin-top: 22px;
-  border-top: 1px solid var(--color-silver);
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-properties
-  .product-item-list
-  ul
-  li {
-  padding: 6px;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-properties
-  .product-item-list
-  ul
-  li:nth-child(even) {
-  background-color: var(--color-silver-light);
-}
+        .product-item-img {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      /* custom BIM OBJECT SELECTED - product - list */
+      .product-item-elem {
+        padding: 18px 0;
+        h3 {
+          margin: 0;
+          font-size: 13px;
+          line-height: 15px;
+          color: var(--color-primary);
+        }
+        h6 {
+          font-weight: bold;
+          color: var(--color-primary);
+          display: block;
+          margin: 5px 0;
+          font-size: 13px;
+          line-height: 15px;
+        }
+        .product-item-list {
+          color: var(--color-granite-light);
+          font-size: 11px;
+          line-height: 13px;
+        }
+      }
 
-/* custom BIM OBJECT SELECTED - product - classifications */
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li {
-  padding: 6px;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li
-  span:first-child {
-  font-weight: bold;
-}
-.bim-object
-  .product
-  .product-item
-  .product-item-classifications
-  .product-item-list
-  li:nth-child(even) {
-  background-color: var(--color-silver-light);
+      /* custom BIM OBJECT SELECTED - product - properties */
+      .product-item-properties {
+        margin-top: 18px;
+        border-top: 1px solid var(--color-silver);
+        .product-item-list ul {
+          li {
+            padding: 6px;
+            &:nth-child(even) {
+              background-color: var(--color-silver-light);
+            }
+          }
+        }
+      }
+      /* custom BIM OBJECT SELECTED - product - classifications */
+      .product-item-classifications {
+        border-top: 1px solid var(--color-silver);
+        .product-item-list li {
+          padding: 6px;
+          span:first-child {
+            font-weight: bold;
+          }
+          &:nth-child(even) {
+            background-color: var(--color-silver-light);
+          }
+        }
+      }
+    }
+  }
 }
 </style>
