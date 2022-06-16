@@ -4,7 +4,7 @@ import icon from "../assets/icon.svg";
 export default {
   name: "PlatformDemo",
   component: BtnPlatformDemoComponent,
-  addToWindows: ["3d"],
+  addToWindows: ["3d", "plan", "dwg"],
   button: {
     position: "right",
     content: "free",
