@@ -15,7 +15,6 @@ import ChristmasSleighPlugin from "@/plugins/christmasSleigh/src/christmasSleigh
 import excelExportPlugin from "@/plugins/excelExport/src/excelExport.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/src/gltfExtractor.plugin.js";
 import HolusionPlugin from "@/plugins/holusion/src/holusion.plugin.js";
-import iotPlugin from "@/plugins/iot/src/iot.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugin.js";
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
@@ -59,7 +58,6 @@ export default {
     bimdataViewer.registerPlugin(excelExportPlugin);
     bimdataViewer.registerPlugin(GltfExtractorPlugin);
     bimdataViewer.registerPlugin(HolusionPlugin);
-    bimdataViewer.registerPlugin(iotPlugin);
     bimdataViewer.registerPlugin(kroqiBcfService);
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
