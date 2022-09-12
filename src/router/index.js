@@ -19,7 +19,7 @@ const routes = [
     name: "viewer",
     component: Viewer,
     beforeEnter(to, from, next) {
-      if (to.query.cloudId && to.query.projectId && to.query.ifcId) {
+      if (to.query.cloudId && to.query.projectId && to.query.modelId) {
         next();
       } else {
         next("/");

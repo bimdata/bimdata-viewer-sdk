@@ -1,12 +1,15 @@
-import * as bimdata from "@bimdata/bimdata-api-client";
+import { makeBIMDataApiClient } from "@bimdata/typescript-fetch-api-client";
+
+makeBIMDataApiClient({
+  apiUrl: process.env.VUE_APP_API_BASE_URL,
+  credentials: "include"
+});
 
 export default function getClient({ accessToken, apiUrl }) {
-  const defaultClient = bimdata.ApiClient.instance;
-  defaultClient.basePath = apiUrl;
-  const Bearer = defaultClient.authentications["Bearer"];
-
-  Bearer.type = "oauth2";
-  Bearer.accessToken = accessToken;
-
-  return bimdata;
+  const apiClient = makeBIMDataApiClient({
+    apiUrl: apiUrl,
+    credentials: "include"
+  });
+  apiClient.accessToken = accessToken
+  return apiClient;
 }

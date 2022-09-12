@@ -29,13 +29,13 @@
     </div>
     <div class="m-y-6">
       <select
-        v-model="selectedIfc"
-        :disabled="!selectedProject || fetchingIfcs"
+        v-model="selectedModel"
+        :disabled="!selectedProject || fetchingModels"
       >
         <option disabled :value="null">{{
-          fetchingIfcs ? "Fetching IFCs" : "Select an IFC"
+          fetchingModels ? "Fetching Models" : "Select a Model"
         }}</option>
-        <option v-for="ifc of ifcs" :key="ifc.id" :value="ifc">{{
+        <option v-for="ifc of models" :key="ifc.id" :value="ifc">{{
           ifc.name
         }}</option>
       </select>
@@ -65,9 +65,9 @@ export default {
       projects: [],
       selectedProject: null,
       fetchingProjects: false,
-      ifcs: [],
-      selectedIfc: null,
-      fetchingIfcs: false,
+      models: [],
+      selectedModel: null,
+      fetchingModels: false,
     };
   },
   computed: {
@@ -77,28 +77,28 @@ export default {
         accessToken: this.oidcAccessToken,
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
-      return new apiClient.CollaborationApi();
+      return apiClient.collaborationApi;
     },
-    ifcApi() {
+    modelApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
       });
-      return new apiClient.IfcApi();
+      return apiClient.modelApi;
     },
   },
   watch: {
     selectedCloud() {
       if (this.selectedCloud) {
-        this.selectedIfc = null;
+        this.selectedModel = null;
         this.selectedProject = null;
         this.getProjects();
       }
     },
     selectedProject() {
       if (this.selectedProject) {
-        this.selectedIfc = null;
-        this.getIfcs();
+        this.selectedModel = null;
+        this.getModels();
       }
     },
   },
@@ -112,7 +112,7 @@ export default {
         query: {
           cloudId: this.selectedCloud.id,
           projectId: this.selectedProject.id,
-          ifcId: this.selectedIfc.id,
+          modelId: this.selectedModel.id,
         },
       });
     },
@@ -128,13 +128,13 @@ export default {
       );
       this.fetchingProjects = false;
     },
-    async getIfcs() {
-      this.fetchingIfcs = true;
-      this.ifcs = await this.ifcApi.getIfcs(
+    async getModels() {
+      this.fetchingModels = true;
+      this.models = await this.modelApi.getModels(
         this.selectedCloud.id,
         this.selectedProject.id
       );
-      this.fetchingIfcs = false;
+      this.fetchingModels = false;
     },
   },
 };
