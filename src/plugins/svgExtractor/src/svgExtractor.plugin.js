@@ -4,7 +4,7 @@ import icon from "../assets/export-svg.svg";
 export default {
   name: "SvgExtractorPlugin",
   component: SvgExtractorComponent,
-  addToWindows: ["2d"],
+  addToWindows: ["2d", 'dwg'],
   button: {
     position: "right",
     content: "simple", // How the viewer show the plugin content. Value can be "panel", "simple" of "free"

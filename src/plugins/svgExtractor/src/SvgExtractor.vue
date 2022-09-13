@@ -21,9 +21,9 @@ export default {
   },
   methods: {
     downloadSvg() {
-      const ifc = this.$viewer.state.ifcs[0];
-      if (ifc.map_file) {
-        window.location.href = ifc.map_file;
+      const model = this.$viewer.state.models[0];
+      if (model.map_file) {
+        window.location.href = model.map_file;
       } else {
         this.$viewer.localContext.hub.emit("alert", {
           type: "error",
