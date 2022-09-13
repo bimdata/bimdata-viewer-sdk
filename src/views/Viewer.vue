@@ -36,7 +36,7 @@ export default {
       api: {
         cloudId: this.$route.query.cloudId,
         projectId: this.$route.query.projectId,
-        ifcIds: [this.$route.query.ifcId],
+        modelIds: [this.$route.query.modelId],
         apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
         accessToken: this.oidcAccessToken,
       },
