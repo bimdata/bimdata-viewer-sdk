@@ -199,9 +199,6 @@ export default {
       );
     },
   },
-  unmounted() {
-    this.webSocket.close();
-  },
   destroyed() {
     this.webSocket.close();
   },
