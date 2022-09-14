@@ -20,6 +20,7 @@ import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
+import cameraFollow from "@/plugins/cameraFollow/src/cameraFollow.plugin.js";
 
 export default {
   data() {
@@ -63,7 +64,7 @@ export default {
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
-
+    bimdataViewer.registerPlugin(cameraFollow);
 
     bimdataViewer.mount(`#${this.viewerId}`);
 
