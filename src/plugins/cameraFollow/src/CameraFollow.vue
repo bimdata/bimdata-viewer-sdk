@@ -7,12 +7,7 @@
         :key="user.uuid"
         @click="onFollow(user.uuid)"
       >
-        <BIMDataIcon
-          name="user"
-          fill
-          color="default"
-          size="xxs"
-        />
+        {{user.email}}
       </div>
       <div>
         <BIMDataButton width="12px">close</BIMDataButton>
@@ -31,12 +26,11 @@ export default {
     return {
       user: undefined,
       userList: [],
-      console,
     };
   },
   async created() {
     this.user = await this.getSelf();
-    this.webSocket = new WebSocket("ws://localhost:3000/");
+    this.webSocket = new WebSocket("ws://192.168.17.3:3000/");
     this.lastAskedCameraPos = null;
     this.webSocket.addEventListener("message", event => {
       console.log("event", event);
@@ -78,6 +72,7 @@ export default {
           break;
         case "SET_MOUSE_POSITION":
           const [x, y] = message;
+
           if (!this.isCursorCreated) {
             const viewer = document.getElementById(
               this.viewer3d.engine3dCanvasId
@@ -87,17 +82,17 @@ export default {
             cursor.id = "mouse-pointer";
             cursor.style.backgroundColor = "red";
             cursor.style.position = "absolute";
-            cursor.style.width = 30 + "px";
-            cursor.style.height = 30 + "px";
-            cursor.style.left = x + "px";
-            cursor.style.top = y + "px";
+            cursor.style.width = 5 + "px";
+            cursor.style.height = 5 + "px";
+            cursor.style.left = x + "%";
+            cursor.style.top = y + "%";
             viewer.appendChild(cursor);
             this.isCursorCreated = true;
           }
 
           const cursor = document.getElementById("mouse-pointer");
-          cursor.style.left = x + "px";
-          cursor.style.top = y + "px";
+          cursor.style.left = x + "%";
+          cursor.style.top = y + "%";
           break;
       }
     });
@@ -191,10 +186,20 @@ export default {
       document.addEventListener("mousemove", this.sendMousePosition);
     },
     sendMousePosition(event) {
+      const viewer = document.getElementById(
+        this.viewer3d.engine3dCanvasId
+      ).parentNode;
+
+      const { height, width } = viewer.getBoundingClientRect();
+      const info = viewer.getBoundingClientRect();
+      console.log("info", info);
       this.webSocket.send(
         JSON.stringify({
           meta: "MOUSE_POSITION",
-          message: [event.pageX, event.pageY],
+          message: [
+            parseInt((event.pageX * 100) / height, 10),
+            parseInt((event.pageY * 100) / width, 10),
+          ],
         })
       );
     },
@@ -209,10 +214,6 @@ export default {
 .camera-follow {
   &__cursor {
     position: absolute;
-  }
-  &__box {
-    display: flex;
-    gap: var(--spacing-unit);
   }
 }
 </style>
