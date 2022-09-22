@@ -12,12 +12,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "npm run pretty-quick --staged"
     }
   },
   "dependencies": {
     "@bimdata/typescript-fetch-api-client": "^9.0.6",
-    "@bimdata/viewer": "^1.9.0-rc.150",
+    "@bimdata/viewer": "^1.9.0-rc.154",
     "oidc-client": "^1.11.5",
     "vue": "^2.7.10",
     "vue-i18n": "^8.26.7",
