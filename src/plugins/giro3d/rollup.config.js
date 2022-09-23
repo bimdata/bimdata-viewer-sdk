@@ -1,6 +1,5 @@
 import VuePlugin from 'rollup-plugin-vue';
-import scssPlugin from 'rollup-plugin-scss';
-import url from '@rollup/plugin-url';
+import postcss from "rollup-plugin-postcss";
 import { terser } from 'rollup-plugin-terser';
 import commonjs from 'rollup-plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
@@ -9,13 +8,9 @@ const isProduction = (process.env.BUILD === 'production');
 
 const plugins = [
   VuePlugin(),
-  scssPlugin(),
+  postcss(),
   commonjs(),
   nodeResolve(),
-  url({
-    limit: 100 * 1024 *1024,
-    include: ['assets/*']
-  }),
 ];
 
 if (isProduction) {
@@ -24,6 +19,7 @@ if (isProduction) {
 
 export default {
   input: 'src/giro3d.plugin.js',
+  inlineDynamicImports: true,
   output: {
     file: 'dist/giro3d.plugin.js',
     format: 'esm',
