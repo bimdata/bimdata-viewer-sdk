@@ -1,5 +1,14 @@
 module.exports = {
   runtimeCompiler: true,
+  configureWebpack: {
+    resolve: {
+      fallback: {
+        fs: false,
+        http: false,
+        https: false,
+      }
+    }
+  },
   chainWebpack: config => {
     config.module.rules.delete('svg');
     config.module.rules.delete('images');

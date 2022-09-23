@@ -18,7 +18,8 @@
     "giro3d"
   ],
   "dependencies": {
-    "@giro3d/giro3d": "^0.4.0"
+    "@giro3d/giro3d": "^0.4.0",
+    "three": "^0.135.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.5",
