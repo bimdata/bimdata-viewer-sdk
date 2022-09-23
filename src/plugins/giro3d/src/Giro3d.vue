@@ -33,7 +33,7 @@ export default {
 
     const instance = new Instance(viewerDiv, {
       renderer: {
-        clearColor: 0xcccccc,
+        clearColor: false,
       },
     });
 
