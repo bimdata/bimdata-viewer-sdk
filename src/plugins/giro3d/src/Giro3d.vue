@@ -24,6 +24,14 @@ export default {
   },
   created() {
     this.giro3dDivId = `3d-engine-${this.$viewer.localContext.pluginsUnit.id}`;
+
+    this.localContextResizeSubscription = this.$viewer.localContext.hub.on(
+      "context-resize",
+      this.onResize
+    );
+  },
+  destroyed() {
+    this.$viewer.localContext.hub.off(this.localContextResizeSubscription);
   },
   async mounted() {
     const viewerDiv = document.getElementById(this.giro3dDivId);
@@ -53,6 +61,14 @@ export default {
     this.controls = controls;
   },
   methods: {
+    onResize({ width, height }) {
+      if (!this.instance) {
+        return;
+      }
+      // https://gitlab.com/giro3d/giro3d/-/blob/master/src/Core/Instance.js#L167-174
+      this.instance.mainLoop.gfxEngine.onWindowResize(width, height);
+      this.instance.notifyChange(this.instance.camera.camera3D);
+    },
     placeCamera(position, lookAt) {
       const { instance, controls } = this;
 
