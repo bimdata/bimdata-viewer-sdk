@@ -1,9 +1,9 @@
 import IotEquipmentAnnotation from "./IotEquipmentAnnotation.vue";
 
 const equipments = [
-  { name: "Equipment 01", uuid: "0vNFceMkb8dezQiQhWAOcR", x: 150, y: 75 },
-  { name: "Equipment 02", uuid: "1234", x: 106, y: 52 },
-  { name: "Equipment 03", uuid: "ABCD", x: 175, y: 61 },
+  { name: "Equipment 01", uuid: "0vNFceMkb8dezQiQhWAOcR", x: 158.3, y: 69.7 },
+  { name: "Equipment 02", uuid: "1234", x: 139.5, y: 60 },
+  { name: "Equipment 03", uuid: "ABCD", x: 165.5, y: 64.8 },
 ];
 
 export default {
