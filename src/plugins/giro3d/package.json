@@ -1,5 +1,5 @@
 {
-  "name": "giro3d",
+  "name": "@bimdata/giro3d-viewer-plugin",
   "version": "0.0.1",
   "description": "giro3d BIMData Viewer Plugin",
   "scripts": {
