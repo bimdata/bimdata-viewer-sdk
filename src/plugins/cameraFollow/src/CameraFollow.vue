@@ -79,9 +79,9 @@ export default {
         case "USERLIST":
           this.availableUsers = message;
           const colorValues = Object.values(colors);
-          for (const [index, user] of this.availableUsers.entries()) {
-            user.color = colorValues[index];
-          }
+          this.availableUsers.forEach(
+            (user, index) => (user.color = colorValues[index])
+          );
           break;
         case "INITIALVIEWPOINT":
           this.sendCamera();
@@ -166,12 +166,12 @@ export default {
   computed: {
     availableUserObjects() {
       let users = new Set();
-      for (const user of this.availableUsers) {
+      this.availableUsers.forEach(user => {
         users.add({
           ...this.projectUsers.find(u => (u.email = user.email)),
           ...user,
         });
-      }
+      });
       return users;
     },
   },
