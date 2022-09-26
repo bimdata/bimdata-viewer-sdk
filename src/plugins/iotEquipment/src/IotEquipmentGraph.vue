@@ -7,27 +7,12 @@
       :id="`chart-${_uid}`"
       class="iot-equipment-graph__chart"
     ></div>
-    <BIMDataButton
-      class="iot-equipment-graph__btn-reset-zoom"
-      width="100px"
-      height="28px"
-      color="primary"
-      fill
-      radius
-      :disabled="!resetZoom"
-      @click="onResetZoomClick"
-    >
-      reset zoom
-    </BIMDataButton>
   </div>
 </template>
 
 <script>
 import Chartist from "chartist";
 import ChartistTooltip from "chartist-plugin-tooltips-updated";
-import ChartistZoom from "chartist-plugin-zoom";
-// Components
-import { BIMDataButton } from "@bimdata/design-system/components.js";
 
 function getFormattedDate(timestamp) {
   const date = new Date(timestamp);
@@ -47,16 +32,10 @@ const chartOptions = {
   },
   plugins: [
     ChartistTooltip(),
-    // ChartistZoom({
-    //   onZoom: (chart, reset) => (this.resetZoom = reset)
-    // }),
   ],
 };
 
 export default {
-  components: {
-    BIMDataButton
-  },
   props: {
     title: {
       type: String,
@@ -109,11 +88,6 @@ export default {
     margin: 0 var(--spacing-unit) calc(var(--spacing-unit) / 2);
     font-size: 14px;
     font-weight: bold;
-  }
-
-  &__btn-reset-zoom {
-    margin-left: auto;
-    margin-right: var(--spacing-unit);
   }
 
   &.serie-23500 /* Capteur COV */,
