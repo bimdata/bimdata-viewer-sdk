@@ -1,0 +1,31 @@
+{
+  "name": "@bimdata/giro3d-viewer-plugin",
+  "version": "0.0.2",
+  "description": "giro3d BIMData Viewer Plugin",
+  "scripts": {
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup --watch -c",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "dist/giro3d.plugin.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "BIMData",
+    "Viewer",
+    "Plugin",
+    "giro3d"
+  ],
+  "devDependencies": {
+    "@giro3d/giro3d": "^0.4.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "rollup": "^2.35.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-vue": "^5.1.9",
+    "sass": "^1.42.1",
+    "three": "^0.135.0"
+  }
+}
