@@ -66,9 +66,11 @@ export default {
   },
   async created() {
     this.viewer3d = this.$viewer.localContext.getPlugin("viewer3d");
+    this.currentModelIds = this.viewer3d.loadedIfcIds;
     this.user = await this.getSelf();
     this.projectUsers = await this.getProjectUsers();
-    this.webSocket = new WebSocket(this.getCameraFollowServerUrl());
+    // this.webSocket = new WebSocket(this.getCameraFollowServerUrl());
+    this.webSocket = new WebSocket("ws://localhost:3000/");
     this.lastAskedCameraPos = null;
     this.webSocket.addEventListener("message", event => {
       // console.log("event", event);
@@ -85,7 +87,7 @@ export default {
           break;
         case "INITIALVIEWPOINT":
           this.sendCamera();
-          this.sendModels();
+          this.sendModel();
           break;
         case "STARTFOLLOW":
           this.listenCamera();
@@ -114,9 +116,8 @@ export default {
           this.lastAskedCameraPos = message;
           break;
         case "SET_MODELS":
-          // this.$viewer.state.models = message.data;
-          // this.$viewer.state.loadModel()
-          // const filteredModels = this.viewer3d.loadedIfcIds.
+          if (this.currentModelIds.includes(message.modelId)) return;
+          this.currentModelIds.push(message.modelId);
           break;
         case "SET_MOUSE_POSITION":
           const [x, y] = message;
@@ -267,8 +268,17 @@ export default {
         projection: this.viewer3d.xeokit.scene.camera.projection,
       });
     },
-    sendModels() {
-      this.sendToServer("MODELS", this.viewer3d.loadedIfcIds);
+    sendModel(model) {
+      if (model) {
+        this.sendToServer("MODELS", model);
+      } else {
+        this.viewer3d.loadedIfcIds.forEach(modelId =>
+          this.sendToServer("MODELS", {
+            type: "load",
+            modelId,
+          })
+        );
+      }
     },
     sendSelectedObjects() {
       this.sendToServer(
@@ -289,14 +299,15 @@ export default {
       );
     },
     listenModels() {
-      this.loadedModelsListener = this.$viewer.localContext.hub.on(
-        "3d-model-loaded",
-        this.sendModels
-      );
-      this.unloadedModelsListener = this.$viewer.localContext.hub.on(
-        "3d-model-unloaded",
-        this.sendModels
-      );
+      this.$viewer.localContext.hub.on("3d-model-loading", ({ ifc }) => {
+        this.sendModel({
+          type: "load",
+          modelId: ifc.id,
+        });
+      });
+      this.$viewer.localContext.hub.on("models-unloading", models => {
+        this.sendModel({ type: "unload", models });
+      });
     },
     listenSelectedObjects() {
       this.selectedObjectListener = this.$viewer.state.hub.on(
