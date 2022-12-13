@@ -1,0 +1,20 @@
+.reflect-plugin {
+  --color-tipee: #A4C407;
+
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-white);
+
+  :deep() {
+    .bimdata-btn.color-tipee {
+      background-color: var(--color-tipee);
+      color: var(--color-white);
+    }
+
+    .bimdata-loading.color-tipee {
+      &::after {
+        background-color: var(--color-tipee);
+      }
+    }
+  }
+}
