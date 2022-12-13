@@ -18,6 +18,7 @@ import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
 import platformDemo from "@bimdata/platform-demo-viewer-plugin";
 import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
 import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
+import reflectPlugin from "@/plugins/reflect/src/reflect.plugin.js";
 
 import iotEquipment from "@bimdata/iot-equipment-viewer-plugin";
 import iframeShare from "@bimdata/iframe-share-viewer-plugin";
@@ -62,13 +63,17 @@ export default {
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
+    bimdataViewer.registerPlugin(reflectPlugin);
 
     bimdataViewer.registerPlugin(iotEquipment);
     bimdataViewer.registerPlugin(iframeShare);
     bimdataViewer.registerPlugin(bimworld);
     bimdataViewer.registerPlugin(iot);
 
-    bimdataViewer.mount(`#${this.viewerId}`);
+    bimdataViewer.mount(`#${this.viewerId}`, {
+      ratios: [50, 50],
+      children: ["3d", "REFLECT"]
+    });
 
     this.$watch(
       () => this.oidcAccessToken,
