@@ -10,6 +10,7 @@ const isProduction = (process.env.BUILD === 'production');
 
 const plugins = [
   replace({
+    preventAssignment: true,
     'process.env.NODE_ENV': JSON.stringify('production'),
   }),
   VuePlugin(),

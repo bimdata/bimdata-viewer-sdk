@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import eachLimit from "async/eachLimit";
+import { eachLimit } from "async";
 import FileSaver from "file-saver";
 import diff from "lodash/difference"
 import {
