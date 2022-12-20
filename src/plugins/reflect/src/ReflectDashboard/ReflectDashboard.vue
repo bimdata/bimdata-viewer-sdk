@@ -96,7 +96,6 @@ export default {
   ],
   data() {
     return {
-      adminMode: false,
       loading: false,
       processing: false,
       projects: [],
@@ -115,23 +114,6 @@ export default {
     this.bcfApi = this.$viewer.api.apiClient.bcfApi;
   },
   mounted() {
-    this.$viewer.globalContext.hub.once("3d-model-loaded", () => {
-      if (this.$viewer.state.models.length > 1) {
-        this.$viewer.localContext.hub.emit("alert", {
-          type: "error",
-          message:
-            "You can't split more than one model at once. Please load only one model.",
-        });
-      }
-    });
-    this.$viewer.localContext.registerShortcut({
-      name: "admin",
-      key: "$",
-      ctrlKey: true,
-      shiftKey: false,
-      execute: () => this.toggleAdminMode(),
-    });
-
     if (this.$viewer.state.models.length > 0) {
       this.loadProject();
     }
@@ -141,10 +123,6 @@ export default {
     this.$viewer.localContext.unregisterShortcut("admin");
   },
   methods: {
-    toggleAdminMode() {
-      this.adminMode = !this.adminMode;
-    },
-
     async loadProject() {
       this.loading = true;
 
@@ -157,7 +135,7 @@ export default {
 
       const project = this.projects.find(p => p.name === projectName);
 
-      if (this.projects.length === 0 || !project) {
+      if (!project) {
         await this.initProject(projectName);
       } else {
         this.projectId = project._id;
@@ -265,8 +243,6 @@ export default {
     async reset() {
       this.loading = true;
 
-      this.rowsResultData = [];
-      this.columnsResultData = [];
       this.validationData = [];
 
       const uuids = [...this.$viewer.state.models[0].uuids.keys()];
