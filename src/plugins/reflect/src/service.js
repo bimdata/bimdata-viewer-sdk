@@ -29,7 +29,6 @@ function createService() {
       return await fetch(`${TIPEE_SMARTY_URL}/reflect/projects`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
         },
       }).then(
         res => res.json()
@@ -44,7 +43,6 @@ function createService() {
       return await fetch(`${TIPEE_SMARTY_URL}/reflect/rules?projectId=${projectId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
         },
       }).then(
         res => res.json()
@@ -61,7 +59,6 @@ function createService() {
       return await fetch(`${TIPEE_SMARTY_URL}/reflect/project/${projectId}/properties?ifc_type=${type}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
         },
       }).then(
         res => res.json()
@@ -84,6 +81,8 @@ function createService() {
         body: JSON.stringify({ name, description }),
       }).then(
         res => res.json()
+      ).then(
+        json => json.project_id
       );
     } catch (error) {
       console.error("[ReflectPlugin] createProject error: ", error);
@@ -96,7 +95,6 @@ function createService() {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
         },
       });
     } catch (error) {
@@ -129,7 +127,6 @@ function createService() {
       return await fetch(`${TIPEE_SMARTY_URL}/reflect/project/${projectId}/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
         },
       }).then(
         res => res.json()
@@ -161,7 +158,7 @@ function createService() {
     }
   }
 
-  async function runQuery(projectId, queryBuilder) {
+  async function runQuery(projectId, query) {
     try {
       return await fetch(
         `${TIPEE_SMARTY_URL}/reflect/project/${projectId}/rule`,
@@ -171,7 +168,7 @@ function createService() {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(queryBuilder),
+          body: JSON.stringify(query),
         }
       ).then(
         res => res.json()

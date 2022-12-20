@@ -82,8 +82,8 @@ export default {
       TIPEE_PLATFORM_URL,
       TIPEE_REFLECT_URL,
 
-      password: "test_plugin",
-      username: "test_plugin",
+      password: "",
+      username: "",
     };
   },
   emits: ["login"],

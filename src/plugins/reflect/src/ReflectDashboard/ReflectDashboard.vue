@@ -171,8 +171,7 @@ export default {
     async initProject(name) {
       this.loading = true;
 
-      const project = await service.createProject(name);
-      this.projectId = project._id;
+      this.projectId = await service.createProject(name);
 
       const doc = this.$viewer.state.models[0].document;
       const result = await service.addIfc(this.projectId, doc.name, doc.file);
