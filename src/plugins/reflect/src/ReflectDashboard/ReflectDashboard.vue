@@ -48,7 +48,7 @@
       </div>
 
       <div class="reflect-dashboard__body__results">
-        <ReflectValidationTable :rows="validationData" />
+        <ReflectValidationTable :rows="resultDataValidation" />
       </div>
     </div>
 
@@ -105,7 +105,9 @@ export default {
 
       reflectElementUuids: null,
       reflectElementUuidsNotValid: null,
-      validationData: [],
+      resultDataRows: [],
+      resultDataColumns: [],
+      resultDataValidation: [],
     };
   },
   created() {
@@ -188,8 +190,13 @@ export default {
           });
         }
 
-        this.validationData = runResults
-          .reduce((acc, rule) => acc.concat(rule.validation_generale), []);
+        this.resultDataRows =
+          runResults.reduce((acc, rule) => acc.concat(rule.result), []);
+        this.resultDataColumns =
+          Object.keys(this.resultDataRows.reduce((obj, x) => ({ ...obj, ...x }), {}))
+          .map(x => ({ id: x, label: x }));
+        this.resultDataValidation =
+          runResults.reduce((acc, rule) => acc.concat(rule.validation_generale), []);
 
         const uuids = [...this.$viewer.state.models[0].uuids.keys()];
         this.$viewer.state.hideObjectsByUuids( diff(uuids, this.reflectElementUuids) );
@@ -243,7 +250,9 @@ export default {
     async reset() {
       this.loading = true;
 
-      this.validationData = [];
+      this.resultDataRows = [];
+      this.resultDataColumns = [];
+      this.resultDataValidation = [];
 
       const uuids = [...this.$viewer.state.models[0].uuids.keys()];
       this.$viewer.state.showObjectsByUuids(uuids);
@@ -266,12 +275,12 @@ export default {
     },
 
     async exportDataToXLS() {
-      if (this.validationData.length > 0) {
+      if (this.resultDataValidation.length > 0) {
         this.loading = true;
         await generateAndDownloadXLS(
-          [],
-          [],
-          this.validationData,
+          this.resultDataColumns,
+          this.resultDataRows,
+          this.resultDataValidation,
           REFLECT_XLS_FILENAME
         );
         this.loading = false;
