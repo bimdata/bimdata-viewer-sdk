@@ -1,12 +1,10 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createWebHistory, createRouter } from 'vue-router'
+
 import Home from "../views/Home.vue";
 import Viewer from "../views/Viewer.vue";
 import OidcCallback from "@/views/OidcCallback.vue";
 import { vuexOidcCreateRouterMiddleware } from "vuex-oidc";
 import store from "@/store";
-
-Vue.use(VueRouter);
 
 const routes = [
   {
@@ -33,9 +31,9 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(),
+  base: process.env.NODE_ENV,
   routes,
 });
 router.beforeEach(vuexOidcCreateRouterMiddleware(store));

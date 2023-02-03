@@ -1,10 +1,11 @@
 const authority =
-  process.env.VUE_APP_BIMDATA_OIDC_URL ||
-  "https://iam.bimdata.io/auth/realms/bimdata";
+  import.meta.env.VITE_APP_BIMDATA_OIDC_URL  || "http://localhost:8080";
 
-const appUrl = process.env.VUE_APP_URL || "http://localhost:8080";
 
-const clientId = process.env.VUE_APP_CLIENT_ID;
+const appUrl = import.meta.env.VITE_APP_URL || "http://localhost:8080";
+
+
+const clientId = import.meta.env.VITE_APP_CLIENT_ID;
 
 if (!clientId) {
   throw new Error(

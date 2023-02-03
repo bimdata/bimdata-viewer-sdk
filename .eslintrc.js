@@ -13,8 +13,8 @@ module.exports = {
     SharedArrayBuffer: "readonly",
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": import.meta.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": import.meta.env.NODE_ENV === "production" ? "error" : "off",
     "prettier/prettier": "off",
     indent: "off",
     "linebreak-style": ["off", "unix"],

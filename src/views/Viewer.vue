@@ -39,7 +39,7 @@ export default {
         cloudId: this.$route.query.cloudId,
         projectId: this.$route.query.projectId,
         modelIds: [this.$route.query.modelId],
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
         accessToken: this.oidcAccessToken,
       },
       plugins: {

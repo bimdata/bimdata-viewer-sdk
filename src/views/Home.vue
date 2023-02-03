@@ -75,14 +75,14 @@ export default {
     collaborationApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
       });
       return apiClient.collaborationApi;
     },
     modelApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
       });
       return apiClient.modelApi;
     },
