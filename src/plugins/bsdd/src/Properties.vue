@@ -177,13 +177,15 @@ import {
   BIMDataSelect,
   BIMDataToggle,
   BIMDataTooltip,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
+
 import { requestApi } from "./utils.js";
 import _ from "lodash";
 
 export default {
   name: "bsdd",
   components: {
+    BIMDataButton,
     BIMDataInput,
     BIMDataTooltip,
     BIMDataButton,
@@ -259,7 +261,7 @@ export default {
       this.$viewer.state.hub.on("objects-selected", reactOnSelectionChange),
     ];
   },
-  destroyed() {
+  unmounted() {
     this.stateSubscriptions.forEach(sub => this.$viewer.state.hub.off(sub));
   },
   methods: {
@@ -571,15 +573,15 @@ export default {
         }
       }
     }
-    ::v-deep.toggle__button .toggle__switch {
+    :deep(.toggle__button .toggle__switch) {
       margin: 0 0px;
     }
   }
   .bimdata-dropdown-list {
-    ::v-deep.bimdata-tooltip {
+    :deep(.bimdata-tooltip) {
       width: 100%;
     }
-    ::v-deep.bimdata-tooltip__text {
+    :deep(.bimdata-tooltip__text) {
       text-align: left;
       left: 0;
       transform: none;
@@ -588,15 +590,15 @@ export default {
       }
     }
   }
-  ::v-deep.bimdata-dropdown-list__content {
+  :deep(.bimdata-dropdown-list__content) {
     width: 100%;
   }
-  ::v-deep.bimdata-list {
+  :deep(.bimdata-list) {
     li {
       padding: 6px 12px;
     }
   }
-  ::v-deep.bimdata-tooltip__text {
+  :deep(.bimdata-tooltip__text) {
     padding: 10px;
     font-size: 11px;
     font-weight: normal;

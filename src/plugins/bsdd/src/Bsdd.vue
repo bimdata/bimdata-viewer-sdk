@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import { BIMDataDropdownList } from "@bimdata/design-system/components.js";
+import { BIMDataDropdownList } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 import Properties from "./Properties.vue";
 import { requestApi, toIfcType } from "./utils.js";
@@ -100,6 +100,7 @@ export default {
     ]);
     this.availableDomains = _.sortBy(availableDomains, "name");
     this.availableLanguages = _.sortBy(availableLanguages, "name");
+
     this.loading = false;
 
     this.$viewer.state.hub.on("objects-selected", this.updateCurrentIfcType);
@@ -188,9 +189,9 @@ export default {
       .bimdata-search-bar {
         margin: 12px auto;
       }
-      ::v-deep.bimdata-tooltip {
+      :deep(.bimdata-tooltip) {
         width: 100%;
-        &__text {
+        .bimdata-tooltip__text {
           padding: 6px;
           width: 92%;
           height: fit-content;

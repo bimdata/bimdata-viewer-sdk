@@ -59,20 +59,20 @@
 
 <script>
 import { requestApi } from "./utils.js";
-import {
-  BIMDataButton,
-  BIMDataDropdownList,
-  BIMDataTooltip,
-} from "@bimdata/design-system/components.js";
+// import {
+//   BIMDataButton,
+//   BIMDataDropdownList,
+//   BIMDataTooltip,
+// } from "@bimdata/design-system/components.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
   name: "Classifications",
-  components: {
-    BIMDataButton,
-    BIMDataDropdownList,
-    BIMDataTooltip,
-  },
+  // components: {
+  //   BIMDataButton,
+  //   BIMDataDropdownList,
+  //   BIMDataTooltip,
+  // },
   props: {
     language: {
       type: Object,
