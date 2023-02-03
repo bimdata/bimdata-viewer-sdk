@@ -26,7 +26,7 @@
           width="30%"
           v-for="item in results"
           :key="item.id"
-          @click.native="getProperties(item)"
+          @click="getProperties(item)"
         >
           <template #content>
             <div class="bimdata-card_logo">
@@ -101,10 +101,9 @@ import {
   BIMDataIcon,
   BIMDataLoading,
   BIMDataSearch,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js"
 
 export default {
-  // https://vuejs.org/v2/guide/components.html
   name: "bimobject",
   components: {
     BIMDataLoading,
@@ -156,7 +155,7 @@ export default {
       this.$viewer.state.hub.on("objects-selected", reactOnSelectionChange),
     ];
   },
-  destroyed() {
+  unmounted() {
     this.stateSubscriptions.forEach(sub => this.$viewer.state.hub.off(sub));
   },
   methods: {
