@@ -23,7 +23,7 @@
 </template>
 <script>
 import colorPicker from "@bimdata/color-picker";
-import { BIMDataButton } from "@bimdata/design-system/components.js";
+import { BIMDataButton } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 export default {
   name: "colorPickerModal",
