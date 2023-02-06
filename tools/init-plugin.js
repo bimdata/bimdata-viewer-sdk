@@ -20,9 +20,9 @@ function createPluginStructure(pluginDir, answers) {
   }
 }
 
-function createRollupConfig(pluginDir, answers) {
-  const file = nunjucks.render("rollup.config.js", answers);
-  fs.writeFileSync(pluginDir + "/rollup.config.js", file);
+function createViteConfig(pluginDir, answers) {
+  const file = nunjucks.render("vite.config.js", answers);
+  fs.writeFileSync(pluginDir + "/vite.config.js", file);
 }
 
 function createNpmConfig(pluginDir, answers) {
@@ -170,7 +170,7 @@ const run = async () => {
   const pluginDir = pluginsDir + "/" + answers.name;
 
   createPluginStructure(pluginDir, answers);
-  createRollupConfig(pluginDir, answers);
+  createViteConfig(pluginDir, answers);
   createNpmConfig(pluginDir, answers);
   createPluginFiles(pluginDir, answers);
 
@@ -198,6 +198,9 @@ const run = async () => {
     "    bimdataViewer." + chalk.cyan("registerPlugin") + `(${answers.name});`
   );
   console.log();
+  console.log("And don't forget to go to: " + chalk.yellowBright(
+    `"src/plugins/my-plugin-name"`
+  ) + "to make : " + chalk.yellowBright(`"npm i && npm run build"`));
 };
 
 run();

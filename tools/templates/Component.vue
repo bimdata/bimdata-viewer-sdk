@@ -1,11 +1,11 @@
 <template>
-  <!-- https://vuejs.org/v2/guide/syntax.html -->
+  <!-- https://vuejs.org/guide/essentials/template-syntax.html -->
   <div></div>
 </template>
 
 <script>
 export default {
-  // https://vuejs.org/v2/guide/components.html
+  // https://vuejs.org/guide/essentials/component-basics.html
   name: "{{ name }}",
   data() {
     return {};
