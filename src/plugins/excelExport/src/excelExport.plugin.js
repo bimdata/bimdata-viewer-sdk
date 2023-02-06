@@ -5,7 +5,7 @@ export default {
   startupScript($viewer) {
     $viewer.contextMenu.registerCommand({
         get label() {
-          return $viewer.vm.$t("excelExport.title");
+          return $viewer.contextMenu.$t("excelExport.title");
         },
         execute: () => {
           $viewer.globalContext.modals.pushModal(ExportModal)
