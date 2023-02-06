@@ -1,5 +1,5 @@
 import KroqiBcfServiceComponent from "./KroqiBcfService.vue";
-import { BIMDataIcon } from "@bimdata/design-system/components.js";
+import { BIMDataIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 export default {
   name: "bcfKroqiPremiumService", // The name of the plugin. this.$plugins.MyPluginName to access it from other plugins
