@@ -42,9 +42,13 @@
 <script>
 export default {
   name: "PlatformDemo",
+  created() {
+    console.log('HERE :', this.$viewer);
+  },
   methods: {
     bimdata_url() {
       const apiUrl = this.$viewer.api.apiUrl;
+      console.log({apiUrl})
       if (apiUrl.includes("staging")) {
         return "https://platform-staging.bimdata.io/";
       } else if (apiUrl.includes("next")) {
