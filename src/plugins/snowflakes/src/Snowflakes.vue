@@ -29,7 +29,7 @@ export default {
   onClose() {
     this.events.forEach(event => this.xeokit.scene.off(event)); // remove all events
     this.events = [];
-    this.models.forEach(model => model.destroy()); // remove all snowflakes
+    this.models.forEach(model => model.visible = false); // remove all snowflakes
     this.models = [];
     this.canvas.style.removeProperty("background-color"); // reset the background
   },
