@@ -10,7 +10,7 @@
         @click="reset"
       >
         <BIMDataIcon name="reset" size="xl" />
-        <span>{{ $t("HolusionPlugin.reset") }}</span>
+        <span class="m-l-6">{{ $t("HolusionPlugin.reset") }}</span>
       </BIMDataButton>
       <div class="flex flex-col items-end">
         <BIMDataToggle
@@ -45,7 +45,7 @@
           @click="fitView"
         >
           <BIMDataIcon name="fitView" size="xl" />
-          <span>{{$t('HolusionPlugin.fitView')}}</span>
+          <span class="m-l-6">{{$t('HolusionPlugin.fitView')}}</span>
         </BIMDataButton>
 
         <BIMDataButton
@@ -57,7 +57,7 @@
           @click="isolate"
         >
           <BIMDataIcon name="isolate" size="xxl" />
-          <span>{{$t('HolusionPlugin.isolate')}}</span>
+          <span class="m-l-6">{{$t('HolusionPlugin.isolate')}}</span>
         </BIMDataButton>
       </div>
 
@@ -70,12 +70,12 @@
             fill
             radius
             class="m-r-24"
-            @mousedown.native="startOrbitButton('left')"
-            @mouseleave.native="stopOrbitButton('left')"
-            @mouseup.native="stopOrbitButton('left')"
-            @touchstart.native="startOrbitButton('left')"
-            @touchend.native="stopOrbitButton('left')"
-            @touchcancel.native="stopOrbitButton('left')"
+            @mousedown="startOrbitButton('left')"
+            @mouseleave="stopOrbitButton('left')"
+            @mouseup="stopOrbitButton('left')"
+            @touchstart="startOrbitButton('left')"
+            @touchend="stopOrbitButton('left')"
+            @touchcancel="stopOrbitButton('left')"
           >
             <BIMDataIcon name="left" size="l" />
           </BIMDataButton>
@@ -88,12 +88,12 @@
             fill
             radius
             class="m-b-24"
-            @mousedown.native="startOrbitButton('up')"
-            @mouseleave.native="stopOrbitButton('up')"
-            @mouseup.native="stopOrbitButton('up')"
-            @touchstart.native="startOrbitButton('up')"
-            @touchend.native="stopOrbitButton('up')"
-            @touchcancel.native="stopOrbitButton('up')"
+            @mousedown="startOrbitButton('up')"
+            @mouseleave="stopOrbitButton('up')"
+            @mouseup="stopOrbitButton('up')"
+            @touchstart="startOrbitButton('up')"
+            @touchend="stopOrbitButton('up')"
+            @touchcancel="stopOrbitButton('up')"
           >
             <BIMDataIcon name="up" size="l" />
           </BIMDataButton>
@@ -105,12 +105,12 @@
             fill
             radius
             class="m-t-24"
-            @mousedown.native="startOrbitButton('down')"
-            @mouseleave.native="stopOrbitButton('down')"
-            @mouseup.native="stopOrbitButton('down')"
-            @touchstart.native="startOrbitButton('down')"
-            @touchend.native="stopOrbitButton('down')"
-            @touchcancel.native="stopOrbitButton('down')"
+            @mousedown="startOrbitButton('down')"
+            @mouseleave="stopOrbitButton('down')"
+            @mouseup="stopOrbitButton('down')"
+            @touchstart="startOrbitButton('down')"
+            @touchend="stopOrbitButton('down')"
+            @touchcancel="stopOrbitButton('down')"
           >
             <BIMDataIcon name="down" size="l" />
           </BIMDataButton>
@@ -123,12 +123,12 @@
             fill
             radius
             class="m-l-24"
-            @mousedown.native="startOrbitButton('right')"
-            @mouseleave.native="stopOrbitButton('right')"
-            @mouseup.native="stopOrbitButton('right')"
-            @touchstart.native="startOrbitButton('right')"
-            @touchend.native="stopOrbitButton('right')"
-            @touchcancel.native="stopOrbitButton('right')"
+            @mousedown="startOrbitButton('right')"
+            @mouseleave="stopOrbitButton('right')"
+            @mouseup="stopOrbitButton('right')"
+            @touchstart="startOrbitButton('right')"
+            @touchend="stopOrbitButton('right')"
+            @touchcancel="stopOrbitButton('right')"
           >
             <BIMDataIcon name="right" size="l" />
           </BIMDataButton>
@@ -145,7 +145,7 @@
           @click="undo"
         >
           <BIMDataIcon name="undo" size="l" />
-          <span>{{$t('HolusionPlugin.undo')}}</span>
+          <span class="m-l-6">{{$t('HolusionPlugin.undo')}}</span>
         </BIMDataButton>
 
         <BIMDataButton
@@ -157,7 +157,7 @@
           @click="redo"
         >
           <BIMDataIcon name="redo" size="l" />
-          <span>{{$t('HolusionPlugin.redo')}}</span>
+          <span class="m-l-6">{{$t('HolusionPlugin.redo')}}</span>
         </BIMDataButton>
       </div>
     </div>
@@ -169,7 +169,7 @@ import {
   BIMDataButton,
   BIMDataIcon,
   BIMDataToggle,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 const PIVOT_SPEED = 30 * 1000; // one rotation in 10 second
 
@@ -294,7 +294,7 @@ export default {
       }
     },
   },
-  destroy() {
+  unmounted() {
     if (this.orbitEventInterval) {
       clearInterval(this.orbitEventInterval);
     }
