@@ -1,5 +1,5 @@
 <template>
-  <div class="bimdata-iot m-y-12 p-x-12">
+  <div class="bimdata-iot p-y-12 p-x-12">
     <div class="select">
       <div
         @click="displayOptions = !displayOptions"
@@ -70,7 +70,7 @@ import Graph from "./Graph.vue";
 import {
   BIMDataIcon,
   BIMDataLoading,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 export default {
   name: "iot",
   components: {
@@ -106,7 +106,7 @@ export default {
   created() {
     this.viewer3dPlugin = this.$viewer.globalContext.getPlugins("viewer3d")[0];
     this.$viewer.localContext.hub.once("3d-model-loaded", () => {
-      console.log('model loaded')
+      console.log("model loaded");
       this.$open();
       this.getMonitoredElements();
     });
@@ -212,9 +212,8 @@ export default {
 @import "../node_modules/chartist/dist/chartist.min.css";
 @import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 .bimdata-iot {
+  height: 100%;
   overflow: auto;
-  height: inherit;
-  
   .select {
     position: relative;
     &-content {
@@ -343,7 +342,7 @@ export default {
     .ct-series-a {
       .ct-line,
       .ct-point {
-        stroke: var(--color-neutral);
+        stroke: #205dbd;
       }
     }
     .ct-series-b {
