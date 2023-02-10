@@ -1,57 +1,138 @@
 <template>
-  <div class="home p-24">
-    <h2>BIMData SDK</h2>
-    <div class="m-y-6">
-      <select v-model="selectedCloud" :disabled="fetchingClouds">
-        <option disabled :value="null">{{
-          fetchingClouds ? "Fetching clouds" : "Select a cloud"
-        }}</option>
-        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{
-          cloud.name
-        }}</option>
-      </select>
-    </div>
-    <div class="m-y-6">
-      <select
-        v-model="selectedProject"
-        :disabled="!selectedCloud || fetchingProjects"
+  <div class="home">
+    <header class="flex justify-center">
+      <div class="flex items-center">
+        <div class="">
+          <h1>BIMData SDK</h1>
+          <p>
+            Quickly build a reliable & full featured plugin. Our BIMData SDK is made specifically to help you create your own plugins.
+          </p>
+          <a href="https://developers-staging.bimdata.io/" class="bimdata-btn bimdata-btn__fill bimdata-btn__fill--secondary bimdata-btn__radius m-t-30" target="_blank">Explore our documentation</a>
+        </div>
+        <div class="flex justify-center">
+          <img src="./assets/home-illu.png" width="260" />
+        </div>
+      </div>
+    </header>
+    <div class="home-form flex flex-col m-t-24">
+      <h2>Let's start</h2>
+      <p>
+        Choose one cloud, project and model to see your first plugin in viewer
+        environment
+      </p>
+      <div class="flex m-t-24">
+        <div class="home-form__card">
+          <div class="flex items-center m-b-18">
+            <h5 class="m-r-12">Step 01 : Select a cloud</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedCloud"
+              size="xxs"
+            />
+          </div>
+          <BIMDataSelect
+            width="300px"
+            label="Clouds list"
+            :options="clouds"
+            optionKey="name"
+            v-model="selectedCloud"
+            :disabled="fetchingClouds"
+          />
+        </div>
+        <div class="home-form__card m-x-24">
+          <div class="flex items-center m-b-18">
+            <h5 class="m-r-12">Step 02 : Select a project</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedProject"
+              size="xxs"
+            />
+          </div>
+          <BIMDataSelect
+            width="300px"
+            label="Projects list"
+            :options="projects"
+            optionKey="name"
+            v-model="selectedProject"
+            :disabled="!selectedCloud || fetchingProjects"
+          />
+        </div>
+        <div class="home-form__card">
+          <div class="flex items-center m-b-18">
+            <h5 class="m-r-12">Step 03 : Select a model</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedModel"
+              size="xxs"
+            />
+          </div>
+          <BIMDataSelect
+            width="300px"
+            label="Models list"
+            :options="models"
+            optionKey="name"
+            v-model="selectedModel"
+            :disabled="!selectedProject || fetchingModels"
+          />
+        </div>
+      </div>
+      <BIMDataButton
+        color="primary"
+        width="250px"
+        fill
+        radius
+        class="m-t-36"
+        :disabled="!selectedCloud || !selectedProject"
+        @click="go"
       >
-        <option disabled :value="null">{{
-          fetchingProjects ? "Fetching projects" : "Select a project"
-        }}</option>
-        <option
-          v-for="project of projects"
-          :key="project.id"
-          :value="project"
-          >{{ project.name }}</option
-        >
-      </select>
+        Go
+      </BIMDataButton>
     </div>
-    <div class="m-y-6">
-      <select
-        v-model="selectedModel"
-        :disabled="!selectedProject || fetchingModels"
-      >
-        <option disabled :value="null">{{
-          fetchingModels ? "Fetching Models" : "Select a Model"
-        }}</option>
-        <option v-for="ifc of models" :key="ifc.id" :value="ifc">{{
-          ifc.name
-        }}</option>
-      </select>
+    <div class="home-explications m-t-42 m-b-24">
+      <h4>It just works like this</h4>
+      <div class="flex">
+        <div>
+          <h4>1.</h4>
+          <strong>Install SDK</strong>
+          <p>
+            Choose one cloud, project and model to see your first plugin in
+            viewer environment
+          </p>
+        </div>
+        <div>
+          <h4>2.</h4>
+          <strong>Create your plugin</strong>
+          <p>
+            A single line of code sets up your future plugin and gets you
+            started quickly.
+          </p>
+        </div>
+        <div>
+          <h4>3.</h4>
+          <strong>Build your own plugin</strong>
+          <p>
+            Use your UI elements with our SDK and build the plugin you need.
+          </p>
+        </div>
+      </div>
     </div>
-    <button
-      class="m-t-12"
-      :disabled="!selectedCloud || !selectedProject"
-      @click="go"
-    >
-      Go
-    </button>
   </div>
 </template>
 
 <script>
 import getClient from "../api/api.js";
+
+import {
+  BIMDataButton,
+  BIMDataSelect,
+  BIMDataIcon,
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 import { mapGetters } from "vuex";
 
@@ -69,6 +150,11 @@ export default {
       selectedModel: null,
       fetchingModels: false,
     };
+  },
+  components: {
+    BIMDataButton,
+    BIMDataSelect,
+    BIMDataIcon,
   },
   computed: {
     ...mapGetters(["oidcAccessToken"]),
@@ -140,46 +226,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.home {
-  margin: auto;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  select {
-    width: 250px;
-    height: 32px;
-    border: none;
-    background-color: white;
-    border-bottom: 1px solid;
-    outline: none;
-    cursor: pointer;
-  }
-  button {
-    width: 250px;
-    height: 32px;
-    background-color: #2f374a;
-    color: #fff;
-    border-radius: 3px;
-    background-origin: none;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      background-color: #3b455d;
-    }
-  }
-  &.p-24 {
-    padding: 24px;
-  }
-  .m-y-6 {
-    margin: 6px 0;
-  }
-  .m-t-12 {
-    margin-top: 12px;
-  }
-}
-</style>
+<style lang="scss" scoped src="./_Home.scss"></style>
