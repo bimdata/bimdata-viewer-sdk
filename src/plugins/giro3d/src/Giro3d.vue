@@ -23,7 +23,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$viewer);
     this.giro3dDivId = `3d-engine-${this.$viewer.globalContext.plugins.id}`;
 
     this.localContextResizeSubscription = this.$viewer.globalContext.hub.on(
