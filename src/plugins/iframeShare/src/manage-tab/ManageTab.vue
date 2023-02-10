@@ -21,7 +21,7 @@
 import {
   BIMDataSpinner,
   BIMDataTable,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 import ShareLinkCell from "./ShareLinkCell.vue";
 
 export default {
