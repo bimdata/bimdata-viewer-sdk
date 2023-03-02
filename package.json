@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "vite",
     "serve": "vue-cli-service serve",
-    "build": "vite build",
     "lint": "vue-cli-service lint",
     "init-plugin": "node tools/init-plugin.js",
     "install-plugins": "node build/install-plugins.js"
