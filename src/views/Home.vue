@@ -95,32 +95,59 @@
       </BIMDataButton>
     </div>
     <div class="home-explications m-t-42 m-b-24">
-      <h4>It just works like this</h4>
-      <div class="flex">
+      <h4>It just works like this :</h4>
+      <div class="grid">
         <div>
-          <h4>1.</h4>
-          <strong>Install SDK</strong>
+          <h3>1. Install SDK</h3>
           <p>
-            Choose one cloud, project and model to see your first plugin in
-            viewer environment
+            Clone the repository to your local machine :
           </p>
+          <pre><code>git clone https://github.com/bimdata/bimdata-viewer-sdk.git
+          cd bimdata-viewer-sdk
+          npm install
+          cp .env.example .env
+          </code></pre>
         </div>
         <div>
-          <h4>2.</h4>
-          <strong>Create your plugin</strong>
+          <h3>2. Create your plugin</h3>
           <p>
             A single line of code sets up your future plugin and gets you
-            started quickly.
+            started quickly :
           </p>
+          <pre><code>npm run init-plugin</code></pre>
         </div>
         <div>
-          <h4>3.</h4>
-          <strong>Build your own plugin</strong>
+          <h3>3. Develop and test your plugin</h3>
+          <p>You have to compile and hot-reloads for development with :</p>
+          <pre><code>npm run dev</code></pre>
           <p>
-            Use your UI elements with our SDK and build the plugin you need.
+            Open <code>localhost:8080</code> and select one cloud, project and model to see your first plugin in viewer environment.
           </p>
+          <p>We also have a documentation to help you get started :</p>
+          <a href="https://developers-staging.bimdata.io/viewer/" class="bimdata-btn bimdata-btn__fill bimdata-btn__fill--secondary bimdata-btn__radius m-t-18" target="_blank">Explore our documentation</a>
+        </div>
+        <div>
+          <h3>4. Bundle your plugin</h3>
+          <p>
+            Now you have 2 choices:
+            <ul>
+              <li>
+                deploy your plugin on the <a href="https://marketplace.bimdata.io/" target="_blank"> marketplace </a>
+              </li>
+              <li>import your plugin into your own application</li>
+            </ul>
+          </p>
+          <pre><code>cd src/plugins/your-plugin
+            npm run build</code></pre>
+          <p>Now, your bundled plugin is here : <code>src/plugins/your-plugin/dist</code></p>
         </div>
       </div>
+    </div>
+    <div class="home-inspiration p-30">
+      <h3>In lack of inspiration ?</h3>
+      <p>
+        In <code>src/plugins</code> you can find different plugins to inspire yourself
+      </p>
     </div>
   </div>
 </template>
