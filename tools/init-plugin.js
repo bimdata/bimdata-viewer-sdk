@@ -7,6 +7,7 @@ const copydir = require("copy-dir");
 const inquirer = require("inquirer");
 const nunjucks = require("nunjucks");
 const isVarName = require("is-valid-var-name");
+const child_process = require('child_process');
 
 nunjucks.configure(__dirname + "/templates", { autoescape: true });
 
@@ -173,6 +174,7 @@ const run = async () => {
   createViteConfig(pluginDir, answers);
   createNpmConfig(pluginDir, answers);
   createPluginFiles(pluginDir, answers);
+  child_process.execSync('npm install',{stdio:[0,1,2], cwd: pluginDir});
 
   console.log();
   console.log();
@@ -198,9 +200,6 @@ const run = async () => {
     "    bimdataViewer." + chalk.cyan("registerPlugin") + `(${answers.name});`
   );
   console.log();
-  console.log("And don't forget to go to: " + chalk.yellowBright(
-    `"src/plugins/my-plugin-name"`
-  ) + "to make : " + chalk.yellowBright(`"npm i && npm run build"`));
 };
 
 run();
