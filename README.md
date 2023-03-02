@@ -5,22 +5,18 @@ You can develop, test, build, package and share your plugin easily.
 
 ## Setup
 
-First, you must create a BIMData Application (see https://developers.bimdata.io/tutorials/dev_create_an_application.html)
-The SDK needs at least `cloud:read` and `ifc:read` scopes.
-The default BCF Plugin needs `bcf:read` and `bcf:write` scopes, plus you can add any scope you need for your plugin.
+First, you have to clone the sdk repo and install SDK dependecies :
 
-The default redirect URI is http://localhost:8080/oidc-callback
+```
+git clone https://github.com/bimdata/bimdata-viewer-sdk.git
+cd bimdata-viewer-sdk
+npm install
+```
 
-Then you can copy the `.env.example` file and add your `client_id` in it:
+Then you can copy the `.env.example` file :
 
 ```
 cp .env.example .env
-```
-
-Install SDK dependecies:
-
-```
-npm install
 ```
 
 To have everything working you also need to install all plugins on the first setup.
