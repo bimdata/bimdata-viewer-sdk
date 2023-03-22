@@ -1,5 +1,4 @@
 import KroqiBcfServiceComponent from "./KroqiBcfService.vue";
-import { BIMDataIcon } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 export default {
   name: "bcfKroqiPremiumService", // The name of the plugin. this.$plugins.MyPluginName to access it from other plugins
@@ -11,12 +10,10 @@ export default {
     keepOpen: true, // If true, the window won't be closed if user click somewhere else.
     tooltip: "bcfKroqiPremiumService.tooltip", // Can be an i18n path or a string shown in all languages
     icon: {
-      component: BIMDataIcon,
+      component: "BIMDataIcon",
       options: {
-        props: {
-          name: "bcf",
-          size: "m",
-        },
+        name: "bcf",
+        size: "m",
       },
     },
   },
