@@ -212,6 +212,9 @@ export default {
 @import "../node_modules/chartist/dist/chartist.min.css";
 @import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 .bimdata-iot {
+  overflow: auto;
+  height: inherit;
+  
   .select {
     position: relative;
     &-content {
