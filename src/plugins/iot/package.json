@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/iot-viewer-plugin",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "iot BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
@@ -18,7 +18,7 @@
     "iot"
   ],
   "devDependencies": {
-    "@bimdata/design-system": "1.4.0-rc.92",
+    "@bimdata/design-system": "1.4.0-rc.14",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-replace": "^4.0.0",
