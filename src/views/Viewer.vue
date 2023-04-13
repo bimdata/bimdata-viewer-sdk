@@ -21,6 +21,7 @@ import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
 import Giro3dPlugin from "@/plugins/giro3d/src/giro3d.plugin.js";
+import IotPlugin from "@/plugins/iot/src/iot.plugin.js";
 
 export default {
   data() {
@@ -65,6 +66,7 @@ export default {
     bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
     bimdataViewer.registerPlugin(Giro3dPlugin);
+    bimdataViewer.registerPlugin(IotPlugin);
 
 
     bimdataViewer.mount(`#${this.viewerId}`);
