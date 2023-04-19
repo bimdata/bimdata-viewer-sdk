@@ -18,7 +18,6 @@ import HolusionPlugin from "@/plugins/holusion/dist/holusion.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/dist/kroqiBcfService.plugin.js";
 import platformDemo from "@/plugins/platformDemo/dist/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/dist/snowflakes.plugin.js";
-import SplitPlugin from "@/plugins/split/dist/split.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/dist/svgExtractor.plugin.js";
 
 // import iotEquipment from "@/plugins/iotEquipment/dist/iotEquipment.plugin.js";
@@ -67,7 +66,6 @@ export default {
     bimdataViewer.registerPlugin(kroqiBcfService);
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
-    bimdataViewer.registerPlugin(SplitPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
     bimdataViewer.registerPlugin(Giro3dPlugin);
     bimdataViewer.registerPlugin(IotPlugin);
