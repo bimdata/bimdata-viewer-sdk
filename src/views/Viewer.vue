@@ -8,7 +8,6 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import backgroundColor from "@/plugins/backgroundColor/dist/backgroundColor.plugin.js";
 import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.js";
 import bsdd from "@/plugins/bsdd/dist/bsdd.plugin.js";
 import ChristmasSleighPlugin from "@/plugins/christmasSleigh/dist/christmasSleigh.plugin.js";
@@ -58,7 +57,6 @@ export default {
       },
     });
 
-    bimdataViewer.registerPlugin(backgroundColor);
     bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(bsdd);
     bimdataViewer.registerPlugin(ChristmasSleighPlugin);
