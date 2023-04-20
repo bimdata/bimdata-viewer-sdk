@@ -11,7 +11,7 @@ import makeBIMDataViewer from "@bimdata/viewer";
 import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.esm.min.js";
 import bsdd from "@/plugins/bsdd/dist/bsdd.plugin.esm.min.js";
 import ChristmasSleighPlugin from "@/plugins/christmasSleigh/dist/christmasSleigh.plugin.esm.min.js";
-import excelExportPlugin from "@/plugins/excelExport/dist/excelExport.plugin.js";
+import excelExportPlugin from "@/plugins/excelExport/dist/excelExport.plugin.esm.min.js";
 import Giro3dPlugin from "@/plugins/giro3d/dist/giro3d.plugin.js";
 import GltfExtractorPlugin from "@/plugins/gltfExtractor/dist/gltfExtractor.plugin.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/dist/kroqiBcfService.plugin.js";

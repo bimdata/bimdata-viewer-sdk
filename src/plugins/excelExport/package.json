@@ -1,14 +1,14 @@
 {
   "name": "@bimdata/excel-export-plugin",
   "type": "module",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "excel export BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && npm exec terser -- -c -m --module dist/excelExport.plugin.js > dist/excelExport.plugin.esm.min.js && rm dist/excelExport.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
-  "main": "dist/excelExport.plugin.js",
+  "main": "dist/excelExport.plugin.esm.min.js",
   "files": [
     "dist"
   ],
@@ -25,6 +25,7 @@
     "file-saver": "^2.0.5",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
+    "terser": "^5.17.1",
     "vite": "^4.0.0",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }

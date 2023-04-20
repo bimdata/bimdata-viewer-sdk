@@ -7,9 +7,8 @@ export default {
         get label() {
           return $viewer.contextMenu.$t("excelExport.title");
         },
-        execute: () => {
-          $viewer.globalContext.modals.pushModal(ExportModal)
-        },
+        execute: () => 
+          $viewer.globalContext.modals.pushModal(ExportModal),
         predicate: () => !!$viewer.state.selectedObjects.length,
       });
   },
