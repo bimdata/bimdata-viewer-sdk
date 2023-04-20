@@ -1,7 +1,7 @@
 {
   "name": "@bimdata/bimobject-viewer-plugin",
   "type": "module",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "bimobject BIMData Viewer Plugin",
   "scripts": {
     "build": "vite build && npm exec terser -- -c -m --module dist/bimobject.plugin.js > dist/bimobject.plugin.esm.min.js && rm dist/bimobject.plugin.js",
