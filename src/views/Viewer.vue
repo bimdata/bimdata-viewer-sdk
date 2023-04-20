@@ -13,7 +13,7 @@ import bsdd from "@/plugins/bsdd/dist/bsdd.plugin.esm.min.js";
 import ChristmasSleighPlugin from "@/plugins/christmasSleigh/dist/christmasSleigh.plugin.esm.min.js";
 import excelExportPlugin from "@/plugins/excelExport/dist/excelExport.plugin.esm.min.js";
 import Giro3dPlugin from "@/plugins/giro3d/dist/giro3d.plugin.esm.min.js";
-import GltfExtractorPlugin from "@/plugins/gltfExtractor/dist/gltfExtractor.plugin.js";
+import GltfExtractorPlugin from "@/plugins/gltfExtractor/dist/gltfExtractor.plugin.esm.min.js";
 import kroqiBcfService from "@/plugins/kroqiBcfService/dist/kroqiBcfService.plugin.js";
 import platformDemo from "@/plugins/platformDemo/dist/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/dist/snowflakes.plugin.js";
