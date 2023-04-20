@@ -24,13 +24,10 @@ export default {
   },
   methods: {
     hideUI() {
-      const exceptions = ["viewer3d"];
-      [...this.$viewer.localContext.plugins.entries()]
-        .filter(([name]) => !exceptions.includes(name))
-        .forEach(([, plugin]) => plugin.$hide());
+      this.$viewer.localContext.plugins.get('viewer3d').hideUI();
     },
     showUI() {
-      this.$viewer.localContext.plugins.forEach(plugin => plugin.$show())
+      this.$viewer.localContext.plugins.get('viewer3d').showUI();
     },
     startPivot() {
       const xeokit = this.$viewer.localContext.plugins.get('viewer3d').xeokit;
