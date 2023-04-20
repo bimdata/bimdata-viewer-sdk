@@ -8,7 +8,7 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.js";
+import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.esm.min.js";
 import bsdd from "@/plugins/bsdd/dist/bsdd.plugin.js";
 import ChristmasSleighPlugin from "@/plugins/christmasSleigh/dist/christmasSleigh.plugin.js";
 import excelExportPlugin from "@/plugins/excelExport/dist/excelExport.plugin.js";
