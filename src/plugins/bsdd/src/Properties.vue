@@ -273,9 +273,9 @@ export default {
     async showCurrentObjectProperties(element) {
       this.displayedElement = element;
       const elementDetails =
-        await new this.$viewer.api.apiClient.IfcApi().getElement(
+        await this.$viewer.api.apiClient.modelApi.getElement(
           this.$viewer.api.cloudId,
-          element.ifc.id,
+          element.model.id,
           this.$viewer.api.projectId,
           element.uuid
         );

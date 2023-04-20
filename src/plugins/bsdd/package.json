@@ -1,15 +1,15 @@
 {
   "name": "@bimdata/bsdd-viewer-plugin",
   "type": "module",
-  "version": "0.1.1",
+  "version": "2.0.0",
   "description": "bsdd BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && npm exec terser -- -c -m --module dist/bsdd.plugin.js > dist/bsdd.plugin.esm.min.js && rm dist/bsdd.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
-  "main": "./dist/bsdd.plugin.js",
-  "module": "./dist/bsdd.plugin.js",
+  "main": "./dist/bsdd.plugin.esm.min.js",
+  "module": "./dist/bsdd.plugin.esm.min.js",
   "files": [
     "dist"
   ],
@@ -26,6 +26,7 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
+    "terser": "^5.17.1",
     "vite": "^4.0.0",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }
