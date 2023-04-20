@@ -1,15 +1,15 @@
 {
   "name": "@bimdata/giro3d-viewer-plugin",
   "type": "module",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "giro3d BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && npm exec terser -- -c -m --module dist/giro3d.plugin.js > dist/giro3d.plugin.esm.min.js && rm dist/giro3d.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
-  "main": "./dist/giro3d.plugin.js",
-  "module": "./dist/giro3d.plugin.js",
+  "main": "./dist/giro3d.plugin.esm.min.js",
+  "module": "./dist/giro3d.plugin.esm.min.js",
   "files": [
     "dist"
   ],
@@ -20,13 +20,14 @@
     "giro3d"
   ],
   "devDependencies": {
-    "@giro3d/giro3d": "^0.4.0",
     "@bimdata/design-system": "^1.4.0-rc.89",
+    "@giro3d/giro3d": "^0.4.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
+    "terser": "^5.17.1",
+    "three": "^0.135.0",
     "vite": "^4.0.0",
-    "vite-plugin-css-injected-by-js": "^2.4.0",
-    "three": "^0.135.0"
+    "vite-plugin-css-injected-by-js": "^2.4.0"
   }
 }
