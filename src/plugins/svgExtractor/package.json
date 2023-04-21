@@ -1,10 +1,10 @@
 {
   "name": "@bimdata/svg-extractor-viewer-plugin",
   "type": "module",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "svgExtractor BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && terser -c -m -o dist/svgExtractor.plugin.js --module dist/svgExtractor.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
@@ -24,7 +24,8 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
-    "vite": "^4.0.0",
+    "terser": "^5.17.1",
+    "vite": "^4.3.1",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }
 }
