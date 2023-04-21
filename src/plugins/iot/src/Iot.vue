@@ -177,7 +177,7 @@ export default {
       const ifcs = this.$viewer.state.ifcs;
       const ifc = ifcs.find(ifc => ifc.name.startsWith("Mirabeau_ELEC")); // When there is more than one ifc
       if (ifc) {
-        const apiClient = new this.$viewer.api.apiClient.IfcApi();
+        const apiClient = this.$viewer.api.apiClient.modelApi;
         const systems = await apiClient.getSystems(
           this.$viewer.api.cloudId,
           ifc.id,

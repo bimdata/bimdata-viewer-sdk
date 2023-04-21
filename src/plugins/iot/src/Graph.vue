@@ -4,7 +4,7 @@
       {{ title }}
     </h4>
     <div
-      :id="`chartist-${_uid}`"
+      :id="index"
       class="chartist ct-chart ct-perfect-fourth m-y-12"
     ></div>
     <BIMDataButton
@@ -23,11 +23,10 @@
 import Chartist from "chartist";
 import ChartistZoom from "chartist-plugin-zoom";
 import ChartistTooltip from "chartist-plugin-tooltips-updated";
-import { BIMDataButton } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
+
+let chartistIndex = 1;
+
 export default {
-  components: {
-    BIMDataButton,
-  },
   props: {
     title: {
       type: String,
@@ -60,6 +59,7 @@ export default {
           }),
         ],
       },
+      index: `chartist-${chartistIndex++}`,
     };
   },
   mounted() {
@@ -67,7 +67,7 @@ export default {
       "data",
       () => {
         if (this.data) {
-          new Chartist.Line(`#chartist-${this._uid}`, this.data, this.options);
+          new Chartist.Line("#" + this.index, this.data, this.options);
         }
       },
       {
