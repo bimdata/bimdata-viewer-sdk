@@ -1,15 +1,15 @@
 {
   "name": "@bimdata/christmas-sleigh-viewer-plugin",
   "type": "module",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "christmas sleigh BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build && npm exec terser -- -c -m --module dist/christmasSleigh.plugin.js > dist/christmasSleigh.plugin.esm.min.js && rm dist/christmasSleigh.plugin.js",
+    "build": "vite build && terser -c -m -o dist/christmasSleigh.plugin.js --module dist/christmasSleigh.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
-  "main": "./dist/christmasSleigh.plugin.esm.min.js",
-  "module": "./dist/christmasSleigh.plugin.esm.min.js",
+  "main": "./dist/christmasSleigh.plugin.js",
+  "module": "./dist/christmasSleigh.plugin.js",
   "files": [
     "dist"
   ],
@@ -25,7 +25,7 @@
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
     "terser": "^5.17.1",
-    "vite": "^4.0.0",
+    "vite": "^4.3.1",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }
 }
