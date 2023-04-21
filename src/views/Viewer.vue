@@ -19,7 +19,7 @@ import platformDemo from "@/plugins/platformDemo/dist/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/dist/snowflakes.plugin.js";
 import SvgExtractorPlugin from "@/plugins/svgExtractor/dist/svgExtractor.plugin.js";
 
-// import iotEquipment from "@/plugins/iotEquipment/dist/iotEquipment.plugin.js";
+import iotEquipment from "@/plugins/iotEquipment/dist/iotEquipment.plugin.js";
 import iframeShare from "@/plugins/iframeShare/dist/iframeShare.plugin.js";
 import bimworld from "@/plugins/bimworld/dist/bimworld.plugin.js";
 import iot from "@/plugins/iot/dist/iot.plugin.js";
@@ -69,7 +69,7 @@ export default {
     bimdataViewer.registerPlugin(IotPlugin);
 
 
-    // bimdataViewer.registerPlugin(iotEquipment);
+    bimdataViewer.registerPlugin(iotEquipment);
     bimdataViewer.registerPlugin(iframeShare);
     bimdataViewer.registerPlugin(bimworld);
     bimdataViewer.registerPlugin(iot);

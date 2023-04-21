@@ -1,10 +1,10 @@
 {
   "name": "@bimdata/iot-equipment-viewer-plugin",
   "type": "module",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "iotEquipment BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && terser -c -m -o dist/iotEquipment.plugin.js --module dist/iotEquipment.plugin.js",
     "watch": "vite build --watch",
     "prepublishOnly": "npm run build"
   },
@@ -26,7 +26,8 @@
     "chartist-plugin-tooltips-updated": "^0.1.3",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
-    "vite": "^4.0.0",
+    "terser": "^5.17.1",
+    "vite": "^4.3.1",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }
 }
