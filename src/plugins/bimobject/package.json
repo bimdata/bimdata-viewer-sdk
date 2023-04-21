@@ -1,15 +1,15 @@
 {
   "name": "@bimdata/bimobject-viewer-plugin",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "bimobject BIMData Viewer Plugin",
   "scripts": {
-    "build": "vite build && npm exec terser -- -c -m --module dist/bimobject.plugin.js > dist/bimobject.plugin.esm.min.js && rm dist/bimobject.plugin.js",
+    "build": "vite build && terser -c -m -o dist/bimobject.plugin.js --module dist/bimobject.plugin.js",
     "watch": "vite --watch",
     "prepublishOnly": "npm run build"
   },
-  "main": "./dist/bimobject.plugin.esm.min.js",
-  "module": "./dist/bimobject.plugin.esm.min.js",
+  "main": "./dist/bimobject.plugin.js",
+  "module": "./dist/bimobject.plugin.js",
   "files": [
     "dist"
   ],
@@ -25,7 +25,7 @@
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
     "terser": "^5.17.1",
-    "vite": "^4.0.0",
+    "vite": "^4.3.1",
     "vite-plugin-css-injected-by-js": "^2.4.0"
   }
 }
