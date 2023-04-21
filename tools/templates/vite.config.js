@@ -22,7 +22,6 @@ export default defineConfig(() => {
         name: "{{ name }}Plugin",
         fileName: "{{ name }}.plugin",
       },
-      minify: 'terser',
     },
     assetsInclude: ['assets/*'],
     plugins,
