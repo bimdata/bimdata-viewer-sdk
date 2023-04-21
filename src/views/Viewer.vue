@@ -21,7 +21,7 @@ import SvgExtractorPlugin from "@/plugins/svgExtractor/dist/svgExtractor.plugin.
 
 // import iotEquipment from "@/plugins/iotEquipment/dist/iotEquipment.plugin.js";
 import iframeShare from "@/plugins/iframeShare/dist/iframeShare.plugin.js";
-import bimworld from "@/plugins/bimworld/dist/bimworld.plugin.esm.min.js";
+import bimworld from "@/plugins/bimworld/dist/bimworld.plugin.js";
 import iot from "@/plugins/iot/dist/iot.plugin.js";
 
 
