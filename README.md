@@ -19,7 +19,7 @@ Then you can copy the `.env.example` file :
 cp .env.example .env
 ```
 
-And add this `client_id` : `6dd2bdd5-54df-49c5-9bea-43fe68e0cc13` in this file.
+And add this `client_id` : `6dd2bdd5-54df-49c5-9bea-43fe68e0cc13` in the above file.
 
 _Note: If you want to create you own application you can read this guide : https://developers.bimdata.io/api/guides/application.html#which-app-will-you-create_
 
