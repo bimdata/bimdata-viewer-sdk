@@ -1,4 +1,4 @@
-# BIMData viewer SDK
+# BIMData Viewer SDK
 
 This repo is a pre-configured environment to develop BIMData Viewer plugins.
 You can develop, test, build, package and share your plugin easily.
@@ -19,14 +19,9 @@ Then you can copy the `.env.example` file :
 cp .env.example .env
 ```
 
-To have everything working you also need to install all plugins on the first setup.
+And add this `client_id` : `6dd2bdd5-54df-49c5-9bea-43fe68e0cc13` in this file.
 
-**Note :** Usualy you only need to do this once, you can then start working on your plugins and install/build them
-individually as needed.
-
-```
-npm run install-plugins
-```
+_Note: If you want to create you own application you can read this guide : https://developers.bimdata.io/api/guides/application.html#which-app-will-you-create_
 
 ### Compiles and hot-reloads for development
 
