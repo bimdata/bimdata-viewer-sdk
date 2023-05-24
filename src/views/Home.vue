@@ -22,7 +22,7 @@
       </p>
       <div class="flex m-t-24">
         <div class="home-form__card">
-          <div class="flex items-center m-b-18">
+          <div class="flex items-center">
             <h5 class="m-r-12">Step 01 : Select a cloud</h5>
             <BIMDataIcon
               name="validate"
@@ -32,17 +32,36 @@
               size="xxs"
             />
           </div>
-          <BIMDataSelect
+          <BIMDataDropdownList
             width="300px"
-            label="Clouds list"
-            :options="clouds"
-            optionKey="name"
-            v-model="selectedCloud"
+            :list="clouds"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectCloudClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
             :disabled="fetchingClouds"
-          />
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedCloud"
+                :text="selectedCloud.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Clouds list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
         </div>
         <div class="home-form__card m-x-24">
-          <div class="flex items-center m-b-18">
+          <div class="flex items-center">
             <h5 class="m-r-12">Step 02 : Select a project</h5>
             <BIMDataIcon
               name="validate"
@@ -52,17 +71,35 @@
               size="xxs"
             />
           </div>
-          <BIMDataSelect
+          <BIMDataDropdownList
             width="300px"
-            label="Projects list"
-            :options="projects"
-            optionKey="name"
-            v-model="selectedProject"
+            :list="projects"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectProjectClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
             :disabled="!selectedCloud || fetchingProjects"
-          />
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedProject" :text="selectedProject.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Project list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name" 
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
         </div>
         <div class="home-form__card">
-          <div class="flex items-center m-b-18">
+          <div class="flex items-center">
             <h5 class="m-r-12">Step 03 : Select a model</h5>
             <BIMDataIcon
               name="validate"
@@ -72,14 +109,32 @@
               size="xxs"
             />
           </div>
-          <BIMDataSelect
+          <BIMDataDropdownList
             width="300px"
-            label="Models list"
-            :options="models"
-            optionKey="name"
-            v-model="selectedModel"
+            :list="models"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectModelClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
             :disabled="!selectedProject || fetchingModels"
-          />
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedModel" :text="selectedModel.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Models list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
         </div>
       </div>
       <BIMDataButton
@@ -88,7 +143,7 @@
         fill
         radius
         class="m-t-36"
-        :disabled="!selectedCloud || !selectedProject"
+        :disabled="!selectedModel"
         @click="go"
       >
         Go
@@ -157,8 +212,10 @@ import getClient from "../api/api.js";
 
 import {
   BIMDataButton,
-  BIMDataSelect,
+  BIMDataDropdownList,
   BIMDataIcon,
+  BIMDataSelect,
+  BIMDataTextbox,
 } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 import { mapGetters } from "vuex";
@@ -180,8 +237,10 @@ export default {
   },
   components: {
     BIMDataButton,
-    BIMDataSelect,
+    BIMDataDropdownList,
     BIMDataIcon,
+    BIMDataSelect,
+    BIMDataTextbox,
   },
   computed: {
     ...mapGetters(["oidcAccessToken"]),
@@ -201,6 +260,7 @@ export default {
     },
   },
   watch: {
+    
     selectedCloud() {
       if (this.selectedCloud) {
         this.selectedModel = null;
@@ -228,6 +288,15 @@ export default {
           modelId: this.selectedModel.id,
         },
       });
+    },
+    onSelectCloudClick(cloud) {
+      this.selectedCloud = cloud;
+    },
+    onSelectProjectClick(project) {
+      this.selectedProject = project;
+    },
+    onSelectModelClick(model) {
+      this.selectedModel = model;
     },
     async getClouds() {
       this.fetchingClouds = true;
