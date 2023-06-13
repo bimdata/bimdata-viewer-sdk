@@ -8,7 +8,7 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
+/*import backgroundColor from "@/plugins/backgroundColor/src/backgroundColor.plugin.js";
 import BimObjectPlugin from "@/plugins/bimobject/src/bimobject.plugin.js";
 import bsdd from "@/plugins/bsdd/src/bsdd.plugin.js";
 import ChristmasSleighPlugin from "@/plugins/christmasSleigh/src/christmasSleigh.plugin.js";
@@ -19,8 +19,8 @@ import kroqiBcfService from "@/plugins/kroqiBcfService/src/kroqiBcfService.plugi
 import platformDemo from "@/plugins/platformDemo/src/platformDemo.plugin.js";
 import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
 import SplitPlugin from "@/plugins/split/src/split.plugin.js";
-import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";
-import Giro3dPlugin from "@/plugins/giro3d/src/giro3d.plugin.js";
+import SvgExtractorPlugin from "@/plugins/svgExtractor/src/svgExtractor.plugin.js";*/
+import Giro3dPlugin from "@/plugins/giro3d/dist/giro3d.plugin.js";
 
 export default {
   data() {
@@ -53,7 +53,7 @@ export default {
     });
 
     // bimdataViewer.registerPlugin(backgroundColor);
-    bimdataViewer.registerPlugin(BimObjectPlugin);
+/*    bimdataViewer.registerPlugin(BimObjectPlugin);
     bimdataViewer.registerPlugin(bsdd);
     bimdataViewer.registerPlugin(ChristmasSleighPlugin);
     bimdataViewer.registerPlugin(excelExportPlugin);
@@ -63,11 +63,11 @@ export default {
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SplitPlugin);
-    bimdataViewer.registerPlugin(SvgExtractorPlugin);
+    bimdataViewer.registerPlugin(SvgExtractorPlugin);*/
     bimdataViewer.registerPlugin(Giro3dPlugin);
 
 
-    bimdataViewer.mount(`#${this.viewerId}`);
+    bimdataViewer.mount(`#${this.viewerId}`, 'giro3d');
 
     this.$watch(
       () => this.oidcAccessToken,
