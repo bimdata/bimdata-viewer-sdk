@@ -1,36 +1,27 @@
-# BIMData viewer SDK
+# BIMData Viewer SDK
 
 This repo is a pre-configured environment to develop BIMData Viewer plugins.
 You can develop, test, build, package and share your plugin easily.
 
 ## Setup
 
-First, you must create a BIMData Application (see https://developers.bimdata.io/tutorials/dev_create_an_application.html)
-The SDK needs at least `cloud:read` and `ifc:read` scopes.
-The default BCF Plugin needs `bcf:read` and `bcf:write` scopes, plus you can add any scope you need for your plugin.
-
-The default redirect URI is http://localhost:8080/oidc-callback
-
-Then you can copy the `.env.example` file and add your `client_id` in it:
+First, you have to clone the sdk repo and install SDK dependencies :
 
 ```
-cp .env.example .env
-```
-
-Install SDK dependecies:
-
-```
+git clone https://github.com/bimdata/bimdata-viewer-sdk.git
+cd bimdata-viewer-sdk
 npm install
 ```
 
-To have everything working you also need to install all plugins on the first setup.
-
-**Note :** Usualy you only need to do this once, you can then start working on your plugins and install/build them
-individually as needed.
-
-```
-npm run install-plugins
-```
+> _Note:_
+>
+> If you want to create you own application you can copy the `.env.example` file :
+>
+> ```
+> cp .env.example .env
+> ```
+>
+> Then you can read this guide : https://developers.bimdata.io/api/guides/application.html#which-app-will-you-create
 
 ### Compiles and hot-reloads for development
 

@@ -42,6 +42,7 @@
 <script>
 export default {
   name: "PlatformDemo",
+  inject: ['$viewer'],
   methods: {
     bimdata_url() {
       const apiUrl = this.$viewer.api.apiUrl;

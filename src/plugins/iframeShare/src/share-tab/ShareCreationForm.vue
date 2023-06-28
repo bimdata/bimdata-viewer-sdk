@@ -43,7 +43,7 @@ import {
   BIMDataCheckbox,
   BIMDataIcon,
   BIMDataInput,
-} from "@bimdata/design-system/components.js";
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 export default {
   components: {

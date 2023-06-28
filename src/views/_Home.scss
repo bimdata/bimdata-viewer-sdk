@@ -1,0 +1,153 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  :deep(.bimdata-select__option-list) {
+    font-size: 15px;
+  }
+  header {
+    width: 100%;
+    height: 320px;
+    position: relative;
+    &::before {
+      width: 100%;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 430px;
+      background-color: #f0f4fb;
+      z-index: -1;
+    }
+    & > div {
+      width: 850px;
+      & > div {
+        flex: 1;
+        p {
+          font-size: 15px;
+          line-height: 22px;
+        }
+        a {
+          width: 225px;
+          height: 32px;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  &-form {
+    width: 1036px;
+    align-items: center;
+    padding: 40px;
+    background-color: var(--color-white);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    & > div {
+      width: 100%;
+      justify-content: space-around;
+    }
+    &__card {
+      &__select {
+        width: 300px;
+        justify-content: flex-start;
+      }
+    }
+  }
+  &-explications {
+    width: 956px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      gap: 30px;
+      p {
+        line-height: 1.5;
+        & > code {
+          color: #4d5a7a;
+          padding: 0.25rem 0.5rem;
+          margin: 0;
+          font-size: 0.85em;
+          background-color: rgba(27, 31, 35, 0.05);
+          border-radius: 3px;
+        }
+      }
+      pre {
+        padding: 18px;
+        font-size: 12px;
+        line-height: 22px;
+        background-color: #282b34;
+        color: #adbac7;
+        border-radius: 6px;
+        white-space: pre-line;
+      }
+      ul {
+        li {
+          line-height: 1.5;
+          a {
+            color: #3375dd;
+          }
+        }
+      }
+      a {
+        width: 225px;
+        height: 32px;
+        text-decoration: none;
+      }
+    }
+  }
+  &-inspiration {
+    width: 100%;
+    background-color: #f0f4fb;
+    text-align: center;
+    code {
+      color: #4d5a7a;
+      padding: 0.25rem 0.5rem;
+      margin: 0;
+      font-size: 0.85em;
+      background-color: rgba(27, 31, 35, 0.05);
+      border-radius: 3px;
+    }
+  }
+  @media (min-width: 320px) and (max-width: 1024px) {
+    .flex {
+      flex-direction: column;
+    }
+    header {
+      height: auto;
+      & > div {
+        padding: 24px;
+        width: 100%;
+        text-align: center;
+        a {
+          margin: 24px auto;
+        }
+      }
+      &::before {
+        height: 100%;
+      }
+    }
+    .home-form,
+    .home-explications {
+      width: 100%;
+    }
+    .home-form {
+      box-shadow: none;
+      &__card {
+        margin: 0 !important;
+      }
+    }
+    .home-explications {
+      padding: 0 24px 42px;
+      text-align: center;
+      .flex {
+        & > div {
+          p {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

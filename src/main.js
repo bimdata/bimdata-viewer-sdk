@@ -1,20 +1,19 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import VueI18n from "vue-i18n";
+import { createApp } from 'vue'
+import App from "@/App.vue";
+import router from "@/router";
+import store from "@/store";
+import { createI18n } from 'vue-i18n';
 
-Vue.config.productionTip = false;
-Vue.use(VueI18n);
-
-const i18n = new VueI18n({
+const i18n = createI18n({
   locale: "en", // set locale
   messages: { en: {}, fr: {} }, // set locale messages
 });
 
-new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App),
-}).$mount("#app");
+const app = createApp(App);
+
+app.use(i18n);
+app.use(router);
+app.use(store);
+
+app.mount('#app');
+

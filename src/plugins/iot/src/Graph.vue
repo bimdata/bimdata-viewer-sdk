@@ -4,7 +4,7 @@
       {{ title }}
     </h4>
     <div
-      :id="`chartist-${_uid}`"
+      :id="index"
       class="chartist ct-chart ct-perfect-fourth m-y-12"
     ></div>
     <BIMDataButton
@@ -19,14 +19,14 @@
 </template>
 
 <script>
+// TODO : change chart lib
 import Chartist from "chartist";
 import ChartistZoom from "chartist-plugin-zoom";
 import ChartistTooltip from "chartist-plugin-tooltips-updated";
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/BIMDataButton.js";
+
+let chartistIndex = 1;
+
 export default {
-  components: {
-    BIMDataButton
-  },
   props: {
     title: {
       type: String,
@@ -59,6 +59,7 @@ export default {
           }),
         ],
       },
+      index: `chartist-${chartistIndex++}`,
     };
   },
   mounted() {
@@ -66,7 +67,7 @@ export default {
       "data",
       () => {
         if (this.data) {
-          new Chartist.Line(`#chartist-${this._uid}`, this.data, this.options);
+          new Chartist.Line("#" + this.index, this.data, this.options);
         }
       },
       {
@@ -79,17 +80,17 @@ export default {
       this.resetZoom();
       this.resetZoom = null;
     },
-    getFormatedDate(timestamp){
+    getFormatedDate(timestamp) {
       const date = new Date(timestamp);
       let day = date.getDate();
       let month = date.getMonth() + 1;
-      if ( day < 10 ) {
+      if (day < 10) {
         day = `0${day}`;
       }
-      if ( month < 10 ) {
+      if (month < 10) {
         month = `0${month}`;
       }
-      const formatDate = `${day} ${month}`
+      const formatDate = `${day} ${month}`;
       return formatDate;
     },
   },
@@ -97,7 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bimdata-btn{
+.bimdata-btn {
   margin-left: auto;
   margin-right: 12px;
 }

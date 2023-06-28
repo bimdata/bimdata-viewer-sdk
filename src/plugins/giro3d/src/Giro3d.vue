@@ -23,15 +23,15 @@ export default {
     };
   },
   created() {
-    this.giro3dDivId = `3d-engine-${this.$viewer.localContext.pluginsUnit.id}`;
+    this.giro3dDivId = `3d-engine-${this.$viewer.globalContext.plugins.id}`;
 
-    this.localContextResizeSubscription = this.$viewer.localContext.hub.on(
+    this.localContextResizeSubscription = this.$viewer.globalContext.hub.on(
       "context-resize",
       this.onResize
     );
   },
-  destroyed() {
-    this.$viewer.localContext.hub.off(this.localContextResizeSubscription);
+  unmounted() {
+    this.$viewer.globalContext.hub.off(this.localContextResizeSubscription);
   },
   async mounted() {
     const viewerDiv = document.getElementById(this.giro3dDivId);

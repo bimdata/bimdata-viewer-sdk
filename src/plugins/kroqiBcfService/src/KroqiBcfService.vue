@@ -19,7 +19,7 @@
         @click="open"
       >
         <BIMDataIcon name="chevron" size="xxxs" />
-        <span>{{ $t("bcfKroqiPremiumService.activate") }}</span>
+        <span class="m-l-6">{{ $t("bcfKroqiPremiumService.activate") }}</span>
       </BIMDataButton>
       <p class="color-tertiary-darkest primary-font m-y-18" v-else>
         Veuillez contacter la personne qui administre votre organisation Kroqi
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { BIMDataButton } from "@bimdata/design-system/components.js";
+import { BIMDataButton } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html
@@ -44,12 +44,12 @@ export default {
   },
   computed: {
     userIsAdmin() {
-      return this.$viewer.pluginManager.cfg.bcfKroqiPremiumService.userIsAdmin;
+      return this.$viewer.pluginsCfg.bcfKroqiPremiumService.userIsAdmin;
     },
   },
   methods: {
     open() {
-      const options = this.$viewer.pluginManager.cfg.bcfKroqiPremiumService;
+      const options = this.$viewer.pluginsCfg.bcfKroqiPremiumService;
       const org = options.organization;
       const kroqiDomain = options.kroqiDomain;
       const service = options.service;

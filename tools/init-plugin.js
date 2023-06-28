@@ -7,6 +7,7 @@ const copydir = require("copy-dir");
 const inquirer = require("inquirer");
 const nunjucks = require("nunjucks");
 const isVarName = require("is-valid-var-name");
+const child_process = require('child_process');
 
 nunjucks.configure(__dirname + "/templates", { autoescape: true });
 
@@ -20,9 +21,9 @@ function createPluginStructure(pluginDir, answers) {
   }
 }
 
-function createRollupConfig(pluginDir, answers) {
-  const file = nunjucks.render("rollup.config.js", answers);
-  fs.writeFileSync(pluginDir + "/rollup.config.js", file);
+function createViteConfig(pluginDir, answers) {
+  const file = nunjucks.render("vite.config.js", answers);
+  fs.writeFileSync(pluginDir + "/vite.config.js", file);
 }
 
 function createNpmConfig(pluginDir, answers) {
@@ -170,9 +171,10 @@ const run = async () => {
   const pluginDir = pluginsDir + "/" + answers.name;
 
   createPluginStructure(pluginDir, answers);
-  createRollupConfig(pluginDir, answers);
+  createViteConfig(pluginDir, answers);
   createNpmConfig(pluginDir, answers);
   createPluginFiles(pluginDir, answers);
+  child_process.execSync('npm install',{stdio:[0,1,2], cwd: pluginDir});
 
   console.log();
   console.log();

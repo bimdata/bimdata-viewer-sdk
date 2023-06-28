@@ -1,57 +1,222 @@
 <template>
-  <div class="home p-24">
-    <h2>BIMData SDK</h2>
-    <div class="m-y-6">
-      <select v-model="selectedCloud" :disabled="fetchingClouds">
-        <option disabled :value="null">{{
-          fetchingClouds ? "Fetching clouds" : "Select a cloud"
-        }}</option>
-        <option v-for="cloud of clouds" :key="cloud.id" :value="cloud">{{
-          cloud.name
-        }}</option>
-      </select>
-    </div>
-    <div class="m-y-6">
-      <select
-        v-model="selectedProject"
-        :disabled="!selectedCloud || fetchingProjects"
+  <div class="home">
+    <header class="flex justify-center">
+      <div class="flex items-center">
+        <div class="">
+          <h1>BIMData SDK</h1>
+          <p>
+            Quickly build a reliable & full featured plugin. Our BIMData SDK is made specifically to help you create your own plugins.
+          </p>
+          <a href="https://developers-staging.bimdata.io/" class="bimdata-btn bimdata-btn__fill bimdata-btn__fill--secondary bimdata-btn__radius m-t-30" target="_blank">Explore our documentation</a>
+        </div>
+        <div class="flex justify-center">
+          <img src="./assets/home-illu.png" width="260" />
+        </div>
+      </div>
+    </header>
+    <div class="home-form flex flex-col m-t-24">
+      <h2>Let's start</h2>
+      <p>
+        Choose one cloud, project and model to see your first plugin in viewer
+        environment
+      </p>
+      <div class="flex m-t-24">
+        <div class="home-form__card">
+          <div class="flex items-center">
+            <h5 class="m-r-12">Step 01 : Select a cloud</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedCloud"
+              size="xxs"
+            />
+          </div>
+          <BIMDataDropdownList
+            width="300px"
+            :list="clouds"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectCloudClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
+            :disabled="fetchingClouds"
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedCloud"
+                :text="selectedCloud.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Clouds list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
+        </div>
+        <div class="home-form__card m-x-24">
+          <div class="flex items-center">
+            <h5 class="m-r-12">Step 02 : Select a project</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedProject"
+              size="xxs"
+            />
+          </div>
+          <BIMDataDropdownList
+            width="300px"
+            :list="projects"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectProjectClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
+            :disabled="!selectedCloud || fetchingProjects"
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedProject" :text="selectedProject.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Project list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name" 
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
+        </div>
+        <div class="home-form__card">
+          <div class="flex items-center">
+            <h5 class="m-r-12">Step 03 : Select a model</h5>
+            <BIMDataIcon
+              name="validate"
+              fill
+              color="success"
+              v-if="selectedModel"
+              size="xxs"
+            />
+          </div>
+          <BIMDataDropdownList
+            width="300px"
+            :list="models"
+            elementKey="name"
+            :perPage="40"
+            @element-click="onSelectModelClick"
+            class="home-form__card__select"
+            :closeOnElementClick="true"
+            :disabled="!selectedProject || fetchingModels"
+          >
+            <template #header>
+              <BIMDataTextbox
+                v-if="selectedModel" :text="selectedModel.name"
+                width="85%"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+             <span v-else> Models list</span>
+            </template>
+            <template #element="{ element }">
+              <BIMDataTextbox :text="element.name"
+                cutPosition="middle"
+                tooltipPosition="bottom"
+                tooltipColor="primary"/>
+            </template>
+          </BIMDataDropdownList>
+        </div>
+      </div>
+      <BIMDataButton
+        color="primary"
+        width="250px"
+        fill
+        radius
+        class="m-t-36"
+        :disabled="!selectedModel"
+        @click="go"
       >
-        <option disabled :value="null">{{
-          fetchingProjects ? "Fetching projects" : "Select a project"
-        }}</option>
-        <option
-          v-for="project of projects"
-          :key="project.id"
-          :value="project"
-          >{{ project.name }}</option
-        >
-      </select>
+        Go
+      </BIMDataButton>
     </div>
-    <div class="m-y-6">
-      <select
-        v-model="selectedModel"
-        :disabled="!selectedProject || fetchingModels"
-      >
-        <option disabled :value="null">{{
-          fetchingModels ? "Fetching Models" : "Select a Model"
-        }}</option>
-        <option v-for="ifc of models" :key="ifc.id" :value="ifc">{{
-          ifc.name
-        }}</option>
-      </select>
+    <div class="home-explications m-t-42 m-b-24">
+      <h4>It just works like this :</h4>
+      <div class="grid">
+        <div>
+          <h3>1. Install SDK</h3>
+          <p>
+            Clone the repository to your local machine :
+          </p>
+          <pre><code>git clone https://github.com/bimdata/bimdata-viewer-sdk.git
+          cd bimdata-viewer-sdk
+          npm install
+          cp .env.example .env
+          </code></pre>
+        </div>
+        <div>
+          <h3>2. Create your plugin</h3>
+          <p>
+            A single line of code sets up your future plugin and gets you
+            started quickly :
+          </p>
+          <pre><code>npm run init-plugin</code></pre>
+        </div>
+        <div>
+          <h3>3. Develop and test your plugin</h3>
+          <p>You have to compile and hot-reloads for development with :</p>
+          <pre><code>npm run dev</code></pre>
+          <p>
+            Open <code>localhost:8080</code> and select one cloud, project and model to see your first plugin in viewer environment.
+          </p>
+          <p>We also have a documentation to help you get started :</p>
+          <a href="https://developers-staging.bimdata.io/viewer/" class="bimdata-btn bimdata-btn__fill bimdata-btn__fill--secondary bimdata-btn__radius m-t-18" target="_blank">Explore our documentation</a>
+        </div>
+        <div>
+          <h3>4. Bundle your plugin</h3>
+          <p>
+            Now you have 2 choices:
+            <ul>
+              <li>
+                deploy your plugin on the <a href="https://marketplace.bimdata.io/" target="_blank"> marketplace </a>
+              </li>
+              <li>import your plugin into your own application</li>
+            </ul>
+          </p>
+          <pre><code>cd src/plugins/your-plugin
+            npm run build</code></pre>
+          <p>Now, your bundled plugin is here : <code>src/plugins/your-plugin/dist</code></p>
+        </div>
+      </div>
     </div>
-    <button
-      class="m-t-12"
-      :disabled="!selectedCloud || !selectedProject"
-      @click="go"
-    >
-      Go
-    </button>
+    <div class="home-inspiration p-30">
+      <h3>In lack of inspiration ?</h3>
+      <p>
+        In <code>src/plugins</code> you can find different plugins to inspire yourself
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 import getClient from "../api/api.js";
+
+import {
+  BIMDataButton,
+  BIMDataDropdownList,
+  BIMDataIcon,
+  BIMDataSelect,
+  BIMDataTextbox,
+} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
 
 import { mapGetters } from "vuex";
 
@@ -70,24 +235,32 @@ export default {
       fetchingModels: false,
     };
   },
+  components: {
+    BIMDataButton,
+    BIMDataDropdownList,
+    BIMDataIcon,
+    BIMDataSelect,
+    BIMDataTextbox,
+  },
   computed: {
     ...mapGetters(["oidcAccessToken"]),
     collaborationApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
       });
       return apiClient.collaborationApi;
     },
     modelApi() {
       const apiClient = getClient({
         accessToken: this.oidcAccessToken,
-        apiUrl: process.env.VUE_APP_BIMDATA_API_URL,
+        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
       });
       return apiClient.modelApi;
     },
   },
   watch: {
+    
     selectedCloud() {
       if (this.selectedCloud) {
         this.selectedModel = null;
@@ -116,6 +289,15 @@ export default {
         },
       });
     },
+    onSelectCloudClick(cloud) {
+      this.selectedCloud = cloud;
+    },
+    onSelectProjectClick(project) {
+      this.selectedProject = project;
+    },
+    onSelectModelClick(model) {
+      this.selectedModel = model;
+    },
     async getClouds() {
       this.fetchingClouds = true;
       this.clouds = await this.collaborationApi.getClouds();
@@ -140,46 +322,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.home {
-  margin: auto;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  select {
-    width: 250px;
-    height: 32px;
-    border: none;
-    background-color: white;
-    border-bottom: 1px solid;
-    outline: none;
-    cursor: pointer;
-  }
-  button {
-    width: 250px;
-    height: 32px;
-    background-color: #2f374a;
-    color: #fff;
-    border-radius: 3px;
-    background-origin: none;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      background-color: #3b455d;
-    }
-  }
-  &.p-24 {
-    padding: 24px;
-  }
-  .m-y-6 {
-    margin: 6px 0;
-  }
-  .m-t-12 {
-    margin-top: 12px;
-  }
-}
-</style>
+<style lang="scss" scoped src="./_Home.scss"></style>
