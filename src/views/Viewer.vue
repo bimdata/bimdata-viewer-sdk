@@ -65,9 +65,6 @@ export default {
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
-    bimdataViewer.registerPlugin(Giro3dPlugin);
-    bimdataViewer.registerPlugin(IotPlugin);
-
 
     bimdataViewer.registerPlugin(iotEquipment);
     bimdataViewer.registerPlugin(iframeShare);
