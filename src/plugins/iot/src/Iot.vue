@@ -206,11 +206,8 @@ export default {
 </script>
 
 <style lang="scss">
-// For some unknown reasons, rollup doesn't find ../node_modules/chartist/dist/chartist.min.css but only finds ./node_modules/chartist/dist/chartist.min.css (one less dot ate the beginning)
-// so ../ works when trying live with webpack, and silently fails when building with rollup.
-// A replace is used the rollup.config.js to workaround this bug
-@import "../node_modules/chartist/dist/chartist.min.css";
-@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "chartist/dist/chartist.min.css";
+@import "@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
 .bimdata-iot {
   height: 100%;
   overflow: auto;

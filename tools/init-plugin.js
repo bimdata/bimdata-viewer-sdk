@@ -7,7 +7,7 @@ const copydir = require("copy-dir");
 const inquirer = require("inquirer");
 const nunjucks = require("nunjucks");
 const isVarName = require("is-valid-var-name");
-const child_process = require('child_process');
+const child_process = require("child_process");
 
 nunjucks.configure(__dirname + "/templates", { autoescape: true });
 
@@ -174,23 +174,24 @@ const run = async () => {
   createViteConfig(pluginDir, answers);
   createNpmConfig(pluginDir, answers);
   createPluginFiles(pluginDir, answers);
-  child_process.execSync('npm install',{stdio:[0,1,2], cwd: pluginDir});
+  child_process.execSync("npm install", { stdio: [0, 1, 2] });
+  child_process.execSync(`npm run build --workspace=${answers.name}`, {
+    stdio: [0, 1, 2],
+  });
 
   console.log();
   console.log();
 
   console.log(chalk.green("You can now load your plugin to the viewer:"));
   console.log(
-    "Open " + chalk.red("src/views/viewer.vue") + " and add the import line:"
+    "Open " + chalk.red("src/views/Viewer.vue") + " and add the import line:"
   );
   console.log();
   console.log(
     chalk.red("    import ") +
       answers.name +
       chalk.red(" from ") +
-      chalk.yellowBright(
-        `"@/plugins/${answers.name}/src/${answers.name}.plugin.js"`
-      ) +
+      chalk.yellowBright(`"${answers.name}/dist/${answers.name}.plugin.js"`) +
       ";"
   );
   console.log();
