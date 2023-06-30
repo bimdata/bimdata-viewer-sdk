@@ -44,19 +44,29 @@ This tool asks you a couple of questions about the plugin you develop and genera
 
 Files are created in the directory `src/plugins/{{name of your plugin}}`.
 
-Then import your newly created plugin `src/viewer/Viewer.vue` and add it to the registerPlugin array.
+Then import your newly created plugin and add it to the registerPlugin array.
+
+The SDK utilizes npm workspaces to link your plugin in the root node_modules directory, making it accessible from Viewer.vue as if it were an installed package.
+
+#### **`src/views/Viewer.vue`**
 
 ```js
-// @bimdata/snowflakes-viewer-plugin is the package name
-import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin/dist/snowflakes.plugin.js";
+// `myPlugin` is the package name of `package.json`
+import myPlugin from "myPlugin";
 
 ...
 mounted() {
   const bimdataViewer = makeBIMDataViewer({...})
 
-  bimdataViewer.registerPlugin(SnowflakesPlugin);
+  bimdataViewer.registerPlugin(myPlugin);
 }
 ...
+```
+
+And run the following command:
+
+```sh
+npm run dev myPlugin
 ```
 
 ## Package your plugin
@@ -77,27 +87,28 @@ To publish it, update the `package.json` file with the proper information and ju
 
 The code is minified to protect your code as much as possible.
 
-### More info about how it works
+## More info about how it works
 
 The SDK itself and the packaging use _Vite_ to build.
-The `npm install` will to install all the packaging dependancies on the node_modules of the root directory (SDK) and link the plugin. You can import the plugin with this package name.
 
-Example:
+
+The `npm run dev` command facilitates the development process by automatically watching selected plugins while using the Vite build tool.
+
+### Usage
 
 ```js
-import SplitPlugin from "@bimdata/snowflakes-viewer-plugin/dist/snowflakes.plugin.js";
+npm run dev [plugin1] [plugin2] ...
 ```
 
-The `npm run dev` command facilitates the development process by automatically watching selected plugins while using the Vite build tool. It prompts users to select plugins they want to monitor and launches the necessary processes to watch them simultaneously.
+If no argument, it prompts users to select plugins they want to monitor and launches the necessary processes to watch them simultaneously.
 
-If a `.watch-plugin.rc` file exists in the SDK root's directory, the script will attempt to read the selected plugins from it. If the file does not exist or does not contain valid data, it will prompt you to select the plugins manually.
+If a `.watch-plugin.rc` file exists in the SDK root's directory, the script will attempt to read the selected plugins from it.
 Example:
 
 ```sh
 > cat .watch-plugin.rc
-@bimdata/bimworld-viewer-plugin
 @bimdata/snowflakes-viewer-plugin
-
+MyPlugin
 ```
 
 The `npm run dev:only` command disables this behavior.

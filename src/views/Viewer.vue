@@ -8,21 +8,21 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import BimObjectPlugin from "@bimdata/bimobject-viewer-plugin/dist/bimobject.plugin.js";
-import bsdd from "@bimdata/bsdd-viewer-plugin/dist/bsdd.plugin.js";
-import ChristmasSleighPlugin from "@bimdata/christmas-sleigh-viewer-plugin/dist/christmasSleigh.plugin.js";
-import excelExportPlugin from "@bimdata/excel-export-plugin/dist/excelExport.plugin.js";
-import Giro3dPlugin from "@bimdata/giro3d-viewer-plugin/dist/giro3d.plugin.js";
-import GltfExtractorPlugin from "@bimdata/gltf-extractor-viewer-plugin/dist/gltfExtractor.plugin.js";
-import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service/dist/kroqiBcfService.plugin.js";
-import platformDemo from "@bimdata/platform-demo-viewer-plugin/dist/platformDemo.plugin.js";
-import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin/dist/snowflakes.plugin.js";
-import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin/dist/svgExtractor.plugin.js";
+import BimObjectPlugin from "@bimdata/bimobject-viewer-plugin";
+import bsdd from "@bimdata/bsdd-viewer-plugin";
+import ChristmasSleighPlugin from "@bimdata/christmas-sleigh-viewer-plugin";
+import excelExportPlugin from "@bimdata/excel-export-plugin";
+import Giro3dPlugin from "@bimdata/giro3d-viewer-plugin";
+import GltfExtractorPlugin from "@bimdata/gltf-extractor-viewer-plugin";
+import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
+import platformDemo from "@bimdata/platform-demo-viewer-plugin";
+import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
+import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
 
-import iotEquipment from "@bimdata/iot-equipment-viewer-plugin/dist/iotEquipment.plugin.js";
-import iframeShare from "@bimdata/iframe-share-viewer-plugin/dist/iframeShare.plugin.js";
-import bimworld from "@bimdata/bimworld-viewer-plugin/dist/bimworld.plugin.js";
-import iot from "@bimdata/iot-viewer-plugin/dist/iot.plugin.js";
+import iotEquipment from "@bimdata/iot-equipment-viewer-plugin";
+import iframeShare from "@bimdata/iframe-share-viewer-plugin";
+import bimworld from "@bimdata/bimworld-viewer-plugin";
+import iot from "@bimdata/iot-viewer-plugin";
 
 export default {
   data() {
