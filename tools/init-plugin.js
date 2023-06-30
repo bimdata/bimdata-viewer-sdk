@@ -191,7 +191,7 @@ const run = async () => {
     chalk.red("    import ") +
       answers.name +
       chalk.red(" from ") +
-      chalk.yellowBright(`"${answers.name}/dist/${answers.name}.plugin.js"`) +
+      chalk.yellowBright(answers.name) +
       ";"
   );
   console.log();
