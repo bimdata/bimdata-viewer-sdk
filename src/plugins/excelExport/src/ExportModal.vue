@@ -109,9 +109,13 @@ export default {
       const now = new Date();
       const workbook = new ExcelJS.Workbook();
       workbook.created = now;
-      const ifcTypes = new Set(selectedObjects.map(object => this.convertIfcType(object.type)));
+      const ifcTypes = new Set(
+        selectedObjects.map(object => this.convertIfcType(object.type))
+      );
       ifcTypes.forEach(ifcType => {
-        const selectedObjectsWithType = selectedObjects.filter(object => this.convertIfcType(object.type) === ifcType);
+        const selectedObjectsWithType = selectedObjects.filter(
+          object => this.convertIfcType(object.type) === ifcType
+        );
         const worksheet = workbook.addWorksheet(ifcType);
         // uuid, name, ifc type, object type, base quantities, Pset common
         const columns = [
@@ -136,7 +140,8 @@ export default {
             });
           }
           const commonPset = rawElements[object.uuid].propertySets.find(
-            pset => pset.name.startsWith('Pset_') && pset.name.endsWith('Common')
+            pset =>
+              pset.name.startsWith("Pset_") && pset.name.endsWith("Common")
           );
           if (commonPset) {
             commonPset.properties.forEach(prop => {
@@ -161,7 +166,8 @@ export default {
             pset => pset.name === "BaseQuantities"
           );
           const commonPset = rawElements[object.uuid].propertySets.find(
-            pset => pset.name.startsWith('Pset_') && pset.name.endsWith('Common')
+            pset =>
+              pset.name.startsWith("Pset_") && pset.name.endsWith("Common")
           );
 
           const row = {
@@ -183,7 +189,6 @@ export default {
 
           worksheet.addRow(row);
         });
-
       });
       // worksheet.autoFilter = {
       //   from: "A1",
@@ -191,8 +196,7 @@ export default {
       // };
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
-        type:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       fileSaver.saveAs(blob, this.fileName + ".xlsx");
       this.loading = false;
@@ -210,7 +214,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
-@import "../node_modules/@bimdata/design-system/dist/scss/mixins/_font-size.scss";
+@import "@bimdata/design-system/dist/scss/_BIMDataVariables.scss";
+@import "@bimdata/design-system/dist/scss/mixins/_font-size.scss";
 @import "./_ExportModal.scss";
 </style>

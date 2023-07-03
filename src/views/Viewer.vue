@@ -8,22 +8,21 @@
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import BimObjectPlugin from "@/plugins/bimobject/dist/bimobject.plugin.js";
-import bsdd from "@/plugins/bsdd/dist/bsdd.plugin.js";
-import ChristmasSleighPlugin from "@/plugins/christmasSleigh/dist/christmasSleigh.plugin.js";
-import excelExportPlugin from "@/plugins/excelExport/dist/excelExport.plugin.js";
-import Giro3dPlugin from "@/plugins/giro3d/dist/giro3d.plugin.js";
-import GltfExtractorPlugin from "@/plugins/gltfExtractor/dist/gltfExtractor.plugin.js";
-import kroqiBcfService from "@/plugins/kroqiBcfService/dist/kroqiBcfService.plugin.js";
-import platformDemo from "@/plugins/platformDemo/dist/platformDemo.plugin.js";
-import SnowflakesPlugin from "@/plugins/snowflakes/dist/snowflakes.plugin.js";
-import SvgExtractorPlugin from "@/plugins/svgExtractor/dist/svgExtractor.plugin.js";
+import BimObjectPlugin from "@bimdata/bimobject-viewer-plugin";
+import bsdd from "@bimdata/bsdd-viewer-plugin";
+import ChristmasSleighPlugin from "@bimdata/christmas-sleigh-viewer-plugin";
+import excelExportPlugin from "@bimdata/excel-export-plugin";
+import Giro3dPlugin from "@bimdata/giro3d-viewer-plugin";
+import GltfExtractorPlugin from "@bimdata/gltf-extractor-viewer-plugin";
+import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
+import platformDemo from "@bimdata/platform-demo-viewer-plugin";
+import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
+import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
 
-import iotEquipment from "@/plugins/iotEquipment/dist/iotEquipment.plugin.js";
-import iframeShare from "@/plugins/iframeShare/dist/iframeShare.plugin.js";
-import bimworld from "@/plugins/bimworld/dist/bimworld.plugin.js";
-import iot from "@/plugins/iot/dist/iot.plugin.js";
-
+import iotEquipment from "@bimdata/iot-equipment-viewer-plugin";
+import iframeShare from "@bimdata/iframe-share-viewer-plugin";
+import bimworld from "@bimdata/bimworld-viewer-plugin";
+import iot from "@bimdata/iot-viewer-plugin";
 
 export default {
   data() {

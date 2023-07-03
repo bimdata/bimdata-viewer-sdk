@@ -7,7 +7,7 @@ You can develop, test, build, package and share your plugin easily.
 
 First, you have to clone the sdk repo and install SDK dependencies :
 
-```
+```sh
 git clone https://github.com/bimdata/bimdata-viewer-sdk.git
 cd bimdata-viewer-sdk
 npm install
@@ -25,7 +25,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 
-```
+```sh
 npm run dev
 ```
 
@@ -36,7 +36,7 @@ You can directly open one by opening an URL using specific Ids: http://localhost
 
 ## Create your first plugin
 
-```
+```sh
 npm run init-plugin
 ```
 
@@ -44,20 +44,29 @@ This tool asks you a couple of questions about the plugin you develop and genera
 
 Files are created in the directory `src/plugins/{{name of your plugin}}`.
 
-Then import your newly created plugin `src/viewer/viewer.vue` and add it to the registerPlugin array.
+Then import your newly created plugin and add it to the registerPlugin array.
+
+The SDK utilizes npm workspaces to link your plugin in the root node_modules directory, making it accessible from Viewer.vue as if it were an installed package.
+
+#### **`src/views/Viewer.vue`**
 
 ```js
-import SnowflakesPlugin from "@/plugins/snowflakes/src/snowflakes.plugin.js";
-import SplitPlugin from "@/plugins/split/src/split.plugin.js";
+// `myPlugin` is the package name of `package.json`
+import myPlugin from "myPlugin";
 
 ...
 mounted() {
-  this.$refs.bimdataViewerInstance.registerPlugins([
-    SnowflakesPlugin,
-    SplitPlugin,
-  ]);
+  const bimdataViewer = makeBIMDataViewer({...})
+
+  bimdataViewer.registerPlugin(myPlugin);
 }
 ...
+```
+
+And run the following command:
+
+```sh
+npm run dev myPlugin
 ```
 
 ## Package your plugin
@@ -78,28 +87,28 @@ To publish it, update the `package.json` file with the proper information and ju
 
 The code is minified to protect your code as much as possible.
 
-### More info about how it works
+## More info about how it works
 
-The SDK itself uses _Webpack_ to build. The packaging uses _Rollup_. If you need a complex JS flow, it may lead to some issues.
-To see these issues before deploying, load the packaged version in the SDK:
+The SDK itself and the packaging use _Vite_ to build.
 
-```bash
-cd src/plugins/{your_plugin}
-npm run watch
-```
 
-And load the dist version of the plugin:
+The `npm run dev` command facilitates the development process by automatically watching selected plugins while using the Vite build tool.
+
+### Usage
 
 ```js
-import SplitPlugin from "@/plugins/split/dist/split.plugin.js";
-
-...
-mounted() {
-  this.$refs.bimdataViewerInstance.registerPlugins([
-    SplitPlugin,
-  ]);
-}
-...
+npm run dev [plugin1] [plugin2] ...
 ```
 
-You can also edit the webpack and rollup config as you want.
+If no argument, it prompts users to select plugins they want to monitor and launches the necessary processes to watch them simultaneously.
+
+If a `.watch-plugin.rc` file exists in the SDK root's directory, the script will attempt to read the selected plugins from it.
+Example:
+
+```sh
+> cat .watch-plugin.rc
+@bimdata/snowflakes-viewer-plugin
+MyPlugin
+```
+
+The `npm run dev:only` command disables this behavior.

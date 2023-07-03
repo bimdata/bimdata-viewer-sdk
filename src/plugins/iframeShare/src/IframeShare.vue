@@ -83,8 +83,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../node_modules/@bimdata/design-system/dist/css/design-system.css";
-@import "../node_modules/@bimdata/design-system/dist/scss/_BIMDataTransitions.scss";
+@import "@bimdata/design-system/dist/css/design-system.css";
+@import "@bimdata/design-system/dist/scss/_BIMDataTransitions.scss";
 
 .iframe-share {
   display: block;

@@ -3,10 +3,7 @@
     <div class="iot-equipment-graph__title">
       {{ title }}
     </div>
-    <div
-      :id="`chart-${_uid}`"
-      class="iot-equipment-graph__chart"
-    ></div>
+    <div :id="`chart-${_uid}`" class="iot-equipment-graph__chart"></div>
   </div>
 </template>
 
@@ -30,9 +27,7 @@ const chartOptions = {
   axisY: {
     type: Chartist.AutoScaleAxis,
   },
-  plugins: [
-    ChartistTooltip(),
-  ],
+  plugins: [ChartistTooltip()],
 };
 
 export default {
@@ -76,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../node_modules/chartist/dist/chartist.min.css";
+@import "chartist/dist/chartist.min.css";
 
 .iot-equipment-graph {
   margin: var(--spacing-unit) 0;
