@@ -1,5 +1,8 @@
 # BIMData Viewer SDK
 
+> `Viewer SDK` is only compatible with alpha versions of @bimdata/viewer:2
+> To use this repository with the lastest stable version of BIMData viewer, please use the [viewer/1.10](https://github.com/bimdata/bimdata-viewer-sdk/tree/viewer/1.10) branch
+
 This repo is a pre-configured environment to develop BIMData Viewer plugins.
 You can develop, test, build, package and share your plugin easily.
 
@@ -90,7 +93,6 @@ The code is minified to protect your code as much as possible.
 ## More info about how it works
 
 The SDK itself and the packaging use _Vite_ to build.
-
 
 The `npm run dev` command facilitates the development process by automatically watching selected plugins while using the Vite build tool.
 
