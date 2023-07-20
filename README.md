@@ -16,7 +16,7 @@ cd bimdata-viewer-sdk
 npm install
 ```
 
-> _Note:_
+> **Note**
 >
 > If you want to create you own application you can copy the `.env.example` file :
 >
@@ -25,6 +25,13 @@ npm install
 > ```
 >
 > Then you can read this guide : https://developers.bimdata.io/api/guides/application.html#which-app-will-you-create
+
+
+> **Warning**
+>
+> **Breaking changes**
+>
+> The old .env.example file contained the `VUE_` prefix which has now been replaced by `VITE_`
 
 ### Compiles and hot-reloads for development
 
