@@ -72,7 +72,7 @@ const start = async () => {
 
   const processes = [];
   processes.push(
-    spawn("vite", {
+    spawn("npm", ["run", "dev:only"], {
       stdio: ["ignore", "inherit", "inherit"],
     })
   );
