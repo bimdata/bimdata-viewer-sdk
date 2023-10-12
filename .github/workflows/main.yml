@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: [self-hosted, common]
     if: contains('
       refs/heads/master
       refs/heads/main'
