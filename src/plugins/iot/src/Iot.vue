@@ -67,6 +67,8 @@
 
 <script>
 import Graph from "./Graph.vue";
+import elementData1 from "./eco1.json";
+import elementData2 from "./eco2.json";
 import {
   BIMDataIcon,
   BIMDataLoading,
@@ -80,7 +82,7 @@ export default {
   },
   data() {
     return {
-      series: [],
+      series: {},
       monitoredElements: [],
       selectedElement: null,
       errorValue: "Tableau éléctrique:L1000XH800 P300:631661",
@@ -91,14 +93,14 @@ export default {
     };
   },
   watch: {
-    async selectedElement(newSelectedElement) {
+    selectedElement(newSelectedElement) {
       if (newSelectedElement) {
-        this.viewer3dPlugin.fitViewObjects([newSelectedElement.uuid]);
+        this.viewer3dPlugin.fitView([newSelectedElement.uuid]);
         this.$viewer.state.selectObjects([newSelectedElement.id], {
           exclusive: true,
         });
         this.loading = true;
-        await this.getElementData(newSelectedElement.uuid);
+        this.getElementData(newSelectedElement.uuid);
         this.loading = false;
       }
     },
@@ -121,19 +123,6 @@ export default {
         "Content-Type": "application/json",
       };
     },
-    getIotUrl() {
-      const url = new URL(this.$viewer.api.apiUrl);
-      const hostname = url.hostname;
-      let env = "";
-      const [apiEnv, ...domainPath] = hostname.split(".");
-      const domain = domainPath.join(".");
-      if (apiEnv.includes("-staging")) {
-        env = "-staging";
-      } else if (apiEnv.includes("-next")) {
-        env = "-next";
-      }
-      return url.protocol + "//iot" + env + "." + domain;
-    },
     onObjectsSelected(uuids) {
       const selectedAndMonitoredElements = uuids.filter(uuid =>
         this.monitoredElements.some(element => element.uuid === uuid)
@@ -150,31 +139,34 @@ export default {
     },
     getSeries(meters) {
       let series = [];
-      meters.forEach(meter => {
-        const records = meter.measurements.map(({ records }) =>
-          records.map(record => ({
-            x: Date.parse(record.timestamp),
-            y: record.value,
-            meta: record.timestamp,
-          }))
-        );
+      for (let name in meters) {
+        let records = [];
+        for (let measurement in meters[name].measurements) {
+          records.push(
+            meters[name].measurements[measurement].map(record => ({
+              x: Date.parse(record.timestamp),
+              y: record.value,
+              meta: record.timestamp,
+            }))
+          );
+        }
         series.push({
-          meterName: meter.meter_name,
+          meterName: name,
           series: { series: records },
-          meterId: meter.meter_id,
+          meterId: meters[name].meter_id,
         });
-      });
+      }
       return series;
     },
-    async getElementData(elementId) {
-      const res = await fetch(
-        `${this.getIotUrl()}/element-records/${elementId}?days=7`,
-        { headers: this.getHeaders() }
-      );
-      this.series = this.getSeries(await res.json());
+    getElementData(elementId) {
+      if (elementId === "0vNFceMkb8dezQiQhWAOcS") {
+        this.series = this.getSeries(elementData1);
+      } else {
+        this.series = this.getSeries(elementData2);
+      }
     },
     async getMonitoredElements() {
-      const ifcs = this.$viewer.state.ifcs;
+      const ifcs = this.$viewer.state.models;
       const ifc = ifcs.find(ifc => ifc.name.startsWith("Mirabeau_ELEC")); // When there is more than one ifc
       if (ifc) {
         const apiClient = this.$viewer.api.apiClient.modelApi;

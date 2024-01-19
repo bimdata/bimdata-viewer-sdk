@@ -3,10 +3,7 @@
     <h4 class="m-x-12">
       {{ title }}
     </h4>
-    <div
-      :id="index"
-      class="chartist ct-chart ct-perfect-fourth m-y-12"
-    ></div>
+    <div :id="index" class="chartist ct-chart ct-perfect-fourth m-y-12"></div>
     <BIMDataButton
       class="bimdata-btn__fill bimdata-btn__fill--primary bimdata-btn__radius"
       @click="onResetZoomClick"
