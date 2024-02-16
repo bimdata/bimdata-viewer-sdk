@@ -18,6 +18,7 @@ import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
 import platformDemo from "@bimdata/platform-demo-viewer-plugin";
 import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
 import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
+import BoomPlugin from "@/plugins/boom/src/boom.plugin.js";
 
 import iotEquipment from "@bimdata/iot-equipment-viewer-plugin";
 import iframeShare from "@bimdata/iframe-share-viewer-plugin";
@@ -51,6 +52,9 @@ export default {
           kroqiProjectId: "123456789",
           service: "BIMDATA",
         },
+        viewer3d: {
+          enableOffsets: true,
+        },
       },
     });
 
@@ -64,6 +68,7 @@ export default {
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
+    bimdataViewer.registerPlugin(BoomPlugin);
 
     bimdataViewer.registerPlugin(iotEquipment);
     bimdataViewer.registerPlugin(iframeShare);
