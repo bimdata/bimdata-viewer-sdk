@@ -1,7 +1,7 @@
 {
   "name": "@bimdata/bcf-kroqi-premium-service",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "kroqiBcfService BIMData Viewer Plugin",
   "scripts": {
     "build": "vite build && terser -c -m -o dist/kroqiBcfService.plugin.js --module dist/kroqiBcfService.plugin.js",
