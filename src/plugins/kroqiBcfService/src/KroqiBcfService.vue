@@ -52,8 +52,6 @@ export default {
       const options = this.$viewer.pluginsCfg.bcfKroqiPremiumService;
       const org = options.organization;
       const kroqiDomain = options.kroqiDomain;
-      const service = options.service;
-      const kroqiProjectId = options.kroqiProjectId;
       const kroqiUrl = `https://${org}.${kroqiDomain}/#/account/subscription`;
       window.open(kroqiUrl, "_blank").focus();
     },
