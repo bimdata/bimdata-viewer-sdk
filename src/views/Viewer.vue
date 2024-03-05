@@ -48,8 +48,6 @@ export default {
           kroqiDomain: "pfptnbdev.io",
           organization: "cstb",
           userIsAdmin: true,
-          kroqiProjectId: "123456789",
-          service: "BIMDATA",
         },
       },
     });
