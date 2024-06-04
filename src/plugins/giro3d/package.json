@@ -1,7 +1,7 @@
 {
   "name": "@bimdata/giro3d-viewer-plugin",
   "type": "module",
-  "version": "2.0.2",
+  "version": "2.0.5",
   "description": "giro3d BIMData Viewer Plugin",
   "scripts": {
     "build": "vite build && terser -c -m -o dist/giro3d.plugin.js --module dist/giro3d.plugin.js",
