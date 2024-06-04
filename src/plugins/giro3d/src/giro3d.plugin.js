@@ -7,6 +7,7 @@ export default {
     name: 'giro3d',
     label: 'Giro3dPlugin.window_label',
     plugins: ['fullscreen'],
+    modelTypes: ["POINT_CLOUD"],
   },
   i18n: {
     en: {
