@@ -1,7 +1,7 @@
 <template>
   <div class="bimdata-giro3d">
     <NoModelWindowPlaceHolder v-if="loadedModelIds.length === 0 && !loading" />
-    <ModelsLoader :types="['POINT_CLOUD']" @load-models="loadModels" @unload-models="unloadModels" preview />
+    <ModelsLoader preview />
     <div :id="giro3dDivId" class="bimdata-giro3d__viewer"></div>
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
   },
   unmounted() {
     this.$viewer.globalContext.hub.off(this.localContextResizeSubscription);
+    this.localContextSubscriptions?.forEach(subscription => this.$viewer.localContext.hub.off(subscription));
   },
   async mounted() {
     const viewerDiv = document.getElementById(this.giro3dDivId);
@@ -59,6 +60,11 @@ export default {
 
     this.instance = instance;
     this.controls = controls;
+
+    this.localContextSubscriptions = [
+      this.$viewer.localContext.hub.on("models-loaded", ({ models }) => this.loadModels(models), { getLastEvent: true }),
+      this.$viewer.localContext.hub.on("models-unloaded", ({ models }) => this.unloadModels(models), { getLastEvent: true })
+    ]
   },
   methods: {
     onResize({ width, height }) {
