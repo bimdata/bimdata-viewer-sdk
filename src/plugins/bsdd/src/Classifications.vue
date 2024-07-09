@@ -63,7 +63,7 @@ import { requestApi } from "./utils.js";
 //   BIMDataButton,
 //   BIMDataDropdownList,
 //   BIMDataTooltip,
-// } from "@bimdata/design-system/components.js";
+// } from "@bimdata/design-system/src/BIMDataComponents/index.js";
 
 export default {
   // https://vuejs.org/v2/guide/components.html

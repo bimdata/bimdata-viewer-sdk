@@ -1,7 +1,7 @@
 {
   "name": "@bimdata/bimobject-viewer-plugin",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "bimobject BIMData Viewer Plugin",
   "scripts": {
     "build": "vite build && terser -c -m -o dist/bimobject.plugin.js --module dist/bimobject.plugin.js",
@@ -20,7 +20,7 @@
     "bimobject"
   ],
   "devDependencies": {
-    "@bimdata/design-system": "^1.4.0-rc.89",
+    "@bimdata/design-system": "^2.1.1-rc.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",

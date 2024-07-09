@@ -101,7 +101,7 @@ import {
   BIMDataIcon,
   BIMDataLoading,
   BIMDataSearch,
-} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js"
+} from "@bimdata/design-system/src/BIMDataComponents/index.js"
 
 export default {
   name: "bimobject",

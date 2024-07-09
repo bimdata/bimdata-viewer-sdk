@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import { BIMDataDropdownList } from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
+import { BIMDataDropdownList } from "@bimdata/design-system/src/BIMDataComponents/index.js";
 
 import Properties from "./Properties.vue";
 import { requestApi, toIfcType } from "./utils.js";

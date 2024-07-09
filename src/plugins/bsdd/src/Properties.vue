@@ -177,7 +177,7 @@ import {
   BIMDataSelect,
   BIMDataToggle,
   BIMDataTooltip,
-} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
+} from "@bimdata/design-system/src/BIMDataComponents/index.js";
 
 import { requestApi } from "./utils.js";
 import _ from "lodash";
