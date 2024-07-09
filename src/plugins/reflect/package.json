@@ -1,6 +1,6 @@
 {
   "name": "viewer-plugin-reflect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reflect BIMData Viewer Plugin",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
@@ -18,7 +18,7 @@
     "reflect"
   ],
   "dependencies": {
-    "@bimdata/design-system": "1.4.0-rc.76",
+    "@bimdata/design-system": "^2.1.1-rc.2",
     "async": "^3.2.4",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5"
