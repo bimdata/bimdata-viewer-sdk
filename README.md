@@ -14,6 +14,7 @@ First, you have to clone the sdk repo and install SDK dependencies :
 git clone https://github.com/bimdata/bimdata-viewer-sdk.git
 cd bimdata-viewer-sdk
 npm install
+npm run build
 ```
 
 > **Note**
