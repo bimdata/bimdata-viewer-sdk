@@ -1,88 +1,99 @@
 <template>
-  <div class="viewer">
-    <div :id="viewerId"></div>
-  </div>
+    <div class="viewer">
+        <div :id="viewerId"></div>
+    </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import makeBIMDataViewer from "@bimdata/viewer";
 
-import BimObjectPlugin from "@bimdata/bimobject-viewer-plugin";
-import bsdd from "@bimdata/bsdd-viewer-plugin";
-import ChristmasSleighPlugin from "@bimdata/christmas-sleigh-viewer-plugin";
-import excelExportPlugin from "@bimdata/excel-export-plugin";
-import Giro3dPlugin from "@bimdata/giro3d-viewer-plugin";
-import GltfExtractorPlugin from "@bimdata/gltf-extractor-viewer-plugin";
-import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
-import platformDemo from "@bimdata/platform-demo-viewer-plugin";
-import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
-import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
-
-import iotEquipment from "@bimdata/iot-equipment-viewer-plugin";
-import iframeShare from "@bimdata/iframe-share-viewer-plugin";
-import bimworld from "@bimdata/bimworld-viewer-plugin";
-import iot from "@bimdata/iot-viewer-plugin";
+import bulldozairBimdataPlugin from "bulldozairBimdataPlugin";
 
 export default {
-  data() {
-    return {
-      viewerId: "bimdataViewerId",
-    };
-  },
-  computed: {
-    ...mapGetters(["oidcAccessToken"]),
-  },
-  mounted() {
-    const bimdataViewer = makeBIMDataViewer({
-      locale: "fr",
-      api: {
-        cloudId: this.$route.query.cloudId,
-        projectId: this.$route.query.projectId,
-        modelIds: [this.$route.query.modelId],
-        apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
-        accessToken: this.oidcAccessToken,
-      },
-      plugins: {
-        bcfKroqiPremiumService: {
-          kroqiDomain: "pfptnbdev.io",
-          organization: "cstb",
-          userIsAdmin: true,
-        },
-      },
-    });
+    data() {
+        return {
+            viewerId: "bimdataViewerId",
+        };
+    },
+    computed: {
+        ...mapGetters(["oidcAccessToken"]),
+    },
+    mounted() {
+        const bimdataViewer = makeBIMDataViewer({
+            locale: "fr",
+            api: {
+                cloudId: this.$route.query.cloudId,
+                projectId: this.$route.query.projectId,
+                modelIds: [this.$route.query.modelId],
+                apiUrl: import.meta.env.VITE_APP_BIMDATA_API_URL,
+                accessToken: this.oidcAccessToken,
+            },
+            ui: {
+                style: {
+                    colorSecondary: '#7830fe',
+                },
+                header: false,
+                windowManager: false,
+                version: false,
+                bimdataLogo: false,
+                menuVisible: false,
+            },
+            plugins: {
 
-    bimdataViewer.registerPlugin(BimObjectPlugin);
-    bimdataViewer.registerPlugin(bsdd);
-    bimdataViewer.registerPlugin(ChristmasSleighPlugin);
-    bimdataViewer.registerPlugin(excelExportPlugin);
-    bimdataViewer.registerPlugin(Giro3dPlugin);
-    bimdataViewer.registerPlugin(GltfExtractorPlugin);
-    bimdataViewer.registerPlugin(kroqiBcfService);
-    bimdataViewer.registerPlugin(platformDemo);
-    bimdataViewer.registerPlugin(SnowflakesPlugin);
-    bimdataViewer.registerPlugin(SvgExtractorPlugin);
+            },
+        });
 
-    bimdataViewer.registerPlugin(iotEquipment);
-    bimdataViewer.registerPlugin(iframeShare);
-    bimdataViewer.registerPlugin(bimworld);
-    bimdataViewer.registerPlugin(iot);
+        bimdataViewer.registerPlugin(bulldozairBimdataPlugin);
 
-    bimdataViewer.mount(`#${this.viewerId}`);
+        bimdataViewer.mount(`#${this.viewerId}`, {
+            ratios: [50, 50],
+            direction: 'column',
+            children: [
+                {
+                    ratios: [25, 75],
+                    children: ['structure', '2d'],
+                },
+                {
+                    ratios: [25, 75],
+                    children: ['properties', '3d'],
+                },
+            ],
+        });
+        bimdataViewer.$viewer.globalContext.hub.on("bz-annotation-create", payload => {
+            console.log("bz-annotation-create", payload);
+        });
+        bimdataViewer.$viewer.globalContext.hub.on("bz-annotation-move", payload => {
+            console.log("bz-annotation-move", payload);
+        });
+        bimdataViewer.$viewer.globalContext.hub.on("bz-annotation-remove", payload => {
+            console.log("bz-annotation-remove", payload);
+        });
 
-    this.$watch(
-      () => this.oidcAccessToken,
-      token => {
-        bimdataViewer.setAccessToken(token);
-      }
-    );
-  },
+        bimdataViewer.$viewer.globalContext.hub.on("3d-model-loaded", payload => {
+            console.log("3d-model-loaded", payload);
+            const { globalContext } = bimdataViewer.$viewer;
+            const pluginInstance = globalContext.plugins.get('BulldozairBimdataPluginPlugin')[0];
+            pluginInstance.createAnnotation({ x: 7.855044131214674, y: 17.953135312432774, z: 1.3085887913883143, number: 123 });
+        });
+        bimdataViewer.$viewer.globalContext.hub.on("2d-model-loaded", payload => {
+            console.log("2d-model-loaded", payload);
+        });
+
+
+        this.$watch(
+            () => this.oidcAccessToken,
+            token => {
+                bimdataViewer.setAccessToken(token);
+            }
+        );
+    },
 };
 </script>
 
 <style scoped>
 .viewer {
-  height: 100vh;
-  width: 100vw;
+    height: 100vh;
+    width: 100vw;
 }
 </style>
