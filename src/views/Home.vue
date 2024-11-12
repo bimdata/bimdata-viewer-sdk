@@ -216,7 +216,7 @@ import {
   BIMDataIcon,
   BIMDataSelect,
   BIMDataTextbox,
-} from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/index.js";
+} from "@bimdata/design-system";
 
 import { mapGetters } from "vuex";
 
