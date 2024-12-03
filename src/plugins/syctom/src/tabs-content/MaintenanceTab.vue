@@ -22,7 +22,7 @@
         <BIMDataIconChevron size="xxxs" :rotate="displayFilters ? 90 : 0" />
       </BIMDataButton>
       <transition name="slide-fade-up" mode="out-in">
-        <template v-if="displayFilters && syctomData">
+        <template v-if="displayFilters && syctomOrders">
           <div class="filters p-x-18 p-y-30">
             <div class="flex justify-between">
               <BIMDataSelect
@@ -108,10 +108,10 @@
         </template>
       </transition>
     </div>
-    <div v-if="filteredSyctomData.length === 0">
+    <div v-if="filteredSyctomOrders.length === 0">
       Il n'y a pas de données à afficher
     </div>
-    <BIMDataList v-else :items="filteredSyctomData" :itemHeight="200">
+    <BIMDataList v-else :items="filteredSyctomOrders" :itemHeight="200">
       <template #default="{ item: data }">
         <div class="card flex">
           <template v-if="PRIORITIES[data['Priorité']]">
@@ -126,18 +126,9 @@
             <div :style="{ backgroundColor: '#898989', width: '15px' }"></div>
           </template>
           <div class="card__left flex flex-col justify-between p-12">
-            <div>Priorité : {{ data["Priorité"] || "AUTRE" }}</div>
+            <div>Priorité: {{ data["Priorité"] || "AUTRE" }}</div>
             <div>
-              {{
-                new Date(data["Date début"]).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                })
-              }}
+              {{ new Date(data["Date début"]).toLocaleString() }}
             </div>
           </div>
           <div class="card__right">
@@ -146,23 +137,31 @@
                 {{ data["Description poste technique"] }}
               </div>
               <div>
-                <strong>Type :</strong>
-                <span class="color-granite">{{ data["Type"] }}</span>
+                <strong>Type:</strong> <span class="color-granite">{{ TYPES[data["Type"]].text }}</span>
               </div>
               <div>
-                <strong>Statut :</strong>
-                <span class="color-high">{{ data["Statut"] }}</span>
+                <strong>Statut:</strong> <span class="color-high">{{ data["Statut"] }}</span>
               </div>
             </div>
             <div class="date flex justify-between">
               <div>
                 <span class="color-granite"
-                  >Début SEC : {{ data["Début SEC"] || "-" }}</span
+                  >Début SEC:
+                  {{
+                    data["Début SEC"]
+                      ? new Date(data["Début SEC"]).toLocaleString()
+                      : "-"
+                  }}</span
                 >
               </div>
               <div>
                 <span class="color-granite"
-                  >Fin SEC : {{ data["Fin SEC"] || "-" }}</span
+                  >Fin SEC:
+                  {{
+                    data["Fin SEC"]
+                      ? new Date(data["Fin SEC"]).toLocaleString()
+                      : "-"
+                  }}</span
                 >
               </div>
             </div>
@@ -188,8 +187,8 @@
 </template>
 
 <script>
-import { computed, ref, reactive } from "vue";
-import { PRIORITIES } from "../utils.js";
+import { computed, ref, reactive, inject } from "vue";
+import { PRIORITIES, TYPES } from "../utils.js";
 
 function getSelectOptions(list) {
   return Array.from(new Set(list)).sort((a, b) =>
@@ -199,25 +198,32 @@ function getSelectOptions(list) {
 
 export default {
   props: {
-    syctomData: {
+    syctomOrders: {
       type: Array,
     },
   },
   setup(props) {
     const displayFilters = ref(false);
 
+    const $viewer = inject("$viewer");
+
     const priorityOptions = computed(() =>
-      getSelectOptions(props.syctomData.map(data => data["Priorité"] || "AUTRE"))
+      getSelectOptions(
+        props.syctomOrders.map(data => data["Priorité"] || "AUTRE")
+      )
     );
     const typeOptions = computed(() =>
-      getSelectOptions(props.syctomData.map(data => data["Type"]))
+      {
+        const groupedTypes = Object.values(TYPES).map(type => type.text);
+        return [...new Set(groupedTypes)];
+      }
     );
     const statutOptions = computed(() =>
-      getSelectOptions(props.syctomData.map(data => data["Statut"]))
+      getSelectOptions(props.syctomOrders.map(data => data["Statut"]))
     );
 
     let maxValue = 0;
-    props.syctomData.forEach(data => {
+    props.syctomOrders.forEach(data => {
       const priceData = data["Coût matériel"].replace(",", ".");
       const valuesFromObject = parseFloat(priceData);
       maxValue = Math.max(maxValue, valuesFromObject);
@@ -232,11 +238,16 @@ export default {
         endDate: null,
         startPrice: 0,
         endPrice: maxValue,
+        objects: new Set(),
       });
     };
 
     const filters = createFiltersObject();
     const filtersUI = createFiltersObject();
+
+    $viewer.state.hub.on("objects-selected", (objects) => {
+      filters.objects = new Set()
+    })
 
     const submitFilters = () => {
       filtersUI.endDate?.setHours(23, 59, 59);
@@ -260,11 +271,11 @@ export default {
       filtersUI.endDate = null;
       filtersUI.startPrice = 0;
       filtersUI.endPrice = maxValue;
-    }
+    };
 
     const searchText = ref("");
-    const filteredSyctomData = computed(() => {
-      let data = props.syctomData;
+    const filteredSyctomOrders = computed(() => {
+      let data = props.syctomOrders;
       if (searchText.value !== "") {
         data = data.filter(newData =>
           newData["Description poste technique"]
@@ -274,7 +285,13 @@ export default {
       }
 
       if (filters.types.length > 0) {
-        data = data.filter(newData => Object.values(filters.types).includes(newData["Type"]));
+        const selectedTypeIds = filters.types.map(
+          selectedText =>
+            Object.values(TYPES).find(type => type.text === selectedText)?.id
+        );
+        data = data.filter(newData =>
+          selectedTypeIds.includes(newData["Type"])
+        );
       }
 
       if (filters.statuses.length > 0) {
@@ -284,9 +301,18 @@ export default {
       }
 
       if (filters.priorities.length > 0) {
-        data = data.filter(newData =>
-          Object.values(filters.priorities).includes(newData["Priorité"])
-        );
+        const selectedPriorityTexts = filters.priorities;
+
+        data = data.filter(newData => {
+          const priority = newData["Priorité"];
+          if (
+            selectedPriorityTexts.includes("AUTRE") &&
+            (!priority || priority === "AUTRE")
+          ) {
+            return true;
+          }
+          return selectedPriorityTexts.includes(priority);
+        });
       }
 
       if (filters.startDate && filters.endDate) {
@@ -315,6 +341,19 @@ export default {
         );
       }
 
+      if (filters.objects.size > 0) {
+        console.log("objects", filters.objects);
+        data = data.filter(
+          newData => {
+            const objects = newData["Objets IFC"];
+            if (!objects) {
+              return false;
+            }
+            const objectsSet = new Set(objects);
+            return objectsSet.isSubsetOf(filters.objects);
+          }
+        );
+      }
       return data;
     });
 
@@ -324,9 +363,10 @@ export default {
       statutOptions,
       typeOptions,
       searchText,
-      filteredSyctomData,
+      filteredSyctomOrders,
       filters: filtersUI,
       PRIORITIES,
+      TYPES,
       submitFilters,
       resetFilters,
     };

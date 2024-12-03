@@ -17,7 +17,7 @@
     </BIMDataTabs>
     <MaintenanceTab
       v-if="selectedTab.id === 'maintenance'"
-      :syctomData="syctomData"
+      :syctomOrders="syctomOrders"
     />
   </div>
 </template>
@@ -26,7 +26,7 @@
 import { ref } from "vue";
 
 import MaintenanceTab from "./tabs-content/MaintenanceTab.vue";
-import syctomData from "./syctom.js";
+import syctomOrders from "./syctom.json";
 export default {
   components: {
     MaintenanceTab,
@@ -55,7 +55,7 @@ export default {
       tabs,
       selectedTab,
       onTabChange,
-      syctomData,
+      syctomOrders,
     };
   },
 };
@@ -66,4 +66,3 @@ export default {
   background-color: var(--color-white);
 }
 </style>
-

@@ -1,15 +1,3 @@
-import { reactive } from "vue";
-
-const EMPTY_FILTERS = {
-  priorities: [],
-  statuses: [],
-  types: [],
-  startDate: null,
-  endDate: null,
-  startPrice: null,
-  endPrice: null,
-};
-
 const PRIORITIES = Object.freeze({
   URGENT: {
     text: "URGENT",
@@ -53,17 +41,47 @@ const PRIORITIES = Object.freeze({
   },
 });
 
-function useFilter(data) {
-  const filters = reactive({ ...EMPTY_FILTERS });
+const TYPES = Object.freeze({
+  I1: {
+    id: "I1",
+    text: "demandes d'interventions (DI/OT)",
+  },
+  I2: {
+    id: "I2",
+    text: "modifications de process",
+  },
+  I3: {
+    id: "I3",
+    text: "activités sécurités (plus utilisés)",
+  },
+  I4: {
+    id: "I4",
+    text: "I4",
+  },
+  I5: {
+    id: "I5",
+    text: "demande de travaux",
+  },
+  I6: {
+    id: "I6",
+    text: "I6",
+  },
+  SEC1: {
+    id: "SEC1",
+    text: "SEC1",
+  },
+  SEC2: {
+    id: "SEC2",
+    text: "SEC2",
+  },
+  SEC3: {
+    id: "SEC3",
+    text: "SEC3",
+  },
+  SEC4: {
+    id: "SEC4",
+    text: "SEC4",
+  },
+});
 
-  function apply(f) {
-    Object.assign(filters, f);
-  }
-
-  return {
-    filters,
-    apply,
-  };
-}
-
-export { PRIORITIES, useFilter };
+export { PRIORITIES, TYPES };

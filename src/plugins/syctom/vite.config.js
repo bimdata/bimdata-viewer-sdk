@@ -23,7 +23,7 @@ export default defineConfig(() => {
         fileName: "syctom.plugin",
       },
       minify: false,
-      sourcemap: "inline",
+      sourcemap: true,
     },
     assetsInclude: ['assets/*'],
     plugins,
