@@ -14,7 +14,7 @@
   "dependencies": {
     "@bimdata/design-system": "2.1.0",
     "@bimdata/typescript-fetch-api-client": "10.9.0",
-    "@bimdata/viewer": "^2.6.1",
+    "@bimdata/viewer": "^2.7.0",
     "@vue/compat": "^3.4.33",
     "oidc-client": "^1.11.5",
     "vue": "^3.4.33",
