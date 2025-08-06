@@ -1,6 +1,6 @@
 <template>
   <div class="maintenance-tab">
-    <div class="maintenance-tab__header flex m-y-18">
+    <div class="maintenance-tab__header flex m-b-18">
       <BIMDataSearch
         placeholder="Search"
         color="primary"
@@ -22,7 +22,7 @@
         <BIMDataIconChevron size="xxxs" :rotate="displayFilters ? 90 : 0" />
       </BIMDataButton>
       <transition name="slide-fade-up" mode="out-in">
-        <template v-if="displayFilters && syctomOrders">
+        <template v-if="displayFilters && data">
           <div class="filters p-x-18 p-y-30">
             <div class="flex justify-between">
               <BIMDataSelect
@@ -108,16 +108,16 @@
         </template>
       </transition>
     </div>
-    <div v-if="filteredSyctomOrders.length === 0">
+    <div v-if="filteredData.length === 0">
       Il n'y a pas de données à afficher
     </div>
-    <BIMDataList v-else :items="filteredSyctomOrders" :itemHeight="200">
+    <BIMDataList v-else class="card-list" :items="filteredData" :itemHeight="200">
       <template #default="{ item: data }">
         <div class="card flex">
-          <template v-if="PRIORITIES[data['Priorité']]">
+          <template v-if="PRIORITIES[data[PRIORITY]]">
             <div
               :style="{
-                backgroundColor: PRIORITIES[data['Priorité']].color,
+                backgroundColor: PRIORITIES[data[PRIORITY]].color,
                 width: '15px',
               }"
             ></div>
@@ -126,21 +126,21 @@
             <div :style="{ backgroundColor: '#898989', width: '15px' }"></div>
           </template>
           <div class="card__left flex flex-col justify-between p-12">
-            <div>Priorité: {{ data["Priorité"] || "AUTRE" }}</div>
+            <div>Priorité: {{ data[PRIORITY] || OTHER }}</div>
             <div>
-              {{ new Date(data["Date début"]).toLocaleString() }}
+              {{ new Date(data[START_DATE]).toLocaleString() }}
             </div>
           </div>
           <div class="card__right">
             <div class="content">
               <div class="content__title">
-                {{ data["Description poste technique"] }}
+                {{ data[DESC] }}
               </div>
               <div>
-                <strong>Type:</strong> <span class="color-granite">{{ TYPES[data["Type"]].text }}</span>
+                <strong>Type:</strong> <span class="color-granite">{{ TYPES[data[TYPE]].text }}</span>
               </div>
               <div>
-                <strong>Statut:</strong> <span class="color-high">{{ data["Statut"] }}</span>
+                <strong>Statut:</strong> <span class="color-high">{{ data[STATUS] }}</span>
               </div>
             </div>
             <div class="date flex justify-between">
@@ -148,8 +148,8 @@
                 <span class="color-granite"
                   >Début SEC:
                   {{
-                    data["Début SEC"]
-                      ? new Date(data["Début SEC"]).toLocaleString()
+                    data[SEC_START]
+                      ? new Date(data[SEC_START]).toLocaleString()
                       : "-"
                   }}</span
                 >
@@ -158,8 +158,8 @@
                 <span class="color-granite"
                   >Fin SEC:
                   {{
-                    data["Fin SEC"]
-                      ? new Date(data["Fin SEC"]).toLocaleString()
+                    data[SEC_END]
+                      ? new Date(data[SEC_END]).toLocaleString()
                       : "-"
                   }}</span
                 >
@@ -168,15 +168,15 @@
             <div class="price flex justify-between">
               <div class="flex flex-col items-center justify-center">
                 <span class="color-granite">Coût matériel</span>
-                <strong>{{ data["Coût matériel"] }}€</strong>
+                <strong>{{ data[COST_MAT] }}€</strong>
               </div>
               <div class="flex flex-col items-center justify-center">
                 <span class="color-granite">Coût service</span>
-                <strong>{{ data["Coût service"] }}€</strong>
+                <strong>{{ data[COST_SERV] }}€</strong>
               </div>
               <div class="flex flex-col items-center justify-center">
                 <span class="color-granite">Coût total</span>
-                <strong class="color-neutral">{{ data["Coût total"] }}€</strong>
+                <strong class="color-neutral">{{ data[COST_TOTAL] }}€</strong>
               </div>
             </div>
           </div>
@@ -188,7 +188,23 @@
 
 <script>
 import { computed, ref, reactive, inject } from "vue";
-import { PRIORITIES, TYPES } from "../utils.js";
+import { FIELDS, PRIORITIES, TYPES } from "../../data/syctom-maintenance-config.js";
+
+const {
+  COST_MAT,
+  COST_SERV,
+  COST_TOTAL,
+  DESC,
+  IFC_OBJECTS,
+  PRIORITY,
+  SEC_END,
+  SEC_START,
+  START_DATE,
+  STATUS,
+  TYPE
+} = FIELDS;
+
+const OTHER = "AUTRE";
 
 function getSelectOptions(list) {
   return Array.from(new Set(list)).sort((a, b) =>
@@ -198,7 +214,7 @@ function getSelectOptions(list) {
 
 export default {
   props: {
-    syctomOrders: {
+    data: {
       type: Array,
     },
   },
@@ -209,7 +225,7 @@ export default {
 
     const priorityOptions = computed(() =>
       getSelectOptions(
-        props.syctomOrders.map(data => data["Priorité"] || "AUTRE")
+        props.data.map(d => d[PRIORITY] || OTHER)
       )
     );
     const typeOptions = computed(() =>
@@ -219,12 +235,12 @@ export default {
       }
     );
     const statutOptions = computed(() =>
-      getSelectOptions(props.syctomOrders.map(data => data["Statut"]))
+      getSelectOptions(props.data.map(d => d[STATUS]))
     );
 
     let maxValue = 0;
-    props.syctomOrders.forEach(data => {
-      const priceData = data["Coût matériel"].replace(",", ".");
+    props.data.forEach(data => {
+      const priceData = data[COST_MAT].replace(",", ".");
       const valuesFromObject = parseFloat(priceData);
       maxValue = Math.max(maxValue, valuesFromObject);
     });
@@ -274,11 +290,11 @@ export default {
     };
 
     const searchText = ref("");
-    const filteredSyctomOrders = computed(() => {
-      let data = props.syctomOrders;
+    const filteredData = computed(() => {
+      let data = props.data;
       if (searchText.value !== "") {
         data = data.filter(newData =>
-          newData["Description poste technique"]
+          newData[DESC]
             .toLowerCase()
             .includes(searchText.value.toLowerCase())
         );
@@ -290,13 +306,13 @@ export default {
             Object.values(TYPES).find(type => type.text === selectedText)?.id
         );
         data = data.filter(newData =>
-          selectedTypeIds.includes(newData["Type"])
+          selectedTypeIds.includes(newData[TYPE])
         );
       }
 
       if (filters.statuses.length > 0) {
         data = data.filter(newData =>
-          Object.values(filters.statuses).includes(newData["Statut"])
+          Object.values(filters.statuses).includes(newData[STATUS])
         );
       }
 
@@ -304,10 +320,10 @@ export default {
         const selectedPriorityTexts = filters.priorities;
 
         data = data.filter(newData => {
-          const priority = newData["Priorité"];
+          const priority = newData[PRIORITY];
           if (
-            selectedPriorityTexts.includes("AUTRE") &&
-            (!priority || priority === "AUTRE")
+            selectedPriorityTexts.includes(OTHER) &&
+            (!priority || priority === OTHER)
           ) {
             return true;
           }
@@ -318,8 +334,8 @@ export default {
       if (filters.startDate && filters.endDate) {
         data = data.filter(
           newData =>
-            newData["Date début"] >= filters.startDate.toISOString() &&
-            newData["Date début"] <= filters.endDate.toISOString()
+            newData[START_DATE] >= filters.startDate.toISOString() &&
+            newData[START_DATE] <= filters.endDate.toISOString()
         );
       }
 
@@ -327,8 +343,8 @@ export default {
         console.log("startPrice", filters.startPrice);
         data = data.filter(
           newData =>
-            parseFloat(newData["Coût total"]) >= filters.startPrice &&
-            parseFloat(newData["Coût total"]) <= filters.endPrice
+            parseFloat(newData[COST_TOTAL]) >= filters.startPrice &&
+            parseFloat(newData[COST_TOTAL]) <= filters.endPrice
         );
       }
 
@@ -336,8 +352,8 @@ export default {
         console.log("endPrice", filters.endPrice);
         data = data.filter(
           newData =>
-            parseFloat(newData["Coût total"]) >= filters.startPrice &&
-            parseFloat(newData["Coût total"]) <= filters.endPrice
+            parseFloat(newData[COST_TOTAL]) >= filters.startPrice &&
+            parseFloat(newData[COST_TOTAL]) <= filters.endPrice
         );
       }
 
@@ -345,7 +361,7 @@ export default {
         console.log("objects", filters.objects);
         data = data.filter(
           newData => {
-            const objects = newData["Objets IFC"];
+            const objects = newData[IFC_OBJECTS];
             if (!objects) {
               return false;
             }
@@ -358,15 +374,30 @@ export default {
     });
 
     return {
+      // Constants
+      COST_MAT,
+      COST_SERV,
+      COST_TOTAL,
+      DESC,
+      IFC_OBJECTS,
+      OTHER,
+      PRIORITIES,
+      PRIORITY,
+      SEC_END,
+      SEC_START,
+      START_DATE,
+      STATUS,
+      TYPE,
+      TYPES,
+      // Refs
       displayFilters,
       priorityOptions,
       statutOptions,
       typeOptions,
       searchText,
-      filteredSyctomOrders,
+      filteredData,
       filters: filtersUI,
-      PRIORITIES,
-      TYPES,
+      // Methods
       submitFilters,
       resetFilters,
     };
@@ -376,17 +407,21 @@ export default {
 
 <style scoped lang="scss">
 .maintenance-tab {
-  height: calc(100vh - 174px);
+  padding-top: calc(var(--spacing-unit) * 2);
+
   &__header {
     position: relative;
-    gap: 12px;
+    gap: var(--spacing-unit);
+
     .search {
       flex: 4;
     }
+
     .filter-btn {
       flex: 1;
       justify-content: space-between;
     }
+
     .filters {
       position: absolute;
       width: 100%;
@@ -410,28 +445,38 @@ export default {
       }
     }
   }
+
+  .card-list {
+    height: calc(100% - var(--spacing-unit) * 2 - 27px);
+  }
+
   .card {
     border-radius: 3px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+
     &__left {
       width: 160px;
     }
+
     &__right {
       width: 100%;
       flex: 4;
       border-left: 1px solid var(--color-silver);
+
       .content,
       .date,
       .price {
         padding: 0 20px;
       }
+
       .date,
       .price {
         > div {
           flex: 1;
         }
       }
+
       .content {
         min-height: 94px;
         display: flex;
@@ -441,9 +486,11 @@ export default {
           min-height: 30px;
         }
       }
+
       .date {
         min-height: 33px;
       }
+
       .price {
         min-height: 66px;
         border-top: 1px solid var(--color-silver);

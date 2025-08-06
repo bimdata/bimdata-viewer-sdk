@@ -19,10 +19,10 @@
     "Plugin",
     "syctom"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "@bimdata/design-system": "^1.4.0-rc.89",
+    "@bimdata/design-system": "^2.3.0",
     "@vitejs/plugin-vue": "^4.0.0",
+    "chartist": "^1.4.0",
     "rollup-plugin-external-globals": "^0.7.1",
     "sass": "^1.53.0",
     "terser": "^5.17.1",

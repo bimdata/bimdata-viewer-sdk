@@ -1,3 +1,17 @@
+const FIELDS = {
+  COST_MAT: "Coût matériel",
+  COST_SERV: "Coût service",
+  COST_TOTAL: "Coût total",
+  DESC: "Description poste technique",
+  IFC_OBJECTS: "Objets IFC",
+  PRIORITY: "Priorité",
+  SEC_END: "Fin SEC",
+  SEC_START: "Début SEC",
+  START_DATE: "Date début",
+  STATUS: "Statut",
+  TYPE: "Type",
+};
+
 const PRIORITIES = Object.freeze({
   URGENT: {
     text: "URGENT",
@@ -84,4 +98,4 @@ const TYPES = Object.freeze({
   },
 });
 
-export { PRIORITIES, TYPES };
+export { FIELDS, PRIORITIES, TYPES };

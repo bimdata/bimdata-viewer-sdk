@@ -1,68 +1,100 @@
 <template>
   <div class="syctom p-12">
     <BIMDataTabs
-      :tabs="tabs"
+      :tabs="TABS"
       width="100%"
       height="44px"
       tabSize="33%"
       :selected="selectedTab.id"
       @tab-selected="onTabChange"
-      class="syctom__tabs"
     >
       <template #tab="{ tab }">
-        <span class="syctom__tabs-label">
-          {{ tab.text }}
-        </span>
+        {{ tab.text }}
       </template>
     </BIMDataTabs>
-    <MaintenanceTab
-      v-if="selectedTab.id === 'maintenance'"
-      :syctomOrders="syctomOrders"
-    />
+
+    <Transition name="fade">
+      <MaintenanceTab
+        v-if="selectedTab.id === 'maintenance'"
+        :data="syctomMaintenanceData"
+      />
+
+      <EnvironmentTab
+        v-else-if="selectedTab.id === 'environment'"
+      />
+
+      <ProcessTab
+        v-else-if="selectedTab.id === 'process'"
+      />
+    </Transition>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, provide, ref } from "vue";
+import SyctomService from "./SyctomService.js";
+// import syctomMaintenanceData from "./data/syctom-maintenance-data.json";
 
-import MaintenanceTab from "./tabs-content/MaintenanceTab.vue";
-import syctomOrders from "./syctom.json";
+import EnvironmentTab from "./environment/EnvironmentTab.vue";
+import MaintenanceTab from "./maintenance/MaintenanceTab.vue";
+import ProcessTab from "./process/ProcessTab.vue";
+
+const TABS = [
+  {
+    id: "maintenance",
+    text: "Maintenance",
+  },
+  {
+    id: "environment",
+    text: "Données environnementales",
+  },
+  {
+    id: "process",
+    text: "Process",
+  },
+];
+
 export default {
   components: {
+    EnvironmentTab,
     MaintenanceTab,
+    ProcessTab,
   },
   setup() {
-    const tabs = [
-      {
-        id: "maintenance",
-        text: "Maintenance",
-      },
-      {
-        id: "data",
-        text: "Données environnementales",
-      },
-      {
-        id: "process",
-        text: "Process",
-      },
-    ];
-    const selectedTab = ref(tabs[0]);
+    const service = new SyctomService();
+    provide("service", service);
+
+    const selectedTab = ref(TABS[0]);
 
     const onTabChange = tab => {
       selectedTab.value = tab;
     };
+
+    const syctomMaintenanceData = ref([]);
+
+    onMounted(async () => {
+      syctomMaintenanceData.value = await service.fetchMaintenanceData();
+    });
+
     return {
-      tabs,
+      TABS,
       selectedTab,
+      syctomMaintenanceData,
       onTabChange,
-      syctomOrders,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .syctom {
+  height: 100%;
   background-color: var(--color-white);
+
+  .maintenance-tab,
+  .environment-tab,
+  .process-tab {
+    height: calc(100% - 44px);
+  }
 }
 </style>
