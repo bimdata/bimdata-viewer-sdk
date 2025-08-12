@@ -1,4 +1,4 @@
-const SERVICE_URL = "http://localhost:8081";
+const SERVICE_URL = "https://statics.bimdata.io/js/syctom/VChNAE4Ria8aZGpcA2U2PJBHT5jxCeyW";
 const NB_SAMPLES = 1000;
 
 const maintenanceDataFile = "syctom-maintenance-data.json";

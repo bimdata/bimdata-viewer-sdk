@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { GROUPS } from "../../data/syctom-process-config.js";
+import { GROUPS } from "../../config/syctom-process-config.js";
 
 import ProcessGroup from "./ProcessGroup.vue";
 

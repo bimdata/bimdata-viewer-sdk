@@ -188,7 +188,7 @@
 
 <script>
 import { computed, ref, reactive, inject } from "vue";
-import { FIELDS, PRIORITIES, TYPES } from "../../data/syctom-maintenance-config.js";
+import { FIELDS, PRIORITIES, TYPES } from "../../config/syctom-maintenance-config.js";
 
 const {
   COST_MAT,

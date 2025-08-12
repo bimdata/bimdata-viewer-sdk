@@ -9,7 +9,7 @@
         Analyse de {{ text }}
       </div>
       <div class="graph" ref="graph">
-        <!-- TODO -->
+        <!-- Graph will be displayed here -->
       </div>
     </div>
   </div>
@@ -47,8 +47,10 @@ export default {
         const time = (await service.fetchProcessData(["time"]))[0];
         const data = await service.fetchProcessData(tags.value);
 
+        const dates = time.map(t => t.split(" ")[0]);
+
         const values = [];
-        for (let i = 0; i<time.length; i++) {
+        for (let i = 0; i < dates.length; i++) {
           let sum = 0;
           for (let y of data) sum += y[i];
           values.push(sum);
@@ -57,20 +59,12 @@ export default {
         new LineChart(
           graph.value,
           {
-            labels: time,
+            labels: dates,
             series: [values],
           },
           {
             height: "300px",
             showPoint: false,
-            axisX: {
-              // showLabel: false,
-              // showGrid: true,
-
-            },
-            axisY: {
-              // showGrid: true,
-            }
           }
         );
       }
@@ -101,8 +95,36 @@ export default {
   }
 
   .content {
+    padding-bottom: calc(var(--spacing-unit) * 3);
+
     .text {
       margin-bottom: var(--spacing-unit);
+    }
+  }
+}
+</style>
+
+<style>
+/**
+ * Add some global styles to properly display labels on chart.
+ */
+.syctom .process-item .graph {
+  .ct-chart-line {
+    overflow: visible;
+  }
+
+  .ct-labels {
+    /* Label positioning */
+    .ct-label.ct-horizontal {
+      transform-origin: top left;
+      transform: translate(-36px, 52px) rotate(-60deg);
+    }
+
+    /* Only show some labels for readability */
+    > *:not(:first-child):not(:nth-child(20n)) {
+      .ct-label.ct-horizontal {
+        display: none;
+      }
     }
   }
 }

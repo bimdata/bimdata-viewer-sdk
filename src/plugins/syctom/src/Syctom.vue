@@ -33,7 +33,6 @@
 <script>
 import { onMounted, provide, ref } from "vue";
 import SyctomService from "./SyctomService.js";
-// import syctomMaintenanceData from "./data/syctom-maintenance-data.json";
 
 import EnvironmentTab from "./environment/EnvironmentTab.vue";
 import MaintenanceTab from "./maintenance/MaintenanceTab.vue";
