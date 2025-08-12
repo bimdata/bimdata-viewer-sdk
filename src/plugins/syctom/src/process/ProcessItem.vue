@@ -8,6 +8,9 @@
       <div class="text">
         Analyse de {{ text }}
       </div>
+      <div class="placeholder" v-show="noData">
+        Pas de données disponibles
+      </div>
       <div class="graph" ref="graph">
         <!-- Graph will be displayed here -->
       </div>
@@ -32,6 +35,7 @@ export default {
 
     const graph = ref(null);
     const isOpen = ref(false);
+    const noData = ref(false);
 
     const tags = computed(() => {
       const { tag1 = [], tag2 = [], tag3 = [] } = props.item;
@@ -44,13 +48,20 @@ export default {
 
     watch(isOpen, async () => {
       if (isOpen.value) {
-        const time = (await service.fetchProcessData(["time"]))[0];
-        const data = await service.fetchProcessData(tags.value);
+        let time, data;
 
-        const dates = time.map(t => t.split(" ")[0]);
+        time = (await service.fetchProcessData(["time"]))[0];
+        time = time.map(t => t.split(" ")[0]);
+
+        try {
+          data = await service.fetchProcessData(tags.value);
+        } catch {
+          noData.value = true;
+          return;
+        }
 
         const values = [];
-        for (let i = 0; i < dates.length; i++) {
+        for (let i = 0; i < time.length; i++) {
           let sum = 0;
           for (let y of data) sum += y[i];
           values.push(sum);
@@ -59,7 +70,7 @@ export default {
         new LineChart(
           graph.value,
           {
-            labels: dates,
+            labels: time,
             series: [values],
           },
           {
@@ -73,6 +84,7 @@ export default {
     return {
       graph,
       isOpen,
+      noData,
       text,
     };
   },
@@ -99,6 +111,15 @@ export default {
 
     .text {
       margin-bottom: var(--spacing-unit);
+    }
+
+    .placeholder {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
     }
   }
 }
