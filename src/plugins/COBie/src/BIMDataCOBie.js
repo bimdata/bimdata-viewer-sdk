@@ -10,7 +10,7 @@ function toConsoleSafe(value) {
     .replace(/\u2026/g, "...");
 }
 
-function downloadArrayBuffer(buffer, filename) {
+async function downloadArrayBuffer(buffer, filename) {
   const blob = new Blob([buffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
@@ -20,8 +20,19 @@ function downloadArrayBuffer(buffer, filename) {
   a.download = filename;
   document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+
+  // delayed cleanup to ensure the download has been triggered before revoking the URL
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      console.log(`[cobie-export] Export completed: ${filename}`);
+
+      resolve();
+    }, 200);
+  });
 }
 
 function safeName(value) {
@@ -91,7 +102,7 @@ export default {
       });
 
       const ts = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 15);
-      downloadArrayBuffer(buffer, `COBie_${safeName(modelName)}_${ts}.xlsx`);
+      await downloadArrayBuffer(buffer, `COBie_${safeName(modelName)}_${ts}.xlsx`);
     } catch (err) {
       console.error("[cobie-export]", err);
     } finally {
