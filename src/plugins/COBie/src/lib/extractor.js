@@ -107,7 +107,7 @@ export async function extractCobie(client, log) {
     elementObjectType: new Map(),
   };
   try {
-    const tree = await client.getStructureTree();
+    const tree = await client.getStructureTreeFromUrl(model && model.structure_file);
     walkSpatialTree(tree, ctx, null, null);
   } catch (e) {
     note(`  Warning: unable to load structure_file: ${e.message || e}`);

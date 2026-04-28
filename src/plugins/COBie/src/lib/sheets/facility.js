@@ -40,7 +40,7 @@ function extractPostalAddress(building) {
       const psetName = (pset.name || "").toLowerCase().replace(/\s+/g, "");
       if (!ADDRESS_PSET_NAMES.has(psetName)) continue;
       for (const prop of pset.properties || []) {
-        const key = (prop.name || "").toLowerCase().replace(/[\s_]/g, "");
+        const key = (((prop.definition || {}).name) || "").toLowerCase().replace(/[\s_]/g, "");
         const cob = ADDRESS_FIELD_MAP[key];
         if (cob && !addr[cob]) {
           let val = prop.value || "";
@@ -112,7 +112,7 @@ function extractCoordinates(sites) {
         const pname = (pset.name || "").toLowerCase().replace(/[\s_]/g, "");
         if (!GEO_PSETS.has(pname)) continue;
         for (const prop of pset.properties || []) {
-          const pk = (prop.name || "").toLowerCase().replace(/[\s_]/g, "");
+          const pk = (((prop.definition || {}).name) || "").toLowerCase().replace(/[\s_]/g, "");
           const val = prop.value;
           if (val === null || val === undefined || val === "") continue;
           if (LAT_DEFS.has(pk)) lat = Array.isArray(val) ? compoundAngleToDecimal(val) : val;

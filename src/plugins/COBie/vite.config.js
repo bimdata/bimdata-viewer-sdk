@@ -17,7 +17,7 @@ export default defineConfig(() => {
   return {
     build: {
       lib: {
-        entry: "./src/plugin.js",
+        entry: "./src/cobie.plugin.js",
         formats: ["es"],
         name: "cobiePlugin",
         fileName: "cobie.plugin",

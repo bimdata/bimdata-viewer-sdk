@@ -173,12 +173,15 @@ export class BIMDataClient {
    * structure.json : arborescence project → site → building → storey → space → element.
    * L'URL signée est dans model.structure_file (S3, sans header Authorization).
    */
-  async getStructureTree() {
-    const model = await this.getModel();
-    const url = model && model.structure_file;
+  async getStructureTreeFromUrl(url) {
     if (!url) return [];
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`structure_file ${resp.status} ${resp.statusText}`);
     return resp.json();
+  }
+
+  async getStructureTree() {
+    const model = await this.getModel();
+    return this.getStructureTreeFromUrl(model && model.structure_file);
   }
 }

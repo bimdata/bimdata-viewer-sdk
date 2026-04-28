@@ -17,12 +17,6 @@ const SKIP_PSETS = new Set([
   "Pset_BuildingStoreyCommon",
 ]);
 
-const SHEET_FOR_TYPE = {
-  ifcspace: "Space",
-  ifcbuildingstorey: "Floor",
-  ifcbuilding: "Facility",
-};
-
 const SPATIAL_SKIP = new Set(["ifcbuilding", "ifcbuildingstorey", "ifcspace", "ifcsite", "ifcproject", ""]);
 
 function rowsFromElement(el, sheetName, createdOn) {

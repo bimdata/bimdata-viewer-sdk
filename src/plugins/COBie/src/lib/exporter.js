@@ -20,6 +20,14 @@ const THIN_BORDER = {
   right: { style: "thin" },
 };
 
+const WIDTH_SAMPLE_LIMIT = 1000;
+
+function normalizeCellValue(value) {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "object") return JSON.stringify(value);
+  return value;
+}
+
 function writeSheet(ws, headers, rows, color) {
   // Header row
   ws.addRow(headers);
@@ -32,13 +40,17 @@ function writeSheet(ws, headers, rows, color) {
   });
 
   // Data rows
+  const maxWidths = headers.map((h) => h.length);
+  let measuredRows = 0;
   for (const row of rows) {
-    const values = headers.map((h) => {
-      const v = row[h];
-      if (v === null || v === undefined) return "";
-      if (typeof v === "object") return JSON.stringify(v);
-      return v;
-    });
+    const values = headers.map((h) => normalizeCellValue(row[h]));
+    if (measuredRows < WIDTH_SAMPLE_LIMIT) {
+      for (let i = 0; i < values.length; i++) {
+        const len = String(values[i]).length;
+        if (len > maxWidths[i]) maxWidths[i] = len;
+      }
+      measuredRows += 1;
+    }
     const r = ws.addRow(values);
     r.alignment = { vertical: "top", wrapText: false };
     r.eachCell((cell) => { cell.border = THIN_BORDER; });
@@ -46,13 +58,7 @@ function writeSheet(ws, headers, rows, color) {
 
   // Column widths (header + max content, capped at 60).
   for (let i = 0; i < headers.length; i++) {
-    let max = headers[i].length;
-    for (const row of rows) {
-      const v = row[headers[i]];
-      const len = v === null || v === undefined ? 0 : String(v).length;
-      if (len > max) max = len;
-    }
-    ws.getColumn(i + 1).width = Math.min(max + 2, 60);
+    ws.getColumn(i + 1).width = Math.min(maxWidths[i] + 2, 60);
   }
 
   ws.views = [{ state: "frozen", ySplit: 1 }];
