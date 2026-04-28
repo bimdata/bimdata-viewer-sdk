@@ -1,7 +1,7 @@
 {
   "name": "@bimdata/cobie-viewer-plugin",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "COBie BIMData Viewer Plugin",
   "scripts": {
     "build": "vite build && terser -c -m -o dist/cobie.plugin.js --module dist/cobie.plugin.js",

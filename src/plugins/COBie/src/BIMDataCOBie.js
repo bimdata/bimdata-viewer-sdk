@@ -50,7 +50,6 @@ export default {
     }
   },
   async onOpen() {
-    /** @type {import("../../viewer/$viewer").default} */
     const $viewer = this.$viewer;
 
     const model = $viewer.localContext.loadedModels[0];
@@ -70,6 +69,8 @@ export default {
 
     const worker = new CobieExtractorWorker();
     this._cobieWorker = worker;
+
+    $viewer.localContext.loadingProcessStart();
 
     try {
       const { buffer, modelName } = await new Promise((resolve, reject) => {
@@ -110,6 +111,8 @@ export default {
         this._cobieWorker.terminate();
         this._cobieWorker = null;
       }
+
+      $viewer.localContext.loadingProcessEnd();
 
       setTimeout(() => this.$close(), 0);
     }
