@@ -45,7 +45,7 @@ function askQuestions() {
       name: "name",
       type: "input",
       message:
-        "What is the name of the plugin? (must be a valid javascript variable name)",
+        "What is the name of the plugin ? (must be a valid javascript variable name)",
       validate: input => {
         if (!isVarName(input)) {
           return "Invalid name. The name must be a valid javascript variable name";
@@ -56,26 +56,29 @@ function askQuestions() {
     {
       name: "type",
       type: "list",
+      message:
+        "Is your plugin meant to be a dedicated window, be loaded with a button, none of them (no UI) ?",
       choices: [
         {
           name: "A dedicated window (like 2D viewer)",
           value: "window",
         },
         {
-          name: "A button (Like the BCF plugin or params plugin)",
+          name: "A button (like the 3D parameters plugin)",
           value: "button",
         },
         {
-          name: "None of them (My plugin won't have any UI or I'll handle it myself)",
+          name: "None of them (my plugin won't have any UI or I'll handle it myself)",
           value: null,
         },
       ],
-      message:
-        "Is your plugin meant to be a dedicated window, be loaded with a button, none of them (no UI) ?",
     },
     {
+      when: answers => answers.type === "button",
       name: "buttonPosition",
       type: "list",
+      message: "Where do you want your icon ?",
+      default: "left",
       choices: [
         {
           name: "On the left",
@@ -86,57 +89,62 @@ function askQuestions() {
           value: "right",
         },
       ],
-      message: "Where do you want your icon?",
-      default: "left",
-      when: answers => answers.type === "button",
     },
     {
+      when: answers => answers.type === "button",
       name: "menuType",
       type: "list",
+      message: "What panel kind do you want?",
+      default: "simple",
       choices: [
         {
           name: "A simple div, I'll handle the HTML in it",
           value: "simple",
         },
         {
-          name: "A resizable and movable panel (Like Structures or BCF)",
+          name: "A resizable and movable panel (like Structure plugin)",
           value: "panel",
         },
       ],
-      message: "What panel kind do you want?",
-      default: "simple",
-      when: answers => answers.type === "button",
     },
     {
+      when: answers => answers.type === "button",
       name: "windowVisibility",
       type: "checkbox",
+      message: "On which windows do you want it to be visible ?",
+      default: ["3d"],
       choices: [
         {
-          name: "The 3D Viewer",
-          value: "3dviewer",
+          name: "Viewer IFC 3D",
+          value: "3d",
         },
         {
-          name: "The 2D Viewer",
-          value: "2dviewer",
+          name: "Viewer IFC 2D",
+          value: "2d",
+        },
+        {
+          name: "Viewer DWG",
+          value: "dwg",
+        },
+        {
+          name: "Viewer Plan",
+          value: "plan",
         },
       ],
-      message: "On which windows to you want it to be visible?",
-      default: ["3dviewer"],
       validate: input => {
         if (input.length === 0) {
           return "You must select at least 1 window or your button won't be shown.";
         }
         return true;
       },
-      when: answers => answers.type === "button",
     },
     {
+      when: answers => answers.type === "button",
       name: "closeOnUserInteraction",
       type: "confirm",
       message:
-        "Should your plugin be closed when the user interacts with the model?",
+        "Should your plugin be closed when the user interacts with the model ?",
       default: false,
-      when: answers => answers.type === "button",
     },
   ];
   return inquirer.prompt(questions);
@@ -144,27 +152,20 @@ function askQuestions() {
 
 const run = async () => {
   console.log(
-    chalk.green(
-      "This tool asks you basic questions and setup a plugin boilerplate"
-    )
-  );
-  console.log(chalk.green("There are many options not covered by this tools"));
-  console.log(
-    chalk.green("You can will be able to change any value manually later")
+    chalk.green("This tool asks you basic questions and setup a plugin boilerplate")
   );
   console.log(
-    chalk.green(
-      "You can find complete examples in the documentation: https://developers.bimdata.io"
-    )
+    chalk.green("There are many options not covered by this tools")
+  );
+  console.log(
+    chalk.green("You will be able to change any value manually later")
+  );
+  console.log(
+    chalk.green("Refer to the documentation to find complete examples: https://developers.bimdata.io")
   );
   const answers = await askQuestions();
 
   // Format some data for the template
-  if (answers.windowVisibility) {
-    answers.windowVisibility = answers.windowVisibility.map(window =>
-      window.substring(0, window.indexOf("viewer"))
-    );
-  }
   answers.UpperCaseName = answers.name.replace(/^\w/, c => c.toUpperCase());
   answers.keepOpen = !answers.closeOnUserInteraction;
 
