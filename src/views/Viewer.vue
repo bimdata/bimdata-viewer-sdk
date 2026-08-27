@@ -22,6 +22,7 @@ import kroqiBcfService from "@bimdata/bcf-kroqi-premium-service";
 import platformDemo from "@bimdata/platform-demo-viewer-plugin";
 import SnowflakesPlugin from "@bimdata/snowflakes-viewer-plugin";
 import SvgExtractorPlugin from "@bimdata/svg-extractor-viewer-plugin";
+import BoomPlugin from "@/plugins/boom/src/boom.plugin.js";
 
 
 export default {
@@ -49,6 +50,9 @@ export default {
           organization: "cstb",
           userIsAdmin: true,
         },
+        viewer3d: {
+          enableOffsets: true,
+        },
       },
     });
 
@@ -66,6 +70,7 @@ export default {
     bimdataViewer.registerPlugin(platformDemo);
     bimdataViewer.registerPlugin(SnowflakesPlugin);
     bimdataViewer.registerPlugin(SvgExtractorPlugin);
+    bimdataViewer.registerPlugin(BoomPlugin);
 
     bimdataViewer.mount(`#${this.viewerId}`);
 
